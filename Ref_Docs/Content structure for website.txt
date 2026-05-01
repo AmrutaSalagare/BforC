@@ -1,0 +1,47 @@
+﻿Home Page
+* Hero section (value proposition: “Careers built for women”)
+* Job search bar (role, location, filters)
+* Featured jobs
+* Featured companies
+* Categories (remote jobs, return-to-work, flexible roles, etc.)
+* Testimonials / success stories
+* CTA: Sign up / Upload resume
+Job Search / Browse Jobs
+* Filters (role, salary, experience, remote, women-friendly companies)
+* Job cards (title, company, salary, tags)
+* “Quick apply” / “Save job”
+* AI recommendations
+Company Directory
+* Company profiles
+* Women-friendly ratings (your USP)
+* Benefits, policies (maternity, flexibility, safety)
+Candidate Dashboard (User Account)
+* Profile (resume, skills, experience)
+* Saved jobs
+* Applied jobs
+* Alerts & recommendations
+* Profile strength meter
+Employer / Recruiter Section
+* Post a job
+* Talent search
+* Pricing / plans
+* Employer branding page
+About Us
+* Mission (women empowerment, inclusion)
+* Story
+* Why this platform exists
+Contact / Support
+* Contact form
+* Help center / FAQs
+* Chat support (optional)
+Legal & Trust Pages
+* Privacy Policy
+* Terms of Service
+* Data Protection (important in India)
+* Anti-harassment policy (VERY relevant for your niche)
+
+
+
+
+ AboutUs ■ Content must be provided by you,
+ Content must be made available for Testimonials, Platform Description, Privacy Policy, Social Media links, contact Information
