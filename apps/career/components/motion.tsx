@@ -149,35 +149,31 @@ export function TextReveal({
   const shouldReduce = useReducedMotion();
   const words = text.split(" ");
 
-  const container = {
-    hidden: {},
-    visible: {
-      transition: { staggerChildren: stagger, delayChildren: delay },
-    },
-  };
   const wordVariant = {
     hidden: { opacity: 0, y: shouldReduce ? 0 : 22 },
-    visible: { opacity: 1, y: 0, transition: { duration, ease: EASE } },
+    visible: (index: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration, ease: EASE, delay: delay + index * stagger },
+    }),
   };
 
   return (
-    // @ts-expect-error — polymorphic element
-    <motion.div
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      as={Tag}
-      className={`${className} flex flex-wrap`}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
-      variants={container}
-      style={{ gap: "0.25em" }}
-    >
+    <Tag className={`${className ?? ""} flex flex-wrap`} style={{ gap: "0.25em" }}>
       {words.map((word, i) => (
-        <motion.span key={i} variants={wordVariant} style={{ display: "inline-block" }}>
+        <motion.span
+          key={`${word}-${i}`}
+          custom={i}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+          variants={wordVariant}
+          style={{ display: "inline-block" }}
+        >
           {word}
         </motion.span>
       ))}
-    </motion.div>
+    </Tag>
   );
 }
 
@@ -207,7 +203,7 @@ export function ParallaxSection({
   const y = useTransform(
     scrollYProgress,
     [0, 1],
-    shouldReduce ? [0, 0] : [`${-speed * 60}px`, `${speed * 60}px`]
+    shouldReduce ? [0, 0] : [-speed * 60, speed * 60]
   );
 
   return (
