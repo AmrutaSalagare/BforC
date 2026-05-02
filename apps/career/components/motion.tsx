@@ -49,8 +49,8 @@ export function Reveal({
 }: RevealProps) {
   const shouldReduce = useReducedMotion();
   const dirMap = {
-    up:    { y: shouldReduce ? 0 : distance, x: 0 },
-    left:  { y: 0, x: shouldReduce ? 0 : -distance },
+    up: { y: shouldReduce ? 0 : distance, x: 0 },
+    left: { y: 0, x: shouldReduce ? 0 : -distance },
     right: { y: 0, x: shouldReduce ? 0 : distance },
   };
   const { y, x } = dirMap[direction];
@@ -159,7 +159,7 @@ export function TextReveal({
   };
 
   return (
-    <Tag className={`${className ?? ""} flex flex-wrap`} style={{ gap: "0.25em" }}>
+    <Tag className={`${className ?? ""} flex flex-wrap`} style={{ columnGap: "0.25em", rowGap: "0.02em" }}>
       {words.map((word, i) => (
         <motion.span
           key={`${word}-${i}`}

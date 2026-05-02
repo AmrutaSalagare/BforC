@@ -40,7 +40,7 @@ export function JobCard({ job }: { job: Job }) {
       onHoverEnd={() => setHovered(false)}
       whileHover={{ y: -6 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      className="relative bg-white/40 backdrop-blur-md rounded-xl p-6 border border-white/60 hover:border-[var(--accent-color)]/30 cursor-pointer group shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300"
+      className="relative bg-white/40 backdrop-blur-md rounded-xl p-6 pb-16 border border-white/60 hover:border-[var(--accent-color)]/30 cursor-pointer group shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300"
       aria-label={`${job.title} at ${job.company}`}
     >
       {/* Top row */}

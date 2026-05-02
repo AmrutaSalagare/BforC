@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ArrowRight, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,12 +30,20 @@ export default function RadialOrbitalTimeline({
   
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitAngle = useMotionValue(0);
+  const [radius, setRadius] = useState(200);
+
+  useEffect(() => {
+    const checkSize = () => setRadius(window.innerWidth < 768 ? 130 : 200);
+    checkSize();
+    window.addEventListener("resize", checkSize);
+    return () => window.removeEventListener("resize", checkSize);
+  }, []);
 
   // High-performance rotation loop using requestAnimationFrame (no React re-renders)
   useAnimationFrame((time, delta) => {
     if (autoRotate) {
       // delta is typically 16.6ms at 60fps. Adjust multiplier for speed.
-      orbitAngle.set(orbitAngle.get() + (delta * 0.015));
+      orbitAngle.set(orbitAngle.get() + (delta * 0.007));
     }
   });
 
@@ -127,12 +135,11 @@ export default function RadialOrbitalTimeline({
         </div>
 
         {/* Orbit rings */}
-        <div className="absolute w-[400px] h-[400px] rounded-full border border-[var(--foreground)]/5"></div>
-        <div className="absolute w-[440px] h-[440px] rounded-full border border-[var(--foreground)]/5 border-dashed"></div>
+        <div className="absolute w-[clamp(260px,70vw,400px)] h-[clamp(260px,70vw,400px)] rounded-full border border-[var(--foreground)]/5"></div>
+        <div className="absolute w-[clamp(300px,80vw,440px)] h-[clamp(300px,80vw,440px)] rounded-full border border-[var(--foreground)]/5 border-dashed"></div>
 
         {timelineData.map((item, index) => {
           const initialAngle = (index / timelineData.length) * 360;
-          const radius = 200; // Radius of the orbit
           
           const isExpanded = expandedItems[item.id];
           const isRelated = isRelatedToActive(item.id);

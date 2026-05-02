@@ -48,12 +48,12 @@ export function CompaniesSection() {
               className="flex flex-col gap-3 p-5 bg-white/40 backdrop-blur-md rounded-xl border border-white/60 hover:border-[var(--accent-color)]/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group h-full"
             >
               {/* Logo placeholder */}
-              <div className="flex items-start justify-between">
-                <div className="w-12 h-12 rounded-lg bg-[var(--blush)]/70 flex items-center justify-center font-display text-lg font-medium text-[var(--foreground)]">
+              <div className="flex flex-wrap items-start justify-between gap-y-3 gap-x-2">
+                <div className="w-12 h-12 rounded-lg bg-[var(--blush)]/70 flex items-center justify-center font-display text-lg font-medium text-[var(--foreground)] shrink-0">
                   {CompanyInitials(name)}
                 </div>
                 {womenFriendly && (
-                  <span className="badge-women-friendly text-[10px]">Women-Friendly ✦</span>
+                  <span className="badge-women-friendly text-[10px] shrink-0">Women-Friendly ✦</span>
                 )}
               </div>
 

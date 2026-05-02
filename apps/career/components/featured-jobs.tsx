@@ -112,13 +112,13 @@ export function FeaturedJobs() {
         </Link>
       </Reveal>
 
-      {/* Job grid */}
+      {/* Job grid — Masonry layout */}
       <StaggerReveal
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+        className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5 sm:space-y-0"
         stagger={0.08}
       >
         {FEATURED_JOBS.map((job) => (
-          <StaggerItem key={job.id}>
+          <StaggerItem key={job.id} className="break-inside-avoid sm:mb-5 w-full inline-block">
             <JobCard job={job} />
           </StaggerItem>
         ))}

@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
 import { Search, MapPin } from "lucide-react";
-import { Reveal, EASE } from "@/components/motion";
+import { Reveal, EASE, CountUp } from "@/components/motion";
 import Form from "next/form";
 
 const categories = [
@@ -71,7 +71,7 @@ export function HeroSection() {
         initial="hidden"
         animate="visible"
         variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06, delayChildren: 0.25 } } }}
-        style={{ gap: "0.28em" }}
+        style={{ columnGap: "0.28em", rowGap: "0.02em" }}
       >
         {["Find", "Work", "That"].map((w) => (
           <motion.span key={w} variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } } }}>
@@ -176,7 +176,7 @@ export function HeroSection() {
 
       {/* Stats strip */}
       <motion.div
-        className="flex gap-10 mt-14"
+        className="flex flex-wrap justify-center gap-6 sm:gap-10 mt-10 sm:mt-14"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.7, delay: 0.9 }}
@@ -184,7 +184,7 @@ export function HeroSection() {
         {stats.map(({ value, suffix, label }) => (
           <div key={label} className="text-center">
             <p className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-light text-[var(--accent-color)] leading-none">
-              {value}{suffix}
+              <CountUp target={value} suffix={suffix} />
             </p>
             <p className="eyebrow mt-1">{label}</p>
           </div>
