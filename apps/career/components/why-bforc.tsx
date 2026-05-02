@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Reveal, StaggerReveal, StaggerItem } from "@/components/motion";
 import { Star, Cpu, ShieldCheck } from "lucide-react";
 
@@ -51,7 +52,15 @@ export function WhyBforCSection() {
         <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-6" stagger={0.1}>
           {reasons.map(({ icon: Icon, title, body, color }) => (
             <StaggerItem key={title}>
-              <div className="group flex flex-col gap-4 p-7 bg-white/40 backdrop-blur-md rounded-xl border border-white/60 hover:border-[var(--accent-color)]/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300">
+              <motion.div
+                className="group flex flex-col gap-4 p-7 bg-white/40 backdrop-blur-md rounded-xl border border-white/60 hover:border-[var(--primary)]/30 transition-colors duration-300 h-full"
+                whileHover={{
+                  y: -6,
+                  scale: 1.02,
+                  boxShadow: "0 16px 48px rgba(168,67,112,0.12)",
+                  transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
+                }}
+              >
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
                   style={{ backgroundColor: color + "66" }}
@@ -60,9 +69,9 @@ export function WhyBforCSection() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-base text-[var(--foreground)] mb-2">{title}</h3>
-                  <p className="text-sm text-[var(--muted-fg)] leading-relaxed">{body}</p>
+                  <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">{body}</p>
                 </div>
-              </div>
+              </motion.div>
             </StaggerItem>
           ))}
         </StaggerReveal>

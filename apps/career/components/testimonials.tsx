@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Reveal } from "@/components/motion";
 import { Quote } from "lucide-react";
 
@@ -47,25 +48,34 @@ export function TestimonialsSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map(({ quote, name, role, initials }, i) => (
             <Reveal key={name} delay={i * 0.12}>
-              <figure className="flex flex-col h-full bg-white/40 backdrop-blur-md rounded-xl p-7 border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+              <motion.figure
+                className="flex flex-col h-full bg-white/40 backdrop-blur-md rounded-xl p-7 border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.06)]"
+                whileHover={{
+                  y: -5,
+                  scale: 1.01,
+                  boxShadow: "0 20px 60px rgba(168,67,112,0.10)",
+                  borderColor: "rgba(168,67,112,0.25)",
+                  transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
+                }}
+              >
                 <Quote
                   size={24}
-                  className="text-[var(--accent-color)] mb-4 shrink-0"
+                  className="text-[var(--primary)] mb-4 shrink-0"
                   aria-hidden
                 />
                 <blockquote className="font-display italic text-xl font-light leading-snug text-[var(--foreground)] flex-1 mb-6">
-                  "{quote}"
+                  &ldquo;{quote}&rdquo;
                 </blockquote>
                 <figcaption className="flex items-center gap-3 pt-4 border-t border-[var(--border)]">
-                  <div className="w-9 h-9 rounded-full bg-[var(--blush)] flex items-center justify-center font-display text-sm font-medium text-[var(--foreground)] shrink-0">
+                  <div className="w-9 h-9 rounded-full bg-[var(--accent)] flex items-center justify-center font-display text-sm font-medium text-[var(--foreground)] shrink-0">
                     {initials}
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-[var(--foreground)]">{name}</p>
-                    <p className="text-xs text-[var(--muted-fg)]">{role}</p>
+                    <p className="text-xs text-[var(--muted-foreground)]">{role}</p>
                   </div>
                 </figcaption>
-              </figure>
+              </motion.figure>
             </Reveal>
           ))}
         </div>

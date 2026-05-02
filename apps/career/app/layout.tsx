@@ -25,7 +25,7 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BforC Careers — Where Compassion Meets Career",
+  title: "BforC Careers :: Where Compassion Meets Career",
   description:
     "Find purpose-driven jobs at NGOs, social enterprises, and impact organisations across India. Women-friendly workplaces, flexible roles, and meaningful careers.",
   keywords: [
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     "BforC careers",
   ],
   openGraph: {
-    title: "BforC Careers — Where Compassion Meets Career",
+    title: "BforC Careers :: Where Compassion Meets Career",
     description:
       "Curated roles in social impact, NGOs, and purpose-driven organisations across India.",
     type: "website",
@@ -45,6 +45,8 @@ export const metadata: Metadata = {
 };
 
 import { AnimatedBackground } from "@/components/animated-background";
+import { LenisProvider } from "@/components/lenis-provider";
+import { ScrollProgressBar } from "@/components/motion";
 
 export default function RootLayout({
   children,
@@ -54,11 +56,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable} h-full`}
+      className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable} min-h-screen`}
     >
-      <body className="min-h-full flex flex-col antialiased">
-        <AnimatedBackground />
-        {children}
+      <body className="min-h-screen flex flex-col antialiased">
+        <LenisProvider>
+          <AnimatedBackground />
+          <ScrollProgressBar />
+          {children}
+        </LenisProvider>
       </body>
     </html>
   );

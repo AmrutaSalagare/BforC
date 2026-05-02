@@ -1,27 +1,42 @@
 "use client";
 
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useEffect, useState } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+  useReducedMotion,
+} from "framer-motion";
+import { useRef } from "react";
 
-/** Smooth scroll-linked progress bar at top of viewport */
+// ─── Shared easing curve ─────────────────────────────────────────────────────
+// The signature "expo ease-out" — starts fast, settles very slowly & elegantly
+export const EASE = [0.16, 1, 0.3, 1] as const;
+
+// ─── Scroll Progress Bar ─────────────────────────────────────────────────────
+/** Thin magenta line at the very top of the viewport */
 export function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+  const shouldReduce = useReducedMotion();
+  if (shouldReduce) return null;
 
   return (
     <motion.div
       style={{ scaleX, transformOrigin: "0%" }}
-      className="fixed top-0 left-0 right-0 h-[2px] bg-accent-color z-[100]"
+      className="fixed top-0 left-0 right-0 h-[2px] bg-[var(--ring)] z-[100]"
     />
   );
 }
 
-/** Fade + slide-up on viewport entry */
+// ─── Reveal (fade + slide-up) ─────────────────────────────────────────────────
 interface RevealProps {
   children: React.ReactNode;
   delay?: number;
   className?: string;
   direction?: "up" | "left" | "right";
+  duration?: number;
+  distance?: number;
 }
 
 export function Reveal({
@@ -29,11 +44,14 @@ export function Reveal({
   delay = 0,
   className,
   direction = "up",
+  duration = 0.8,
+  distance = 36,
 }: RevealProps) {
+  const shouldReduce = useReducedMotion();
   const dirMap = {
-    up:    { y: 40, x: 0 },
-    left:  { y: 0,  x: -40 },
-    right: { y: 0,  x: 40 },
+    up:    { y: shouldReduce ? 0 : distance, x: 0 },
+    left:  { y: 0, x: shouldReduce ? 0 : -distance },
+    right: { y: 0, x: shouldReduce ? 0 : distance },
   };
   const { y, x } = dirMap[direction];
 
@@ -42,11 +60,7 @@ export function Reveal({
       initial={{ opacity: 0, y, x }}
       whileInView={{ opacity: 1, y: 0, x: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{
-        duration: 0.7,
-        delay,
-        ease: [0.16, 1, 0.3, 1],
-      }}
+      transition={{ duration, delay, ease: EASE }}
       className={className}
     >
       {children}
@@ -54,7 +68,8 @@ export function Reveal({
   );
 }
 
-/** Stagger container — wraps children and staggers their reveal */
+// ─── StaggerReveal ────────────────────────────────────────────────────────────
+/** Wraps children and staggers their reveal on scroll entry */
 export function StaggerReveal({
   children,
   className,
@@ -80,7 +95,7 @@ export function StaggerReveal({
   );
 }
 
-/** Item to use inside StaggerReveal */
+/** Individual item inside StaggerReveal */
 export function StaggerItem({
   children,
   className,
@@ -88,11 +103,16 @@ export function StaggerItem({
   children: React.ReactNode;
   className?: string;
 }) {
+  const shouldReduce = useReducedMotion();
   return (
     <motion.div
       variants={{
-        hidden:  { opacity: 0, y: 32 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+        hidden: { opacity: 0, y: shouldReduce ? 0 : 28 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.75, ease: EASE },
+        },
       }}
       className={className}
     >
@@ -101,7 +121,131 @@ export function StaggerItem({
   );
 }
 
-/** Count-up animation triggered on viewport entry */
+// ─── TextReveal (word-by-word stagger) ───────────────────────────────────────
+/**
+ * Splits a string into words and staggers their fade+slide entry.
+ * Inspired by Augen.pro style typography animations.
+ *
+ * Usage:
+ *   <TextReveal text="Find Work That Moves the World" as="h1" className="..." />
+ */
+interface TextRevealProps {
+  text: string;
+  as?: keyof JSX.IntrinsicElements;
+  className?: string;
+  delay?: number;
+  stagger?: number;
+  duration?: number;
+}
+
+export function TextReveal({
+  text,
+  as: Tag = "p",
+  className,
+  delay = 0,
+  stagger = 0.07,
+  duration = 0.65,
+}: TextRevealProps) {
+  const shouldReduce = useReducedMotion();
+  const words = text.split(" ");
+
+  const container = {
+    hidden: {},
+    visible: {
+      transition: { staggerChildren: stagger, delayChildren: delay },
+    },
+  };
+  const wordVariant = {
+    hidden: { opacity: 0, y: shouldReduce ? 0 : 22 },
+    visible: { opacity: 1, y: 0, transition: { duration, ease: EASE } },
+  };
+
+  return (
+    // @ts-expect-error — polymorphic element
+    <motion.div
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      as={Tag}
+      className={`${className} flex flex-wrap`}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-60px" }}
+      variants={container}
+      style={{ gap: "0.25em" }}
+    >
+      {words.map((word, i) => (
+        <motion.span key={i} variants={wordVariant} style={{ display: "inline-block" }}>
+          {word}
+        </motion.span>
+      ))}
+    </motion.div>
+  );
+}
+
+// ─── ParallaxSection ──────────────────────────────────────────────────────────
+/**
+ * Wraps children in a parallax container.
+ * `speed` > 0 = slower than scroll (background feel).
+ * `speed` < 0 = faster than scroll (foreground feel).
+ */
+export function ParallaxSection({
+  children,
+  speed = 0.3,
+  className,
+}: {
+  children: React.ReactNode;
+  speed?: number;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const shouldReduce = useReducedMotion();
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    shouldReduce ? [0, 0] : [`${-speed * 60}px`, `${speed * 60}px`]
+  );
+
+  return (
+    <div ref={ref} className={`relative overflow-hidden ${className ?? ""}`}>
+      <motion.div style={{ y }} className="w-full h-full">
+        {children}
+      </motion.div>
+    </div>
+  );
+}
+
+// ─── FadeIn (simple opacity only) ────────────────────────────────────────────
+/** Ultra-lightweight — only animates opacity. Best for backgrounds & decorative. */
+export function FadeIn({
+  children,
+  delay = 0,
+  duration = 0.8,
+  className,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  duration?: number;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration, delay, ease: "easeOut" }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ─── CountUp ──────────────────────────────────────────────────────────────────
 export function CountUp({
   target,
   suffix = "",
@@ -113,29 +257,30 @@ export function CountUp({
   duration?: number;
   className?: string;
 }) {
-  const [count, setCount] = useState(0);
-  const [triggered, setTriggered] = useState(false);
+  // Simple approach — no state churn on re-renders
+  const nodeRef = useRef<HTMLSpanElement>(null);
+  const triggered = useRef(false);
 
   return (
     <motion.span
+      ref={nodeRef}
       className={className}
       onViewportEnter={() => {
-        if (triggered) return;
-        setTriggered(true);
+        if (triggered.current) return;
+        triggered.current = true;
         const start = Date.now();
         const tick = () => {
           const elapsed = Date.now() - start;
           const progress = Math.min(elapsed / duration, 1);
           const ease = 1 - Math.pow(1 - progress, 3);
-          setCount(Math.floor(ease * target));
+          if (nodeRef.current)
+            nodeRef.current.textContent = Math.floor(ease * target) + suffix;
           if (progress < 1) requestAnimationFrame(tick);
-          else setCount(target);
         };
         requestAnimationFrame(tick);
       }}
     >
-      {count}
-      {suffix}
+      0{suffix}
     </motion.span>
   );
 }

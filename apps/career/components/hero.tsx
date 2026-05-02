@@ -1,10 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Search, MapPin, ChevronDown } from "lucide-react";
-import { Reveal } from "@/components/motion";
+import { useState, useRef } from "react";
+import { Search, MapPin } from "lucide-react";
+import { Reveal, EASE } from "@/components/motion";
 import Form from "next/form";
 
 const categories = [
@@ -26,53 +26,78 @@ const stats = [
 import { ArrowRight } from "lucide-react";
 
 export function HeroSection() {
-  const [query, setQuery]     = useState("");
+  const [query, setQuery]       = useState("");
   const [location, setLocation] = useState("");
+  const ref = useRef<HTMLElement>(null);
+
+  // Parallax: background ellipse moves at 0.35x scroll speed
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "35%"]);
 
   return (
     <section
+      ref={ref}
       className="relative min-h-[92svh] flex flex-col items-center justify-center px-6 pt-24 pb-16 overflow-hidden"
       aria-label="Hero — Find Your Impact Role"
     >
-      {/* Subtle warm gradient bg */}
-      <div
+      {/* Parallax background ellipse */}
+      <motion.div
         aria-hidden
+        style={{ y: bgY }}
         className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 60% at 50% 0%, oklch(0.905 0.028 30 / 0.35) 0%, transparent 70%)",
-        }}
-      />
+      >
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in oklch, var(--accent) 55%, transparent) 0%, transparent 70%)",
+          }}
+        />
+      </motion.div>
 
       {/* Eyebrow */}
       <motion.p
         className="eyebrow mb-4 text-center"
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1 }}
+        transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
       >
         — WHERE COMPASSION MEETS CAREER —
       </motion.p>
 
-      {/* Headline */}
+      {/* Headline — word-by-word stagger */}
       <motion.h1
-        className="font-display text-center text-[clamp(2.8rem,8vw,5.5rem)] font-light leading-[1.08] tracking-[-0.03em] text-[var(--foreground)] max-w-3xl mb-5"
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="font-display text-center text-[clamp(2.8rem,8vw,5.5rem)] font-light leading-[1.08] tracking-[-0.03em] text-[var(--foreground)] max-w-3xl mb-5 flex flex-wrap justify-center"
+        initial="hidden"
+        animate="visible"
+        variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06, delayChildren: 0.25 } } }}
+        style={{ gap: "0.28em" }}
       >
-        Find Work That{" "}
-        <em className="font-display not-italic text-[var(--accent-color)]">
-          Moves the World
-        </em>
+        {["Find", "Work", "That"].map((w) => (
+          <motion.span key={w} variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } } }}>
+            {w}
+          </motion.span>
+        ))}
+        {/* Accent word */}
+        <motion.em
+          className="font-display not-italic text-[var(--primary)]"
+          variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EASE } } }}
+        >
+          Moves
+        </motion.em>
+        {["the", "World"].map((w) => (
+          <motion.span key={w} variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } } }}>
+            {w}
+          </motion.span>
+        ))}
       </motion.h1>
 
       {/* Sub */}
       <motion.p
-        className="text-[var(--muted-fg)] text-center max-w-lg text-base leading-relaxed mb-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.7, delay: 0.4 }}
+        className="text-[var(--muted-foreground)] text-center max-w-lg text-base leading-relaxed mb-10"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.65, ease: EASE }}
       >
         Curated roles in social impact, NGOs and purpose-driven organisations.
         Women-friendly workplaces. Real opportunities.
@@ -81,13 +106,14 @@ export function HeroSection() {
       {/* Search Bar */}
       <motion.div
         className="w-full max-w-2xl"
-        initial={{ opacity: 0, y: 32 }}
+        initial={{ opacity: 0, y: 28 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.5, type: "spring", stiffness: 120 }}
+        transition={{ duration: 0.8, delay: 0.8, ease: EASE }}
+        whileHover={{ scale: 1.01 }}
       >
         <Form
           action="/jobs"
-          className="flex flex-col sm:flex-row bg-white/50 backdrop-blur-xl rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-white/60 overflow-hidden"
+          className="flex flex-col sm:flex-row bg-white/60 backdrop-blur-xl rounded-xl shadow-[0_8px_40px_rgb(0,0,0,0.08)] border border-white/70 overflow-hidden transition-shadow duration-300 hover:shadow-[0_12px_50px_rgb(0,0,0,0.12)]"
         >
           {/* Role search */}
           <label htmlFor="q" className="sr-only">Search role, skill, or organisation</label>
