@@ -7,7 +7,7 @@ import {
   useSpring,
   useReducedMotion,
 } from "framer-motion";
-import { useRef } from "react";
+import { type JSX, useRef } from "react";
 
 // ─── Shared easing curve ─────────────────────────────────────────────────────
 // The signature "expo ease-out" — starts fast, settles very slowly & elegantly
