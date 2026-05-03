@@ -47,6 +47,8 @@ export const metadata: Metadata = {
 import { AnimatedBackground } from "@/components/animated-background";
 import { LenisProvider } from "@/components/lenis-provider";
 import { ScrollProgressBar } from "@/components/motion";
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 
 export default function RootLayout({
   children,
@@ -62,7 +64,9 @@ export default function RootLayout({
         <LenisProvider>
           <AnimatedBackground />
           <ScrollProgressBar />
+          <Navbar />
           {children}
+          <Footer />
         </LenisProvider>
       </body>
     </html>

@@ -69,7 +69,7 @@ const tiers = [
 
 export function PricingTeaser() {
   return (
-    <section className="py-20 px-6 max-w-7xl mx-auto" aria-labelledby="pricing-heading">
+    <section id="pricing" className="py-20 px-6 max-w-7xl mx-auto" aria-labelledby="pricing-heading">
       <Reveal className="text-center mb-14">
         <p className="eyebrow mb-3">— PLANS —</p>
         <h2
