@@ -4,7 +4,14 @@ import { ArrowRight, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import NextLink from "next/link";
-import { motion, useMotionValue, useAnimationFrame, useTransform, animate } from "framer-motion";
+import {
+  animate,
+  motion,
+  type MotionValue,
+  useAnimationFrame,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
 
 export interface TimelineItem {
   id: string;
@@ -20,13 +27,171 @@ interface RadialOrbitalTimelineProps {
   timelineData: TimelineItem[];
 }
 
+interface OrbitalTimelineNodeProps {
+  item: TimelineItem;
+  index: number;
+  totalItems: number;
+  timelineData: TimelineItem[];
+  orbitAngle: MotionValue<number>;
+  radius: number;
+  isExpanded: boolean;
+  isPulsing: boolean;
+  onToggle: (id: string, index: number) => void;
+}
+
+function OrbitalTimelineNode({
+  item,
+  index,
+  totalItems,
+  timelineData,
+  orbitAngle,
+  radius,
+  isExpanded,
+  isPulsing,
+  onToggle,
+}: OrbitalTimelineNodeProps) {
+  const initialAngle = (index / totalItems) * 360;
+  const Icon = item.icon;
+
+  // Wrapper rotation handles orbiting; content counter-rotation keeps the icon upright.
+  const wrapperRotate = useTransform(orbitAngle, (angle) => angle + initialAngle);
+  const contentRotate = useTransform(orbitAngle, (angle) => -(angle + initialAngle));
+
+  return (
+    <motion.div
+      className="absolute top-1/2 left-1/2 w-0 h-0"
+      style={{ rotate: wrapperRotate, zIndex: isExpanded ? 200 : 50 }}
+    >
+      <motion.div
+        className="absolute"
+        style={{
+          x: radius,
+          y: 0,
+          marginLeft: "-24px",
+          marginTop: "-24px",
+          rotate: contentRotate,
+        }}
+      >
+        <div
+          className="relative transition-all duration-700 cursor-pointer"
+          onClick={(event) => {
+            event.stopPropagation();
+            onToggle(item.id, index);
+          }}
+        >
+          <div
+            className={`absolute rounded-full -inset-1 ${
+              isPulsing ? "animate-pulse duration-1000" : ""
+            }`}
+            style={{
+              background: `radial-gradient(circle, ${item.color}40 0%, ${item.color}00 70%)`,
+              width: "80px",
+              height: "80px",
+              left: "-16px",
+              top: "-16px",
+              opacity: isPulsing ? 1 : 0,
+              pointerEvents: "none",
+            }}
+          />
+
+          <div
+            className={`
+              w-12 h-12 rounded-full flex items-center justify-center
+              border-[1.5px] shadow-warm-sm
+              transition-all duration-300 transform relative z-10
+              ${
+                isExpanded
+                  ? "scale-125 border-[var(--accent-color)] bg-white"
+                  : "hover:scale-110 bg-white/95 border-[var(--border)]/50"
+              }
+            `}
+          >
+            <Icon size={20} className="text-[var(--foreground)]" />
+          </div>
+
+          <div
+            className={`
+              absolute top-14 whitespace-nowrap
+              text-sm font-semibold tracking-wide
+              transition-all duration-300 pointer-events-none
+              ${isExpanded ? "text-[var(--accent-dark)] scale-110" : "text-[var(--foreground)]"}
+            `}
+            style={{ left: "50%", transform: "translateX(-50%)" }}
+          >
+            <span className="px-3 py-1 rounded-full bg-white/60 backdrop-blur-md shadow-sm border border-white/40 block">
+              {item.label}
+            </span>
+          </div>
+
+          <div
+            className={`
+              absolute top-24 left-1/2 -translate-x-1/2 w-72 transition-all duration-500 origin-top
+              ${isExpanded ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}
+            `}
+          >
+            <Card className="bg-white/95 backdrop-blur-xl border-white/60 shadow-warm-lg overflow-visible">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-[var(--accent-color)]/30" />
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg mt-1 text-[var(--foreground)] font-display">
+                  {item.label}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-sm text-[var(--muted-fg)]">
+                <p>{item.description}</p>
+
+                <div className="mt-5">
+                  <NextLink href={item.href} className="inline-flex w-full">
+                    <Button className="w-full bg-[var(--accent-color)] hover:bg-[var(--accent-dark)] text-white shadow-warm-sm rounded-full transition-colors">
+                      Explore Roles
+                    </Button>
+                  </NextLink>
+                </div>
+
+                {item.relatedIds.length > 0 && (
+                  <div className="mt-4 pt-3 border-t border-[var(--foreground)]/5">
+                    <div className="flex items-center mb-2">
+                      <Link size={12} className="text-[var(--faint-fg)] mr-1.5" />
+                      <h4 className="text-[0.65rem] uppercase tracking-wider font-semibold text-[var(--faint-fg)]">
+                        Related Categories
+                      </h4>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {item.relatedIds.map((relatedId) => {
+                        const relatedItem = timelineData.find((candidate) => candidate.id === relatedId);
+                        const relatedIndex = timelineData.findIndex((candidate) => candidate.id === relatedId);
+
+                        return (
+                          <button
+                            key={relatedId}
+                            className="flex items-center h-6 px-2.5 py-0 text-xs rounded-full border border-[var(--border)] bg-white/50 hover:bg-[var(--surface-2)] hover:border-[var(--accent-color)]/40 text-[var(--muted-fg)] hover:text-[var(--foreground)] transition-all"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              onToggle(relatedId, relatedIndex);
+                            }}
+                          >
+                            {relatedItem?.label}
+                            <ArrowRight size={10} className="ml-1.5 text-[var(--faint-fg)]" />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function RadialOrbitalTimeline({
   timelineData,
 }: RadialOrbitalTimelineProps) {
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
   const [autoRotate, setAutoRotate] = useState<boolean>(true);
   const [pulseEffect, setPulseEffect] = useState<Record<string, boolean>>({});
-  const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitAngle = useMotionValue(0);
@@ -51,7 +216,6 @@ export default function RadialOrbitalTimeline({
     // If clicking outside nodes, reset everything and resume rotation
     if (e.target === containerRef.current || (e.target as HTMLElement).closest('.orbit-bg')) {
       setExpandedItems({});
-      setActiveNodeId(null);
       setPulseEffect({});
       setAutoRotate(true);
     }
@@ -62,17 +226,11 @@ export default function RadialOrbitalTimeline({
     return currentItem ? currentItem.relatedIds : [];
   };
 
-  const isRelatedToActive = (itemId: string): boolean => {
-    if (!activeNodeId) return false;
-    const relatedItems = getRelatedItems(activeNodeId);
-    return relatedItems.includes(itemId);
-  };
-
   const centerViewOnNode = (nodeIndex: number) => {
     setAutoRotate(false);
     const targetNodeAngle = (nodeIndex / timelineData.length) * 360;
     
-    let currentAngle = orbitAngle.get();
+    const currentAngle = orbitAngle.get();
     // 270 degrees is top center
     let target = 270 - targetNodeAngle;
     
@@ -94,7 +252,6 @@ export default function RadialOrbitalTimeline({
 
       if (newState[id]) {
         // Expanding
-        setActiveNodeId(id);
         const relatedItems = getRelatedItems(id);
         const newPulseEffect: Record<string, boolean> = {};
         relatedItems.forEach((relId) => {
@@ -104,7 +261,6 @@ export default function RadialOrbitalTimeline({
         centerViewOnNode(index);
       } else {
         // Collapsing
-        setActiveNodeId(null);
         setAutoRotate(true);
         setPulseEffect({});
       }
@@ -138,153 +294,20 @@ export default function RadialOrbitalTimeline({
         <div className="absolute w-[clamp(260px,70vw,400px)] h-[clamp(260px,70vw,400px)] rounded-full border border-[var(--foreground)]/5"></div>
         <div className="absolute w-[clamp(300px,80vw,440px)] h-[clamp(300px,80vw,440px)] rounded-full border border-[var(--foreground)]/5 border-dashed"></div>
 
-        {timelineData.map((item, index) => {
-          const initialAngle = (index / timelineData.length) * 360;
-          
-          const isExpanded = expandedItems[item.id];
-          const isRelated = isRelatedToActive(item.id);
-          const isPulsing = pulseEffect[item.id];
-          const Icon = item.icon;
-
-          // Wrapper rotation (handles the orbiting)
-          const wrapperRotate = useTransform(orbitAngle, a => a + initialAngle);
-          // Content counter-rotation (keeps the icon upright)
-          const contentRotate = useTransform(orbitAngle, a => -(a + initialAngle));
-
-          return (
-            <motion.div
-              key={item.id}
-              className="absolute top-1/2 left-1/2 w-0 h-0"
-              style={{ rotate: wrapperRotate, zIndex: isExpanded ? 200 : 50 }}
-            >
-              {/* Content positioned at the edge of the radius */}
-              <motion.div 
-                className="absolute"
-                style={{ 
-                  x: radius, 
-                  y: 0,
-                  // Center the item itself (-50%, -50%) before counter-rotating
-                  marginLeft: "-24px",
-                  marginTop: "-24px",
-                  rotate: contentRotate 
-                }}
-              >
-                <div
-                  className="relative transition-all duration-700 cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleItem(item.id, index);
-                  }}
-                >
-                  {/* Pulse ring for related items */}
-                  <div
-                    className={`absolute rounded-full -inset-1 ${
-                      isPulsing ? "animate-pulse duration-1000" : ""
-                    }`}
-                    style={{
-                      background: `radial-gradient(circle, ${item.color}40 0%, ${item.color}00 70%)`,
-                      width: `80px`,
-                      height: `80px`,
-                      left: `-16px`,
-                      top: `-16px`,
-                      opacity: isPulsing ? 1 : 0,
-                      pointerEvents: "none"
-                    }}
-                  ></div>
-
-                  {/* Icon Circle */}
-                  <div
-                    className={`
-                    w-12 h-12 rounded-full flex items-center justify-center
-                    border-[1.5px] shadow-warm-sm
-                    transition-all duration-300 transform relative z-10
-                    ${isExpanded ? "scale-125 border-[var(--accent-color)] bg-white" : "hover:scale-110 bg-white/95 border-[var(--border)]/50"}
-                  `}
-                  >
-                    <Icon size={20} className="text-[var(--foreground)]" />
-                  </div>
-
-                  {/* Label */}
-                  <div
-                    className={`
-                    absolute top-14 whitespace-nowrap
-                    text-sm font-semibold tracking-wide
-                    transition-all duration-300 pointer-events-none
-                    ${isExpanded ? "text-[var(--accent-dark)] scale-110" : "text-[var(--foreground)]"}
-                  `}
-                    style={{ left: "50%", transform: "translateX(-50%)" }}
-                  >
-                    <span className="px-3 py-1 rounded-full bg-white/60 backdrop-blur-md shadow-sm border border-white/40 block">
-                      {item.label}
-                    </span>
-                  </div>
-
-                  {/* Expanded Card */}
-                  <div className={`
-                    absolute top-24 left-1/2 -translate-x-1/2 w-72 transition-all duration-500 origin-top
-                    ${isExpanded ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}
-                  `}>
-                    <Card className="bg-white/95 backdrop-blur-xl border-white/60 shadow-warm-lg overflow-visible">
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-[var(--accent-color)]/30"></div>
-                      <CardHeader className="pb-2">
-                        <CardTitle className="text-lg mt-1 text-[var(--foreground)] font-display">
-                          {item.label}
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="text-sm text-[var(--muted-fg)]">
-                        <p>{item.description}</p>
-
-                        <div className="mt-5">
-                           <NextLink href={item.href} className="inline-flex w-full">
-                             <Button className="w-full bg-[var(--accent-color)] hover:bg-[var(--accent-dark)] text-white shadow-warm-sm rounded-full transition-colors">
-                                Explore Roles
-                             </Button>
-                           </NextLink>
-                        </div>
-
-                        {item.relatedIds.length > 0 && (
-                          <div className="mt-4 pt-3 border-t border-[var(--foreground)]/5">
-                            <div className="flex items-center mb-2">
-                              <Link size={12} className="text-[var(--faint-fg)] mr-1.5" />
-                              <h4 className="text-[0.65rem] uppercase tracking-wider font-semibold text-[var(--faint-fg)]">
-                                Related Categories
-                              </h4>
-                            </div>
-                            <div className="flex flex-wrap gap-1.5">
-                              {item.relatedIds.map((relatedId) => {
-                                const relatedItem = timelineData.find(
-                                  (i) => i.id === relatedId
-                                );
-                                // Find index of related item for centering
-                                const relIndex = timelineData.findIndex(i => i.id === relatedId);
-                                return (
-                                  <button
-                                    key={relatedId}
-                                    className="flex items-center h-6 px-2.5 py-0 text-xs rounded-full border border-[var(--border)] bg-white/50 hover:bg-[var(--surface-2)] hover:border-[var(--accent-color)]/40 text-[var(--muted-fg)] hover:text-[var(--foreground)] transition-all"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      toggleItem(relatedId, relIndex);
-                                    }}
-                                  >
-                                    {relatedItem?.label}
-                                    <ArrowRight
-                                      size={10}
-                                      className="ml-1.5 text-[var(--faint-fg)]"
-                                    />
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          );
-        })}
+        {timelineData.map((item, index) => (
+          <OrbitalTimelineNode
+            key={item.id}
+            item={item}
+            index={index}
+            totalItems={timelineData.length}
+            timelineData={timelineData}
+            orbitAngle={orbitAngle}
+            radius={radius}
+            isExpanded={Boolean(expandedItems[item.id])}
+            isPulsing={Boolean(pulseEffect[item.id])}
+            onToggle={toggleItem}
+          />
+        ))}
       </div>
     </div>
   );

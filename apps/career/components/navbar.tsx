@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Bell, Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 import Image from "next/image";
 

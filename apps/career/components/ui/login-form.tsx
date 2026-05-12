@@ -1,7 +1,10 @@
 "use client";
+import { useActionState } from "react";
 import { useEffect, useRef, useState } from "react";
 import { User, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { loginAction, signupAction } from "@/app/auth/actions";
+import { initialAuthActionState, type AuthActionState } from "@/lib/auth/types";
 
 // Vertex shader source code
 const vertexSmokeySource = `
@@ -66,6 +69,35 @@ const blurClassMap: Record<BlurSize, string> = {
   "2xl": "backdrop-blur-2xl",
   "3xl": "backdrop-blur-3xl",
 };
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+
+  return (
+    <p className="mt-2 text-xs font-medium text-[var(--destructive)]" role="alert">
+      {message}
+    </p>
+  );
+}
+
+function FormMessage({ state }: { state: AuthActionState }) {
+  if (!state.message) return null;
+
+  const isSuccess = state.status === "success";
+
+  return (
+    <p
+      className={`rounded-[4px] border px-3 py-2 text-xs font-medium ${
+        isSuccess
+          ? "border-green-600/20 bg-green-50 text-green-700"
+          : "border-[var(--destructive)]/20 bg-white/70 text-[var(--destructive)]"
+      }`}
+      aria-live="polite"
+    >
+      {state.message}
+    </p>
+  );
+}
 
 export function SmokeyBackground({
   backdropBlurAmount = "xl",
@@ -140,7 +172,7 @@ export function SmokeyBackground({
     const iMouseLocation = gl.getUniformLocation(program, "iMouse");
     const uColorLocation = gl.getUniformLocation(program, "u_color");
 
-    let startTime = Date.now();
+    const startTime = Date.now();
     const [r, g, b] = hexToRgb(color);
     gl.uniform3f(uColorLocation, r, g, b);
 
@@ -196,6 +228,11 @@ export function SmokeyBackground({
 }
 
 export function LoginForm() {
+  const [state, formAction, pending] = useActionState(
+    loginAction,
+    initialAuthActionState
+  );
+
   return (
     <div className="w-full max-w-sm p-8 space-y-8 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/80 shadow-[0_8px_40px_rgb(0,0,0,0.15)] relative z-10">
       <div className="text-center">
@@ -203,14 +240,18 @@ export function LoginForm() {
         <p className="mt-2 text-sm text-[var(--muted-foreground)]">Sign in to continue</p>
       </div>
 
-      <form className="space-y-6 mt-8">
+      <form action={formAction} className="space-y-6 mt-8">
+        <FormMessage state={state} />
+
         {/* Email Input */}
         <div className="relative z-0 mt-6">
           <input
             type="email"
             id="floating_email"
+            name="email"
             className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus:outline-none focus:ring-0 focus:border-[var(--primary)] peer transition-colors"
             placeholder=" "
+            autoComplete="email"
             required
           />
           <label
@@ -220,6 +261,7 @@ export function LoginForm() {
             <User className="inline-block mr-2 -mt-1 text-[var(--primary)]" size={16} />
             Email Address
           </label>
+          <FieldError message={state.fieldErrors?.email} />
         </div>
 
         {/* Password Input */}
@@ -227,8 +269,10 @@ export function LoginForm() {
           <input
             type="password"
             id="floating_password"
+            name="password"
             className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus:outline-none focus:ring-0 focus:border-[var(--primary)] peer transition-colors"
             placeholder=" "
+            autoComplete="current-password"
             required
           />
           <label
@@ -238,6 +282,7 @@ export function LoginForm() {
             <Lock className="inline-block mr-2 -mt-1 text-[var(--primary)]" size={16} />
             Password
           </label>
+          <FieldError message={state.fieldErrors?.password} />
         </div>
 
         <div className="flex items-center justify-end">
@@ -248,9 +293,10 @@ export function LoginForm() {
 
         <button
           type="submit"
+          disabled={pending}
           className="group w-full flex items-center justify-center py-3.5 px-4 bg-[var(--accent-color)] hover:bg-[var(--accent-dark)] rounded-[4px] text-white font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary)] transition-all duration-300 shadow-sm"
         >
-          Sign In
+          {pending ? "Signing In..." : "Sign In"}
           <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
         </button>
 
@@ -266,7 +312,8 @@ export function LoginForm() {
         {/* Google Login Button */}
         <button
           type="button"
-          className="w-full flex items-center justify-center py-3 px-4 bg-white/80 hover:bg-white rounded-[4px] text-[var(--foreground)] font-medium border border-white focus:outline-none shadow-sm transition-all duration-300"
+          disabled
+          className="w-full flex items-center justify-center py-3 px-4 bg-white/60 rounded-[4px] text-[var(--muted-foreground)] font-medium border border-white focus:outline-none shadow-sm transition-all duration-300 cursor-not-allowed"
         >
           <svg className="w-5 h-5 mr-2" viewBox="0 0 48 48">
             <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039L38.802 8.841C34.553 4.806 29.613 2.5 24 2.5C11.983 2.5 2.5 11.983 2.5 24s9.483 21.5 21.5 21.5S45.5 36.017 45.5 24c0-1.538-.135-3.022-.389-4.417z"></path>
@@ -274,7 +321,7 @@ export function LoginForm() {
             <path fill="#4CAF50" d="M24 45.5c5.613 0 10.553-2.306 14.802-6.341l-5.839-5.841C30.842 35.846 27.059 38 24 38c-5.039 0-9.345-2.608-11.124-6.481l-6.571 4.819C9.642 41.277 16.318 45.5 24 45.5z"></path>
             <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l5.839 5.841C44.196 35.123 45.5 29.837 45.5 24c0-1.538-.135-3.022-.389-4.417z"></path>
           </svg>
-          Sign in with Google
+          Google sign-in coming next
         </button>
       </form>
 
@@ -289,6 +336,11 @@ export function LoginForm() {
 }
 
 export function SignupForm() {
+  const [state, formAction, pending] = useActionState(
+    signupAction,
+    initialAuthActionState
+  );
+
   return (
     <div className="w-full max-w-sm p-8 space-y-8 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/80 shadow-[0_8px_40px_rgb(0,0,0,0.15)] relative z-10">
       <div className="text-center">
@@ -296,14 +348,18 @@ export function SignupForm() {
         <p className="mt-2 text-sm text-[var(--muted-foreground)]">Join us to make an impact</p>
       </div>
 
-      <form className="space-y-6 mt-8">
+      <form action={formAction} className="space-y-6 mt-8">
+        <FormMessage state={state} />
+
         {/* Name Input */}
         <div className="relative z-0 mt-6">
           <input
             type="text"
             id="floating_name"
+            name="fullName"
             className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus:outline-none focus:ring-0 focus:border-[var(--primary)] peer transition-colors"
             placeholder=" "
+            autoComplete="name"
             required
           />
           <label
@@ -313,6 +369,7 @@ export function SignupForm() {
             <User className="inline-block mr-2 -mt-1 text-[var(--primary)]" size={16} />
             Full Name
           </label>
+          <FieldError message={state.fieldErrors?.fullName} />
         </div>
 
         {/* Email Input */}
@@ -320,8 +377,10 @@ export function SignupForm() {
           <input
             type="email"
             id="floating_email_signup"
+            name="email"
             className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus:outline-none focus:ring-0 focus:border-[var(--primary)] peer transition-colors"
             placeholder=" "
+            autoComplete="email"
             required
           />
           <label
@@ -331,6 +390,7 @@ export function SignupForm() {
             <User className="inline-block mr-2 -mt-1 text-[var(--primary)]" size={16} />
             Email Address
           </label>
+          <FieldError message={state.fieldErrors?.email} />
         </div>
 
         {/* Password Input */}
@@ -338,8 +398,11 @@ export function SignupForm() {
           <input
             type="password"
             id="floating_password_signup"
+            name="password"
             className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus:outline-none focus:ring-0 focus:border-[var(--primary)] peer transition-colors"
             placeholder=" "
+            autoComplete="new-password"
+            minLength={8}
             required
           />
           <label
@@ -349,13 +412,41 @@ export function SignupForm() {
             <Lock className="inline-block mr-2 -mt-1 text-[var(--primary)]" size={16} />
             Password
           </label>
+          <FieldError message={state.fieldErrors?.password} />
+        </div>
+
+        <div className="space-y-3">
+          <p className="text-xs font-medium text-[var(--muted-foreground)]">I am signing up as</p>
+          <div className="grid grid-cols-2 gap-2">
+            <label className="flex cursor-pointer items-center gap-2 rounded-[4px] border border-white/80 bg-white/50 px-3 py-2 text-xs font-medium text-[var(--foreground)] transition-colors has-[:checked]:border-[var(--primary)] has-[:checked]:bg-[var(--blush)]">
+              <input
+                type="radio"
+                name="role"
+                value="seeker"
+                defaultChecked
+                className="accent-[var(--primary)]"
+              />
+              Job seeker
+            </label>
+            <label className="flex cursor-pointer items-center gap-2 rounded-[4px] border border-white/80 bg-white/50 px-3 py-2 text-xs font-medium text-[var(--foreground)] transition-colors has-[:checked]:border-[var(--primary)] has-[:checked]:bg-[var(--blush)]">
+              <input
+                type="radio"
+                name="role"
+                value="employer"
+                className="accent-[var(--primary)]"
+              />
+              Employer
+            </label>
+          </div>
+          <FieldError message={state.fieldErrors?.role} />
         </div>
 
         <button
           type="submit"
+          disabled={pending}
           className="group w-full flex items-center justify-center py-3.5 px-4 bg-[var(--accent-color)] hover:bg-[var(--accent-dark)] rounded-[4px] text-white font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary)] transition-all duration-300 shadow-sm mt-8"
         >
-          Sign Up
+          {pending ? "Creating Account..." : "Sign Up"}
           <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
         </button>
 
@@ -371,7 +462,8 @@ export function SignupForm() {
         {/* Google Login Button */}
         <button
           type="button"
-          className="w-full flex items-center justify-center py-3 px-4 bg-white/80 hover:bg-white rounded-[4px] text-[var(--foreground)] font-medium border border-white focus:outline-none shadow-sm transition-all duration-300"
+          disabled
+          className="w-full flex items-center justify-center py-3 px-4 bg-white/60 rounded-[4px] text-[var(--muted-foreground)] font-medium border border-white focus:outline-none shadow-sm transition-all duration-300 cursor-not-allowed"
         >
           <svg className="w-5 h-5 mr-2" viewBox="0 0 48 48">
             <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039L38.802 8.841C34.553 4.806 29.613 2.5 24 2.5C11.983 2.5 2.5 11.983 2.5 24s9.483 21.5 21.5 21.5S45.5 36.017 45.5 24c0-1.538-.135-3.022-.389-4.417z"></path>
@@ -379,7 +471,7 @@ export function SignupForm() {
             <path fill="#4CAF50" d="M24 45.5c5.613 0 10.553-2.306 14.802-6.341l-5.839-5.841C30.842 35.846 27.059 38 24 38c-5.039 0-9.345-2.608-11.124-6.481l-6.571 4.819C9.642 41.277 16.318 45.5 24 45.5z"></path>
             <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l5.839 5.841C44.196 35.123 45.5 29.837 45.5 24c0-1.538-.135-3.022-.389-4.417z"></path>
           </svg>
-          Sign in with Google
+          Google sign-up coming next
         </button>
       </form>
 

@@ -9,11 +9,11 @@ import {
 } from "framer-motion";
 import { type JSX, useRef } from "react";
 
-// ─── Shared easing curve ─────────────────────────────────────────────────────
-// The signature "expo ease-out" — starts fast, settles very slowly & elegantly
+// Shared easing curve
+// The signature "expo ease-out" - starts fast, settles very slowly and elegantly
 export const EASE = [0.16, 1, 0.3, 1] as const;
 
-// ─── Scroll Progress Bar ─────────────────────────────────────────────────────
+// Scroll Progress Bar
 /** Thin magenta line at the very top of the viewport */
 export function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
@@ -29,7 +29,7 @@ export function ScrollProgressBar() {
   );
 }
 
-// ─── Reveal (fade + slide-up) ─────────────────────────────────────────────────
+// Reveal (fade + slide-up)
 interface RevealProps {
   children: React.ReactNode;
   delay?: number;
@@ -68,7 +68,7 @@ export function Reveal({
   );
 }
 
-// ─── StaggerReveal ────────────────────────────────────────────────────────────
+// StaggerReveal
 /** Wraps children and staggers their reveal on scroll entry */
 export function StaggerReveal({
   children,
@@ -121,7 +121,7 @@ export function StaggerItem({
   );
 }
 
-// ─── TextReveal (word-by-word stagger) ───────────────────────────────────────
+// TextReveal (word-by-word stagger)
 /**
  * Splits a string into words and staggers their fade+slide entry.
  * Inspired by Augen.pro style typography animations.
@@ -177,7 +177,7 @@ export function TextReveal({
   );
 }
 
-// ─── ParallaxSection ──────────────────────────────────────────────────────────
+// ParallaxSection
 /**
  * Wraps children in a parallax container.
  * `speed` > 0 = slower than scroll (background feel).
@@ -215,8 +215,8 @@ export function ParallaxSection({
   );
 }
 
-// ─── FadeIn (simple opacity only) ────────────────────────────────────────────
-/** Ultra-lightweight — only animates opacity. Best for backgrounds & decorative. */
+// FadeIn (simple opacity only)
+/** Ultra-lightweight - only animates opacity. Best for backgrounds and decorative elements. */
 export function FadeIn({
   children,
   delay = 0,
@@ -241,7 +241,7 @@ export function FadeIn({
   );
 }
 
-// ─── CountUp ──────────────────────────────────────────────────────────────────
+// CountUp
 export function CountUp({
   target,
   suffix = "",
@@ -253,7 +253,7 @@ export function CountUp({
   duration?: number;
   className?: string;
 }) {
-  // Simple approach — no state churn on re-renders
+  // Simple approach - no state churn on re-renders
   const nodeRef = useRef<HTMLSpanElement>(null);
   const triggered = useRef(false);
 

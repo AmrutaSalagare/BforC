@@ -119,10 +119,10 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-white/10">
           <p className="text-xs text-white/30 font-mono-dm">
-            © {new Date().getFullYear()} BrainsForCompassion. All rights reserved.
+            Copyright {new Date().getFullYear()} BrainsForCompassion. All rights reserved.
           </p>
           <p className="text-xs text-white/30">
-            F6, Mahaveer Nagar, Pal Link Road, Jodhpur, Rajasthan · brainsforcompassion@gmail.com
+            F6, Mahaveer Nagar, Pal Link Road, Jodhpur, Rajasthan | brainsforcompassion@gmail.com
           </p>
         </div>
       </div>

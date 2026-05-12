@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 
 /**
- * LenisProvider — mounts Lenis smooth scroll globally.
+ * LenisProvider - mounts Lenis smooth scroll globally.
  * - Syncs with Framer Motion's RAF via useEffect.
  * - Automatically disabled when user prefers-reduced-motion.
  * - Zero re-renders; purely imperative side-effect.
@@ -27,7 +27,7 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     });
     lenisRef.current = lenis;
 
-    // RAF loop — does NOT conflict with framer-motion
+    // RAF loop - does NOT conflict with framer-motion
     let rafId: number;
     const raf = (time: number) => {
       lenis.raf(time);

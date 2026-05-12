@@ -5,98 +5,15 @@ import { ArrowRight } from "lucide-react";
 import { StaggerReveal, StaggerItem, Reveal } from "@/components/motion";
 import { JobCard, type Job } from "@/components/job-card";
 
-// ── Placeholder data (replace with Supabase fetch later) ──────────
-const FEATURED_JOBS: Job[] = [
-  {
-    id: "1",
-    title: "Programme Manager – Education & Livelihood",
-    company: "Akshaya Patra Foundation",
-    location: "Bengaluru",
-    isRemote: false,
-    salaryMin: 600000,
-    salaryMax: 900000,
-    tags: ["Social Impact", "Programme Management"],
-    womenFriendly: true,
-    postedDaysAgo: 1,
-    type: "Full-time",
-  },
-  {
-    id: "2",
-    title: "Research Analyst – Gender & Inclusion",
-    company: "Global AID",
-    location: "Delhi",
-    isRemote: true,
-    salaryMin: 480000,
-    salaryMax: 720000,
-    tags: ["Research", "Flexible Hours"],
-    womenFriendly: true,
-    postedDaysAgo: 3,
-    type: "Full-time",
-  },
-  {
-    id: "3",
-    title: "Content Writer – Social Impact Stories",
-    company: "Sahaj Sansthan",
-    location: "Jaipur",
-    isRemote: true,
-    salaryMin: 360000,
-    salaryMax: 540000,
-    tags: ["Content", "Remote"],
-    womenFriendly: true,
-    postedDaysAgo: 0,
-    type: "Contract",
-  },
-  {
-    id: "4",
-    title: "Community Outreach Coordinator",
-    company: "Women Serve",
-    location: "Mumbai",
-    isRemote: false,
-    salaryMin: 420000,
-    salaryMax: 600000,
-    tags: ["Community", "Leadership"],
-    womenFriendly: true,
-    postedDaysAgo: 2,
-    type: "Full-time",
-  },
-  {
-    id: "5",
-    title: "Monitoring & Evaluation Specialist",
-    company: "Project Baala",
-    location: "Hyderabad",
-    isRemote: false,
-    salaryMin: 700000,
-    salaryMax: 1000000,
-    tags: ["M&E", "Data"],
-    womenFriendly: false,
-    postedDaysAgo: 5,
-    type: "Full-time",
-  },
-  {
-    id: "6",
-    title: "Fundraising & Donor Relations Lead",
-    company: "Jagriti Mahila Samiti",
-    location: "Lucknow",
-    isRemote: false,
-    salaryMin: 550000,
-    salaryMax: 800000,
-    tags: ["Fundraising", "NGO"],
-    womenFriendly: true,
-    postedDaysAgo: 7,
-    type: "Full-time",
-  },
-];
-
-export function FeaturedJobs() {
+export function FeaturedJobs({ jobs }: { jobs: Job[] }) {
   return (
     <section
       className="py-20 px-6 max-w-7xl mx-auto"
       aria-labelledby="featured-jobs-heading"
     >
-      {/* Section header */}
       <Reveal className="flex items-end justify-between mb-10 gap-4 flex-wrap">
         <div>
-          <p className="eyebrow mb-3">— FEATURED ROLES —</p>
+          <p className="eyebrow mb-3">Featured Roles</p>
           <h2
             id="featured-jobs-heading"
             className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-light leading-tight text-[var(--foreground)]"
@@ -112,19 +29,20 @@ export function FeaturedJobs() {
         </Link>
       </Reveal>
 
-      {/* Job grid — Masonry layout */}
       <StaggerReveal
         className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5 sm:space-y-0"
         stagger={0.08}
       >
-        {FEATURED_JOBS.map((job) => (
-          <StaggerItem key={job.id} className="break-inside-avoid sm:mb-5 w-full inline-block">
+        {jobs.map((job) => (
+          <StaggerItem
+            key={job.id}
+            className="break-inside-avoid sm:mb-5 w-full inline-block"
+          >
             <JobCard job={job} />
           </StaggerItem>
         ))}
       </StaggerReveal>
 
-      {/* View more CTA */}
       <Reveal delay={0.2} className="text-center mt-10">
         <Link
           href="/jobs"

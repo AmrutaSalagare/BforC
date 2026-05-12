@@ -1,10 +1,9 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRouter } from "next/navigation";
 import { useState, useRef } from "react";
 import { Search, MapPin } from "lucide-react";
-import { Reveal, EASE, CountUp } from "@/components/motion";
+import { EASE, CountUp } from "@/components/motion";
 import Form from "next/form";
 
 const categories = [
@@ -23,8 +22,6 @@ const stats = [
   { value: 18,   suffix: "",  label: "Countries" },
 ];
 
-import { ArrowRight } from "lucide-react";
-
 export function HeroSection() {
   const [query, setQuery]       = useState("");
   const [location, setLocation] = useState("");
@@ -38,7 +35,7 @@ export function HeroSection() {
     <section
       ref={ref}
       className="relative min-h-[92svh] flex flex-col items-center justify-center px-6 pt-24 pb-16 overflow-hidden"
-      aria-label="Hero — Find Your Impact Role"
+      aria-label="Hero - Find Your Impact Role"
     >
       {/* Parallax background ellipse */}
       <motion.div
@@ -62,10 +59,10 @@ export function HeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
       >
-        — WHERE COMPASSION MEETS CAREER —
+        Where Compassion Meets Career
       </motion.p>
 
-      {/* Headline — word-by-word stagger */}
+      {/* Headline - word-by-word stagger */}
       <motion.h1
         className="font-display text-center text-[clamp(2.8rem,8vw,5.5rem)] font-light leading-[1.08] tracking-[-0.03em] text-[var(--foreground)] max-w-3xl mb-5 flex flex-wrap justify-center"
         initial="hidden"
@@ -125,7 +122,7 @@ export function HeroSection() {
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Role, skill, or organisation…"
+              placeholder="Role, skill, or organisation..."
               className="flex-1 bg-transparent text-sm text-[var(--foreground)] placeholder:text-[var(--faint-fg)] outline-none"
             />
           </div>

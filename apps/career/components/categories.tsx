@@ -80,7 +80,7 @@ export function CategoriesSection() {
     >
       <div className="max-w-[1000px] mx-auto">
         <Reveal className="mb-10 text-center">
-          <p className="eyebrow mb-3">— EXPLORE BY TYPE —</p>
+          <p className="eyebrow mb-3">Explore by Type</p>
           <h2
             id="categories-heading"
             className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-light text-[var(--foreground)]"

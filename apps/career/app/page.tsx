@@ -5,11 +5,18 @@ import { CompaniesSection } from "@/components/companies";
 import { TestimonialsSection } from "@/components/testimonials";
 import { WhyBforCSection }  from "@/components/why-bforc";
 import { PricingTeaser }    from "@/components/pricing-teaser";
+import { getFeaturedCompanies } from "@/lib/data/companies";
+import { getFeaturedJobs } from "@/lib/data/jobs";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [{ jobs }, { companies }] = await Promise.all([
+    getFeaturedJobs(6),
+    getFeaturedCompanies(8),
+  ]);
+
   return (
     <main id="main-content">
-      {/* Skip to main — accessibility */}
+      {/* Skip to main - accessibility */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:bg-[var(--accent-color)] focus:text-[var(--on-accent)] focus:px-4 focus:py-2 focus:rounded"
@@ -19,9 +26,9 @@ export default function HomePage() {
 
       <HeroSection />
       <CategoriesSection />
-      <FeaturedJobs />
+      <FeaturedJobs jobs={jobs} />
       <WhyBforCSection />
-      <CompaniesSection />
+      <CompaniesSection companies={companies} />
       <TestimonialsSection />
       <PricingTeaser />
     </main>

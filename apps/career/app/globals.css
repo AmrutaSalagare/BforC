@@ -4,7 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ─── BforC User Theme ─────────────────────────────── */
+/* BforC User Theme */
 :root {
   --card: #faf5fa;
   --ring: #db2777;
@@ -146,7 +146,7 @@
   --font-mono:    var(--font-dm-mono);
 }
 
-/* ─── Base Layer ─────────────────────────────────────── */
+/* Base Layer */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -168,7 +168,7 @@
     isolation: isolate;
   }
 
-  /* Reduced motion — framer-motion handles this via useReducedMotion() in JS.
+  /* Reduced motion - framer-motion handles this via useReducedMotion() in JS.
      We only silence CSS animations/transitions (not framer-motion) here. */
   @media (prefers-reduced-motion: reduce) {
     *:not([data-framer-motion]) {
@@ -178,9 +178,9 @@
   }
 }
 
-/* ─── Utility classes ────────────────────────────────── */
+/* Utility classes */
 @layer utilities {
-  /* GPU compositing hint — applied by framer-motion's will-change-transform.
+  /* GPU compositing hint - applied by framer-motion's will-change-transform.
      Listed here so Tailwind purge keeps it. */
   .will-change-transform {
     will-change: transform;

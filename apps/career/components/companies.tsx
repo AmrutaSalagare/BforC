@@ -2,29 +2,19 @@
 
 import { motion } from "framer-motion";
 import { Reveal } from "@/components/motion";
-import { CheckCircle2, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import Link from "next/link";
-
-const companies = [
-  { name: "Akshaya Patra",      rating: 4.8, openRoles: 6,  womenFriendly: true },
-  { name: "Global AID",         rating: 4.6, openRoles: 4,  womenFriendly: true },
-  { name: "Sahaj Sansthan",     rating: 4.5, openRoles: 2,  womenFriendly: true },
-  { name: "Women Serve",        rating: 4.9, openRoles: 8,  womenFriendly: true },
-  { name: "Project Baala",      rating: 4.4, openRoles: 3,  womenFriendly: false },
-  { name: "Jagriti Mahila",     rating: 4.7, openRoles: 5,  womenFriendly: true },
-  { name: "Jyoti Foundation",   rating: 4.5, openRoles: 2,  womenFriendly: true },
-  { name: "RLHP",               rating: 4.3, openRoles: 1,  womenFriendly: false },
-];
+import type { Company } from "@/lib/data/types";
 
 function CompanyInitials(name: string) {
-  return name.split(" ").slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+  return name.split(" ").slice(0, 2).map((word) => word[0]).join("").toUpperCase();
 }
 
-export function CompaniesSection() {
+export function CompaniesSection({ companies }: { companies: Company[] }) {
   return (
     <section className="py-20 px-6 max-w-7xl mx-auto" aria-labelledby="companies-heading">
       <Reveal className="mb-10">
-        <p className="eyebrow mb-3">— FEATURED COMPANIES —</p>
+        <p className="eyebrow mb-3">Featured Companies</p>
         <h2
           id="companies-heading"
           className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-light text-[var(--foreground)]"
@@ -34,26 +24,31 @@ export function CompaniesSection() {
       </Reveal>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        {companies.map(({ name, rating, openRoles, womenFriendly }, i) => (
+        {companies.map(({ name, slug, rating, openRoles, womenFriendly }, index) => (
           <motion.div
-            key={name}
+            key={slug}
             initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+            transition={{
+              duration: 0.5,
+              delay: index * 0.06,
+              ease: [0.16, 1, 0.3, 1],
+            }}
             whileHover={{ y: -4 }}
           >
             <Link
-              href={`/companies/${name.toLowerCase().replace(/\s+/g, "-")}`}
+              href={`/companies/${slug}`}
               className="flex flex-col gap-3 p-5 bg-white/40 backdrop-blur-md rounded-xl border border-white/60 hover:border-[var(--accent-color)]/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group h-full"
             >
-              {/* Logo placeholder */}
               <div className="flex flex-wrap items-start justify-between gap-y-3 gap-x-2">
                 <div className="w-12 h-12 rounded-lg bg-[var(--blush)]/70 flex items-center justify-center font-display text-lg font-medium text-[var(--foreground)] shrink-0">
                   {CompanyInitials(name)}
                 </div>
                 {womenFriendly && (
-                  <span className="badge-women-friendly text-[10px] shrink-0">Women-Friendly ✦</span>
+                  <span className="badge-women-friendly text-[10px] shrink-0">
+                    Women-Friendly
+                  </span>
                 )}
               </div>
 

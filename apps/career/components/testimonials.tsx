@@ -7,14 +7,14 @@ import { Quote } from "lucide-react";
 const testimonials = [
   {
     quote:
-      "BforC helped me find a role that aligned with everything I believe in. After a 3-year break, I felt genuinely welcomed back — not just tolerated.",
+      "BforC helped me find a role that aligned with everything I believe in. After a 3-year break, I felt genuinely welcomed back - not just tolerated.",
     name: "Priya M.",
     role: "Programme Officer, Jaipur",
     initials: "PM",
   },
   {
     quote:
-      "The Women-Friendly ratings were the game changer. I didn't have to guess which employers actually meant it — the data was right there.",
+      "The Women-Friendly ratings were the game changer. I didn't have to guess which employers actually meant it - the data was right there.",
     name: "Shweta R.",
     role: "Research Analyst, Delhi",
     initials: "SR",
@@ -36,7 +36,7 @@ export function TestimonialsSection() {
     >
       <div className="max-w-7xl mx-auto">
         <Reveal className="text-center mb-12">
-          <p className="eyebrow mb-3">— SUCCESS STORIES —</p>
+          <p className="eyebrow mb-3">Success Stories</p>
           <h2
             id="testimonials-heading"
             className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-light italic text-[var(--foreground)]"

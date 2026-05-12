@@ -14,7 +14,7 @@ const reasons = [
   {
     icon: Cpu,
     title: "AI Resume Parsing",
-    body: "Upload your resume and we auto-fill your entire profile. Apply to roles in under 2 minutes — even from your phone.",
+    body: "Upload your resume and we auto-fill your entire profile. Apply to roles in under 2 minutes - even from your phone.",
     color: "var(--mint)",
   },
   {
@@ -33,7 +33,7 @@ export function WhyBforCSection() {
     >
       <div className="max-w-7xl mx-auto">
         <Reveal className="max-w-2xl mb-14">
-          <p className="eyebrow mb-3">— WHY BFORC CAREERS —</p>
+          <p className="eyebrow mb-3">Why BforC Careers</p>
           <h2
             id="why-bforc-heading"
             className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-light leading-tight text-[var(--foreground)]"
@@ -44,8 +44,8 @@ export function WhyBforCSection() {
             </em>
           </h2>
           <p className="text-[var(--muted-fg)] mt-4 text-base leading-relaxed max-w-lg">
-            We didn't copy another job board. We asked women in social impact
-            what they actually needed — and built that.
+            We didn&apos;t copy another job board. We asked women in social impact
+            what they actually needed - and built that.
           </p>
         </Reveal>
 

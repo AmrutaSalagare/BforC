@@ -71,7 +71,7 @@ export function PricingTeaser() {
   return (
     <section id="pricing" className="py-20 px-6 max-w-7xl mx-auto" aria-labelledby="pricing-heading">
       <Reveal className="text-center mb-14">
-        <p className="eyebrow mb-3">— PLANS —</p>
+        <p className="eyebrow mb-3">Plans</p>
         <h2
           id="pricing-heading"
           className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-light text-[var(--foreground)]"
@@ -98,7 +98,7 @@ export function PricingTeaser() {
                   </span>
                   {highlight && (
                     <span className="text-[10px] font-mono-dm tracking-wider uppercase text-[var(--accent-color)] bg-[var(--accent-color)]/10 px-2 py-0.5 rounded-full">
-                      Popular ✦
+                      Popular
                     </span>
                   )}
                 </div>
@@ -133,7 +133,7 @@ export function PricingTeaser() {
 
       <Reveal delay={0.3} className="text-center mt-8">
         <p className="text-xs text-[var(--faint-fg)]">
-          No hidden fees · Cancel anytime · Your data, your control
+          No hidden fees | Cancel anytime | Your data, your control
         </p>
       </Reveal>
     </section>
