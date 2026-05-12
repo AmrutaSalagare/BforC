@@ -7,5 +7,7 @@ __pycache__/
 .env.local
 .DS_Store
 .gitignore
-.agent
+.agent/
 Ref_Docs/
+apps/career/AGENTS.md
+apps/career/CLAUDE.md
