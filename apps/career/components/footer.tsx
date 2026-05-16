@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Mail } from "lucide-react";
+import { getCurrentSession } from "@/lib/auth/session";
 
 function LinkedInIcon({ size = 16 }: { size?: number }) {
   return (
@@ -33,31 +34,44 @@ const socials = [
   { label: "Email",     Icon: Mail,          href: "mailto:brainsforcompassion@gmail.com" },
 ];
 
-const footerLinks = {
-  "For Job Seekers": [
-    { label: "Browse Jobs",     href: "/jobs" },
-    { label: "Companies",       href: "/companies" },
-    { label: "Pricing",         href: "/pricing" },
-    { label: "Resume Upload",   href: "/signup" },
-  ],
-  "For Employers": [
-    { label: "Post a Job",      href: "/employers" },
-    { label: "Talent Search",   href: "/employers/search" },
-    { label: "Employer Plans",  href: "/employers/pricing" },
-  ],
-  "Company": [
-    { label: "About BforC",     href: "https://bforc.in/about" },
-    { label: "Our Partners",    href: "https://bforc.in/partners" },
-    { label: "Contact",         href: "https://bforc.in/contact" },
-  ],
-  "Legal": [
-    { label: "Privacy Policy",  href: "/legal/privacy" },
-    { label: "Terms of Service",href: "/legal/terms" },
-    { label: "Anti-Harassment", href: "/legal/anti-harassment" },
-  ],
-};
+const companyLinks = [
+  { label: "About BforC",     href: "https://bforc.in/about" },
+  { label: "Our services",    href: "https://bforc.in/services" },
+  { label: "Our Partners",    href: "https://bforc.in/partners" },
+  { label: "Contact",         href: "https://bforc.in/contact" },
+];
 
-export function Footer() {
+const legalLinks = [
+  { label: "Privacy Policy",   href: "/legal/privacy" },
+  { label: "Terms of Service", href: "/legal/terms" },
+  { label: "Anti-Harassment",  href: "/legal/anti-harassment" },
+];
+
+const publicSeekerLinks = [
+  { label: "Find a role",    href: "/jobs" },
+  { label: "View plans",     href: "/pricing" },
+  { label: "Resume Upload",  href: "/signup" },
+];
+
+const authedSeekerLinks = [
+  { label: "Browse Jobs",    href: "/jobs" },
+  { label: "Pricing",        href: "/pricing" },
+  { label: "Resume Upload",  href: "/profile" },
+];
+
+const employerLinks = [
+  { label: "Post a Job",      href: "/employers" },
+  { label: "Talent Search",   href: "/employers/search" },
+  { label: "Employer Plans",  href: "/employers/pricing" },
+];
+
+export async function Footer() {
+  const session = await getCurrentSession();
+  const isLoggedIn = !!session;
+
+  const seekerLinks = isLoggedIn ? authedSeekerLinks : publicSeekerLinks;
+  const showEmployerColumn = !isLoggedIn || session?.role === "employer";
+
   return (
     <footer
       className="mt-auto"
@@ -75,7 +89,8 @@ export function Footer() {
               <span className="font-display text-white/90 text-lg font-medium">BforC Careers</span>
             </div>
             <p className="text-sm text-white/50 leading-relaxed">
-              Where compassion meets career. A women-led platform connecting purpose-driven talent with organisations that need them.
+              A women-led platform where compassion meets careers. Working on connecting
+              skilled talent with purpose-driven organisations that work for social impact.
             </p>
           </div>
 
@@ -94,26 +109,68 @@ export function Footer() {
         </div>
 
         {/* Link columns */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-12">
-          {Object.entries(footerLinks).map(([group, links]) => (
-            <div key={group}>
+        <div className={`grid grid-cols-2 gap-8 mb-12 ${showEmployerColumn ? "sm:grid-cols-4" : "sm:grid-cols-3"}`}>
+          <div>
+            <p className="text-xs font-mono-dm tracking-widest uppercase text-white/40 mb-4">
+              For Job Seekers
+            </p>
+            <ul className="flex flex-col gap-2.5">
+              {seekerLinks.map(({ label, href }) => (
+                <li key={label}>
+                  <Link href={href} className="text-sm text-white/60 hover:text-white transition-colors duration-200">
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {showEmployerColumn && (
+            <div>
               <p className="text-xs font-mono-dm tracking-widest uppercase text-white/40 mb-4">
-                {group}
+                For Employers
               </p>
               <ul className="flex flex-col gap-2.5">
-                {links.map(({ label, href }) => (
+                {employerLinks.map(({ label, href }) => (
                   <li key={label}>
-                    <Link
-                      href={href}
-                      className="text-sm text-white/60 hover:text-white transition-colors duration-200"
-                    >
+                    <Link href={href} className="text-sm text-white/60 hover:text-white transition-colors duration-200">
                       {label}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
-          ))}
+          )}
+
+          <div>
+            <p className="text-xs font-mono-dm tracking-widest uppercase text-white/40 mb-4">
+              Company
+            </p>
+            <ul className="flex flex-col gap-2.5">
+              {companyLinks.map(({ label, href }) => (
+                <li key={label}>
+                  <Link href={href} className="text-sm text-white/60 hover:text-white transition-colors duration-200">
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-xs font-mono-dm tracking-widest uppercase text-white/40 mb-4">
+              Legal
+            </p>
+            <ul className="flex flex-col gap-2.5">
+              {legalLinks.map(({ label, href }) => (
+                <li key={label}>
+                  <Link href={href} className="text-sm text-white/60 hover:text-white transition-colors duration-200">
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Bottom bar */}

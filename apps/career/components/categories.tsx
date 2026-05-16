@@ -4,7 +4,7 @@ import { Reveal } from "@/components/motion";
 import {
   Laptop2, RefreshCw, Clock3, TrendingUp, BookOpen, Globe2, Users
 } from "lucide-react";
-import RadialOrbitalTimeline, { TimelineItem } from "@/components/ui/radial-orbital-timeline";
+import LinearTimeline, { TimelineItem } from "@/components/ui/linear-timeline";
 
 const timelineData: TimelineItem[] = [
   {
@@ -85,12 +85,12 @@ export function CategoriesSection() {
             id="categories-heading"
             className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-light text-[var(--foreground)]"
           >
-            Find roles that fit your life
+            Find roles made specifically for you
           </h2>
         </Reveal>
 
         <div className="w-full relative overflow-visible">
-           <RadialOrbitalTimeline timelineData={timelineData} />
+           <LinearTimeline timelineData={timelineData} />
         </div>
       </div>
     </section>

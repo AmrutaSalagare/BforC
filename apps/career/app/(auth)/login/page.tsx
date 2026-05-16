@@ -8,9 +8,9 @@ export const metadata = {
 export default function LoginPage() {
   return (
     <main className="relative w-full h-screen min-h-[600px] overflow-hidden bg-[var(--background)] flex items-center justify-center">
-      <SmokeyBackground 
-        className="absolute inset-0 pointer-events-auto" 
-        color="#a84370" 
+      <SmokeyBackground
+        className="absolute inset-0 pointer-events-auto"
+        color="#a84370"
         backdropBlurAmount="2xl"
       />
       <div className="relative z-10 flex items-center justify-center w-full h-full p-4">

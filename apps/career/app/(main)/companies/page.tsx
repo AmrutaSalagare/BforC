@@ -31,16 +31,16 @@ function CompanyCard({ company }: { company: Company }) {
         <h3 className="text-lg font-semibold text-[var(--foreground)] leading-snug group-hover:text-[var(--accent-color)] transition-colors">
           {company.name}
         </h3>
-        <p className="text-xs text-[var(--muted-foreground)] mt-1">
+        <p className="text-xs text-[var(--muted-fg)] mt-1">
           {company.category}
         </p>
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4">
-          <span className="flex items-center gap-1 text-xs text-[var(--muted-foreground)]">
+          <span className="flex items-center gap-1 text-xs text-[var(--muted-fg)]">
             <Star size={13} className="fill-[var(--accent-color)] text-[var(--accent-color)]" />
             {company.rating}
           </span>
-          <span className="flex items-center gap-1 text-xs text-[var(--muted-foreground)]">
+          <span className="flex items-center gap-1 text-xs text-[var(--muted-fg)]">
             <MapPin size={13} />
             {company.location}
           </span>
@@ -80,7 +80,7 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-[var(--foreground)] mb-6 tracking-tight leading-tight">
             Work with teams that <span className="text-[var(--primary)] italic">care.</span>
           </h1>
-          <p className="text-[var(--muted-foreground)] text-lg max-w-2xl mx-auto mb-10">
+          <p className="text-[var(--muted-fg)] text-lg max-w-2xl mx-auto mb-10">
             Discover NGOs, social enterprises, and impact-driven corporations
             vetted for their commitment to social change and inclusive workplaces.
           </p>
@@ -102,7 +102,7 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
         </Reveal>
       </div>
 
-      <Reveal delay={0.1} className="mb-6 text-sm text-[var(--muted-foreground)] font-medium">
+      <Reveal delay={0.1} className="mb-6 text-sm text-[var(--muted-fg)] font-medium">
         Showing {companies.length} organisation{companies.length === 1 ? "" : "s"}
         {source === "seed" ? " from preview data" : ""}
       </Reveal>
@@ -125,7 +125,7 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
         <h2 className="font-display text-3xl text-[var(--foreground)] mb-4">
           Are you an impact organisation?
         </h2>
-        <p className="text-[var(--muted-foreground)] max-w-xl mx-auto mb-8">
+        <p className="text-[var(--muted-fg)] max-w-xl mx-auto mb-8">
           Join our curated network of NGOs and social enterprises to find
           passionate, purpose-driven talent.
         </p>

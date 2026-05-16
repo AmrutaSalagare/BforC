@@ -18,14 +18,14 @@ export function FeaturedJobs({ jobs }: { jobs: Job[] }) {
             id="featured-jobs-heading"
             className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-light leading-tight text-[var(--foreground)]"
           >
-            Roles built for purpose
+            Find your passion and purpose
           </h2>
         </div>
         <Link
           href="/jobs"
           className="flex items-center gap-2 text-sm text-[var(--accent-color)] hover:gap-3 transition-all duration-200 font-medium shrink-0"
         >
-          Browse all jobs <ArrowRight size={16} />
+          Browse all roles <ArrowRight size={16} />
         </Link>
       </Reveal>
 

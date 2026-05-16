@@ -23,12 +23,12 @@ export function AnimatedBackground() {
       </motion.div>
 
       {/* Secondary Orb - Softened */}
-      <motion.div style={{ y: y2 }} className="absolute top-[20%] right-[-10%] w-[55vw] h-[55vw] opacity-30">
+      <motion.div style={{ y: y2 }} className="absolute top-[20%] right-[-10%] w-[55vw] h-[55vw] opacity-25">
         <motion.div
           animate={{ x: [0, -70, 50, 0], scale: [1, 1.15, 0.85, 1], rotate: [0, -90, 0] }}
           transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
           className="w-full h-full rounded-[60%_40%_30%_70%] mix-blend-multiply filter blur-[120px]"
-          style={{ backgroundColor: "var(--secondary)" }} 
+          style={{ backgroundColor: "var(--muted)" }}
         />
       </motion.div>
 
@@ -38,7 +38,7 @@ export function AnimatedBackground() {
           animate={{ x: [0, 50, -50, 0], scale: [1, 0.9, 1.1, 1], rotate: [0, 45, 0] }}
           transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
           className="w-full h-full rounded-[50%_50%_60%_40%] mix-blend-multiply filter blur-[140px]"
-          style={{ backgroundColor: "var(--chart-4)" }} 
+          style={{ backgroundColor: "var(--muted)" }}
         />
       </motion.div>
 

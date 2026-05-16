@@ -14,12 +14,12 @@ export function CompaniesSection({ companies }: { companies: Company[] }) {
   return (
     <section className="py-20 px-6 max-w-7xl mx-auto" aria-labelledby="companies-heading">
       <Reveal className="mb-10">
-        <p className="eyebrow mb-3">Featured Companies</p>
+        <p className="eyebrow mb-3">Featured Organisations</p>
         <h2
           id="companies-heading"
           className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-light text-[var(--foreground)]"
         >
-          Work with organisations that care
+          Work with teams that care
         </h2>
       </Reveal>
 
@@ -75,7 +75,7 @@ export function CompaniesSection({ companies }: { companies: Company[] }) {
           href="/companies"
           className="inline-flex items-center gap-2 text-sm text-[var(--accent-color)] border border-[var(--accent-color)] px-6 py-3 rounded-[4px] hover:bg-[var(--accent-color)] hover:text-[var(--on-accent)] transition-all duration-300"
         >
-          Explore all companies
+          View all organisations
         </Link>
       </Reveal>
     </section>

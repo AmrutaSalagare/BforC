@@ -27,10 +27,7 @@ const reasons = [
 
 export function WhyBforCSection() {
   return (
-    <section
-      className="py-20 px-6"
-      aria-labelledby="why-bforc-heading"
-    >
+    <section className="py-20 px-6" aria-labelledby="why-bforc-heading">
       <div className="max-w-7xl mx-auto">
         <Reveal className="max-w-2xl mb-14">
           <p className="eyebrow mb-3">Why BforC Careers</p>
@@ -38,18 +35,23 @@ export function WhyBforCSection() {
             id="why-bforc-heading"
             className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-light leading-tight text-[var(--foreground)]"
           >
-            Built differently,{" "}
+            BforC is built{" "}
             <em className="font-display not-italic text-[var(--accent-color)]">
               for you
             </em>
           </h2>
           <p className="text-[var(--muted-fg)] mt-4 text-base leading-relaxed max-w-lg">
-            We didn&apos;t copy another job board. We asked women in social impact
-            what they actually needed - and built that.
+            We are not just another job board. We empower women in social
+            impact and help them rebuild. BforC is a community of like-minded,
+            strong, independent women doing impactful work for positive change,
+            closing the gap between talented women and meaningful organisations.
           </p>
         </Reveal>
 
-        <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-6" stagger={0.1}>
+        <StaggerReveal
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          stagger={0.1}
+        >
           {reasons.map(({ icon: Icon, title, body, color }) => (
             <StaggerItem key={title}>
               <motion.div
@@ -68,8 +70,12 @@ export function WhyBforCSection() {
                   <Icon size={22} className="text-[var(--foreground)]" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-base text-[var(--foreground)] mb-2">{title}</h3>
-                  <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">{body}</p>
+                  <h3 className="font-semibold text-base text-[var(--foreground)] mb-2">
+                    {title}
+                  </h3>
+                  <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">
+                    {body}
+                  </p>
                 </div>
               </motion.div>
             </StaggerItem>

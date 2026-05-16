@@ -44,30 +44,16 @@ export const metadata: Metadata = {
   },
 };
 
-import { AnimatedBackground } from "@/components/animated-background";
-import { LenisProvider } from "@/components/lenis-provider";
-import { ScrollProgressBar } from "@/components/motion";
-import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
-
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
       className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable} min-h-screen`}
     >
       <body className="min-h-screen flex flex-col antialiased">
-        <LenisProvider>
-          <AnimatedBackground />
-          <ScrollProgressBar />
-          <Navbar />
-          {children}
-          <Footer />
-        </LenisProvider>
+        {children}
       </body>
     </html>
   );
