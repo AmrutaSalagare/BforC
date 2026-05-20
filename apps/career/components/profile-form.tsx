@@ -46,7 +46,7 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
 }
 
 function inputCls(extra = "") {
-  return `w-full bg-white/50 backdrop-blur-sm border border-[var(--border)] rounded-lg px-3.5 py-2.5 text-sm text-[var(--foreground)] placeholder:text-[var(--faint-fg)] outline-none focus:border-[var(--accent-color)] focus:ring-2 focus:ring-[var(--accent-color)]/10 transition-all duration-200 ${extra}`;
+  return `w-full bg-white/50 backdrop-blur-sm border border-[var(--border)] rounded-lg px-3.5 py-2.5 text-sm text-[var(--foreground)] placeholder:text-[var(--faint-fg)] outline-none focus-visible:border-[var(--accent-color)] focus-visible:ring-2 focus-visible:ring-[var(--accent-color)]/10 transition duration-200 ${extra}`;
 }
 
 type Props = {
@@ -374,7 +374,7 @@ export function ProfileForm({ profile, fullName }: Props) {
             <button
               type="submit"
               disabled={pending}
-              className="ml-auto inline-flex items-center gap-2 bg-[var(--accent-color)] text-[var(--on-accent)] px-7 py-3 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-dark)] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] disabled:opacity-60 disabled:pointer-events-none"
+              className="ml-auto inline-flex items-center gap-2 bg-[var(--accent-color)] text-[var(--on-accent)] px-7 py-3 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-dark)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.97] disabled:opacity-60 disabled:pointer-events-none"
             >
               <Save size={15} />
               {pending ? "Saving…" : "Save profile"}

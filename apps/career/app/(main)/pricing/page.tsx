@@ -62,7 +62,7 @@ export default function PricingPage() {
       <div className="max-w-5xl mx-auto">
         <Reveal className="text-center mb-14">
           <p className="eyebrow mb-4">Pricing</p>
-          <h1 className="font-display text-[clamp(2.4rem,6vw,4rem)] font-light text-[var(--foreground)] mb-4">
+          <h1 className="font-display text-[clamp(2.4rem,6vw,4rem)] font-light text-[var(--foreground)] mb-4 text-balance">
             Simple, transparent plans
           </h1>
           <p className="text-[var(--muted-fg)] text-lg max-w-md mx-auto leading-relaxed">
@@ -75,7 +75,7 @@ export default function PricingPage() {
           {tiers.map(({ name, price, period, description, features, cta, href, highlighted, badge }) => (
             <StaggerItem key={name}>
               <div
-                className={`relative flex flex-col h-full rounded-2xl border p-7 transition-all duration-300 ${
+                className={`relative flex flex-col h-full rounded-2xl border p-7 transition duration-300 ${
                   highlighted
                     ? "bg-[var(--accent-color)]/8 border-[var(--accent-color)]/30 shadow-[0_8px_40px_rgba(168,67,112,0.12)]"
                     : "bg-white/40 backdrop-blur-md border-white/60"
@@ -112,7 +112,7 @@ export default function PricingPage() {
 
                 <Link
                   href={href}
-                  className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[4px] text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] ${
+                  className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[4px] text-sm font-medium transition duration-200 hover:-translate-y-0.5 active:scale-[0.97] ${
                     highlighted
                       ? "bg-[var(--accent-color)] text-[var(--on-accent)] hover:bg-[var(--accent-dark)]"
                       : "border border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-[var(--on-accent)]"

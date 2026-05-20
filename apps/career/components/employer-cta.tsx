@@ -25,7 +25,7 @@ export function EmployerCTASection() {
             </div>
             <Link
               href="/employers"
-              className="shrink-0 inline-flex items-center gap-2 bg-[var(--accent-color)] text-[var(--on-accent)] px-7 py-3.5 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-dark)] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
+              className="shrink-0 inline-flex items-center gap-2 bg-[var(--accent-color)] text-[var(--on-accent)] px-7 py-3.5 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-dark)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
             >
               Create Employer Profile <ArrowRight size={16} />
             </Link>

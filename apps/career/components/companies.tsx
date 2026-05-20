@@ -39,7 +39,7 @@ export function CompaniesSection({ companies }: { companies: Company[] }) {
           >
             <Link
               href={`/companies/${slug}`}
-              className="flex flex-col gap-3 p-5 bg-white/40 backdrop-blur-md rounded-xl border border-white/60 hover:border-[var(--accent-color)]/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 group h-full"
+              className="flex flex-col gap-3 p-5 bg-white/40 backdrop-blur-md rounded-xl border border-white/60 hover:border-[var(--accent-color)]/30 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition duration-300 group h-full"
             >
               <div className="flex flex-wrap items-start justify-between gap-y-3 gap-x-2">
                 <div className="w-12 h-12 rounded-lg bg-[var(--blush)]/70 flex items-center justify-center font-display text-lg font-medium text-[var(--foreground)] shrink-0">
@@ -73,7 +73,7 @@ export function CompaniesSection({ companies }: { companies: Company[] }) {
       <Reveal delay={0.2} className="text-center mt-10">
         <Link
           href="/companies"
-          className="inline-flex items-center gap-2 text-sm text-[var(--accent-color)] border border-[var(--accent-color)] px-6 py-3 rounded-[4px] hover:bg-[var(--accent-color)] hover:text-[var(--on-accent)] transition-all duration-300"
+          className="inline-flex items-center gap-2 text-sm text-[var(--accent-color)] border border-[var(--accent-color)] px-6 py-3 rounded-[4px] hover:bg-[var(--accent-color)] hover:text-[var(--on-accent)] transition duration-300"
         >
           View all organisations
         </Link>

@@ -1,6 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import Form from "next/form";
+
+import { useState, Suspense } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import {
   Briefcase,
   Filter,
@@ -31,14 +34,19 @@ type JobsSearchPageProps = {
   source: "supabase" | "seed";
 };
 
-export function JobsSearchPage({
+export function JobsSearchPageContent({
   jobs,
   query = "",
   location = "",
   source,
 }: JobsSearchPageProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  
+  const activeFilters = searchParams.getAll("filter");
 
   const [jobTypes, setJobTypes] = useState<Record<string, boolean>>({
     "Full-time": true,
@@ -54,11 +62,14 @@ export function JobsSearchPage({
   };
 
   const toggleFilter = (filter: string) => {
-    setActiveFilters((prev) =>
-      prev.includes(filter)
-        ? prev.filter((item) => item !== filter)
-        : [...prev, filter]
-    );
+    const params = new URLSearchParams(searchParams.toString());
+    const current = params.getAll("filter");
+    params.delete("filter");
+    const next = current.includes(filter)
+      ? current.filter((item) => item !== filter)
+      : [...current, filter];
+    next.forEach((f) => params.append("filter", f));
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   return (
@@ -136,7 +147,7 @@ export function JobsSearchPage({
             Find your <span className="text-[var(--primary)] italic">purpose.</span>
           </h1>
 
-          <form
+          <Form
             action="/jobs"
             className="bg-white/60 backdrop-blur-xl p-2 rounded-2xl border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.08)] flex flex-col sm:flex-row gap-2"
           >
@@ -163,7 +174,7 @@ export function JobsSearchPage({
             <button className="bg-[var(--accent-color)] text-white px-8 py-3 rounded-xl font-medium hover:bg-[var(--accent-dark)] transition-colors">
               Search
             </button>
-          </form>
+          </Form>
 
           <div className="flex items-center gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide">
             <button
@@ -176,7 +187,7 @@ export function JobsSearchPage({
               <button
                 key={filter}
                 onClick={() => toggleFilter(filter)}
-                className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border ${
+                className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium transition duration-200 border ${
                   activeFilters.includes(filter)
                     ? "bg-[var(--primary)] text-white border-[var(--primary)]"
                     : "bg-white/40 text-[var(--muted-foreground)] border-white/60 hover:border-[var(--primary)]/50"
@@ -212,5 +223,13 @@ export function JobsSearchPage({
         </StaggerReveal>
       </div>
     </main>
+  );
+}
+
+export function JobsSearchPage(props: JobsSearchPageProps) {
+  return (
+    <Suspense fallback={<div className="min-h-screen pt-32 pb-24 px-4 text-center text-sm">Loading search...</div>}>
+      <JobsSearchPageContent {...props} />
+    </Suspense>
   );
 }

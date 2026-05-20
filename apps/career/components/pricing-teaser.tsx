@@ -89,7 +89,7 @@ export function PricingTeaser() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-center max-w-4xl mx-auto">
         {tiers.map(({ name, price, period, tagline, features, cta, href, highlight, style }, i) => (
           <Reveal key={name} delay={i * 0.1}>
-            <div className={`rounded-2xl border p-7 flex flex-col gap-5 h-full ${style.card} transition-all duration-300`}>
+            <div className={`rounded-2xl border p-7 flex flex-col gap-5 h-full ${style.card} transition duration-300`}>
               {/* Header */}
               <div>
                 <div className="flex items-center justify-between mb-1">
@@ -122,7 +122,7 @@ export function PricingTeaser() {
               {/* CTA */}
               <Link
                 href={href}
-                className={`flex items-center justify-center gap-2 py-3 rounded-[4px] text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 ${style.cta}`}
+                className={`flex items-center justify-center gap-2 py-3 rounded-[4px] text-sm font-medium transition duration-200 hover:-translate-y-0.5 ${style.cta}`}
               >
                 {cta} <ArrowRight size={14} />
               </Link>

@@ -79,7 +79,7 @@ export default function EmployersPage() {
           </p>
           <Link
             href="mailto:brainsforcompassion@gmail.com?subject=Employer%20Enquiry%20-%20BforC%20Careers"
-            className="inline-flex items-center gap-2 bg-[var(--accent-color)] text-[var(--on-accent)] px-7 py-3 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-dark)] transition-all duration-200 hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 bg-[var(--accent-color)] text-[var(--on-accent)] px-7 py-3 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-dark)] transition duration-200 hover:-translate-y-0.5"
           >
             Get in touch <ArrowRight size={15} />
           </Link>

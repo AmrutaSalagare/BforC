@@ -1,5 +1,6 @@
 import { Search, Star, Building2, MapPin, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import Form from "next/form";
 import { Reveal, StaggerReveal, StaggerItem, FadeIn } from "@/components/motion";
 import { getCompanies } from "@/lib/data/companies";
 import type { Company } from "@/lib/data/types";
@@ -12,7 +13,7 @@ function CompanyCard({ company }: { company: Company }) {
   return (
     <Link
       href={`/companies/${company.slug}`}
-      className="flex flex-col flex-1 bg-white/40 backdrop-blur-md rounded-2xl p-6 border border-white/60 hover:border-[var(--accent-color)]/30 cursor-pointer group shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 relative overflow-hidden"
+      className="flex flex-col flex-1 bg-white/40 backdrop-blur-md rounded-2xl p-6 border border-white/60 hover:border-[var(--accent-color)]/30 cursor-pointer group shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition duration-300 relative overflow-hidden"
     >
       <div className="absolute -top-24 -right-24 w-48 h-48 bg-[var(--blush)] rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
@@ -52,7 +53,7 @@ function CompanyCard({ company }: { company: Company }) {
           {company.openRoles}{" "}
           <span className="text-[var(--faint-fg)] font-normal">open roles</span>
         </span>
-        <span className="text-[var(--primary)] bg-[var(--blush)] p-2 rounded-full opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+        <span className="text-[var(--primary)] bg-[var(--blush)] p-2 rounded-full opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition duration-300">
           <ExternalLink size={14} />
         </span>
       </div>
@@ -77,7 +78,7 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
       <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
         <Reveal>
           <p className="eyebrow mb-4">Impact Organisations</p>
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-[var(--foreground)] mb-6 tracking-tight leading-tight">
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-[var(--foreground)] mb-6 tracking-tight leading-tight text-balance">
             Work with teams that <span className="text-[var(--primary)] italic">care.</span>
           </h1>
           <p className="text-[var(--muted-fg)] text-lg max-w-2xl mx-auto mb-10">
@@ -87,7 +88,7 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
         </Reveal>
 
         <Reveal delay={0.1} className="w-full max-w-xl relative">
-          <form action="/companies">
+          <Form action="/companies">
             <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
               <Search size={20} className="text-[var(--faint-fg)]" />
             </div>
@@ -96,9 +97,9 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
               type="text"
               defaultValue={params.q}
               placeholder="Search by name, sector, or city..."
-              className="w-full pl-12 pr-4 py-4 bg-white/60 backdrop-blur-xl border border-white/80 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] outline-none text-[var(--foreground)] placeholder:text-[var(--faint-fg)] focus:border-[var(--primary)]/50 transition-colors"
+              className="w-full pl-12 pr-4 py-4 bg-white/60 backdrop-blur-xl border border-white/80 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] outline-none text-[var(--foreground)] placeholder:text-[var(--faint-fg)] focus-visible:border-[var(--primary)]/50 transition-colors"
             />
-          </form>
+          </Form>
         </Reveal>
       </div>
 

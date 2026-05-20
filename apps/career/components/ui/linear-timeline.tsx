@@ -76,7 +76,7 @@ function FlowTimelineNode({
       style={{ x: nodeX, zIndex: isExpanded ? 200 : 50 }}
     >
       <div
-        className="relative -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-700"
+        className="relative -translate-x-1/2 -translate-y-1/2 cursor-pointer transition duration-700"
         onClick={(event) => {
           event.stopPropagation();
           onToggle(item.id, index);
@@ -105,7 +105,7 @@ function FlowTimelineNode({
           className={`
             w-12 h-12 rounded-full flex items-center justify-center
             border-[1.5px] shadow-warm-sm
-            transition-all duration-300 transform relative z-10
+            transition duration-300 transform relative z-10
             ${
               isExpanded
                 ? "scale-125 border-[var(--accent-color)] bg-white"
@@ -120,7 +120,7 @@ function FlowTimelineNode({
           className={`
             absolute top-14 whitespace-nowrap
             text-sm font-semibold tracking-wide
-            transition-all duration-300 pointer-events-none
+            transition duration-300 pointer-events-none
             ${isExpanded ? "text-[var(--accent-dark)] scale-110" : "text-[var(--foreground)]"}
           `}
           style={{ left: "50%", transform: "translateX(-50%)" }}
@@ -132,7 +132,7 @@ function FlowTimelineNode({
 
         <div
           className={`
-            absolute top-24 left-1/2 -translate-x-1/2 w-72 transition-all duration-500 origin-top
+            absolute top-24 left-1/2 -translate-x-1/2 w-72 transition duration-500 origin-top
             ${isExpanded ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}
           `}
           onClick={(event) => event.stopPropagation()}
@@ -173,7 +173,7 @@ function FlowTimelineNode({
                       return (
                         <button
                           key={relatedId}
-                          className="flex items-center h-6 px-2.5 py-0 text-xs rounded-full border border-[var(--border)] bg-white/50 hover:bg-[var(--surface-2)] hover:border-[var(--accent-color)]/40 text-[var(--muted-fg)] hover:text-[var(--foreground)] transition-all"
+                          className="flex items-center h-6 px-2.5 py-0 text-xs rounded-full border border-[var(--border)] bg-white/50 hover:bg-[var(--surface-2)] hover:border-[var(--accent-color)]/40 text-[var(--muted-fg)] hover:text-[var(--foreground)] transition"
                           onClick={(event) => {
                             event.stopPropagation();
                             onToggle(relatedId, relatedIndex);

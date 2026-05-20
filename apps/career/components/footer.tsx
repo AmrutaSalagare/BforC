@@ -100,7 +100,7 @@ export async function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
-                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:border-[var(--accent-color)] transition-all duration-200"
+                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white/50 hover:text-white hover:border-[var(--accent-color)] transition duration-200"
               >
                 <Icon size={16} />
               </a>

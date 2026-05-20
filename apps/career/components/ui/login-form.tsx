@@ -249,7 +249,7 @@ export function LoginForm() {
             type="email"
             id="floating_email"
             name="email"
-            className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus:outline-none focus:ring-0 focus:border-[var(--primary)] peer transition-colors"
+            className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-[var(--primary)] peer transition-colors"
             placeholder=" "
             autoComplete="email"
             required
@@ -270,7 +270,7 @@ export function LoginForm() {
             type="password"
             id="floating_password"
             name="password"
-            className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus:outline-none focus:ring-0 focus:border-[var(--primary)] peer transition-colors"
+            className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-[var(--primary)] peer transition-colors"
             placeholder=" "
             autoComplete="current-password"
             required
@@ -294,7 +294,7 @@ export function LoginForm() {
         <button
           type="submit"
           disabled={pending}
-          className="group w-full flex items-center justify-center py-3.5 px-4 bg-[var(--accent-color)] hover:bg-[var(--accent-dark)] rounded-[4px] text-white font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary)] transition-all duration-300 shadow-sm"
+          className="group w-full flex items-center justify-center py-3.5 px-4 bg-[var(--accent-color)] hover:bg-[var(--accent-dark)] rounded-[4px] text-white font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--primary)] transition duration-300 shadow-sm"
         >
           {pending ? "Signing In..." : "Sign In"}
           <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
@@ -313,7 +313,7 @@ export function LoginForm() {
         <button
           type="button"
           disabled
-          className="w-full flex items-center justify-center py-3 px-4 bg-white/60 rounded-[4px] text-[var(--muted-foreground)] font-medium border border-white focus:outline-none shadow-sm transition-all duration-300 cursor-not-allowed"
+          className="w-full flex items-center justify-center py-3 px-4 bg-white/60 rounded-[4px] text-[var(--muted-foreground)] font-medium border border-white focus-visible:outline-none shadow-sm transition duration-300 cursor-not-allowed"
         >
           <svg className="w-5 h-5 mr-2" viewBox="0 0 48 48">
             <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039L38.802 8.841C34.553 4.806 29.613 2.5 24 2.5C11.983 2.5 2.5 11.983 2.5 24s9.483 21.5 21.5 21.5S45.5 36.017 45.5 24c0-1.538-.135-3.022-.389-4.417z"></path>
@@ -357,7 +357,7 @@ export function SignupForm() {
             type="text"
             id="floating_name"
             name="fullName"
-            className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus:outline-none focus:ring-0 focus:border-[var(--primary)] peer transition-colors"
+            className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-[var(--primary)] peer transition-colors"
             placeholder=" "
             autoComplete="name"
             required
@@ -378,7 +378,7 @@ export function SignupForm() {
             type="email"
             id="floating_email_signup"
             name="email"
-            className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus:outline-none focus:ring-0 focus:border-[var(--primary)] peer transition-colors"
+            className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-[var(--primary)] peer transition-colors"
             placeholder=" "
             autoComplete="email"
             required
@@ -399,7 +399,7 @@ export function SignupForm() {
             type="password"
             id="floating_password_signup"
             name="password"
-            className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus:outline-none focus:ring-0 focus:border-[var(--primary)] peer transition-colors"
+            className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-[var(--primary)] peer transition-colors"
             placeholder=" "
             autoComplete="new-password"
             minLength={8}
@@ -444,7 +444,7 @@ export function SignupForm() {
         <button
           type="submit"
           disabled={pending}
-          className="group w-full flex items-center justify-center py-3.5 px-4 bg-[var(--accent-color)] hover:bg-[var(--accent-dark)] rounded-[4px] text-white font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary)] transition-all duration-300 shadow-sm mt-8"
+          className="group w-full flex items-center justify-center py-3.5 px-4 bg-[var(--accent-color)] hover:bg-[var(--accent-dark)] rounded-[4px] text-white font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--primary)] transition duration-300 shadow-sm mt-8"
         >
           {pending ? "Creating Account..." : "Sign Up"}
           <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
@@ -463,7 +463,7 @@ export function SignupForm() {
         <button
           type="button"
           disabled
-          className="w-full flex items-center justify-center py-3 px-4 bg-white/60 rounded-[4px] text-[var(--muted-foreground)] font-medium border border-white focus:outline-none shadow-sm transition-all duration-300 cursor-not-allowed"
+          className="w-full flex items-center justify-center py-3 px-4 bg-white/60 rounded-[4px] text-[var(--muted-foreground)] font-medium border border-white focus-visible:outline-none shadow-sm transition duration-300 cursor-not-allowed"
         >
           <svg className="w-5 h-5 mr-2" viewBox="0 0 48 48">
             <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039L38.802 8.841C34.553 4.806 29.613 2.5 24 2.5C11.983 2.5 2.5 11.983 2.5 24s9.483 21.5 21.5 21.5S45.5 36.017 45.5 24c0-1.538-.135-3.022-.389-4.417z"></path>

@@ -45,7 +45,7 @@ export function Navbar({ user }: { user: NavUser }) {
   return (
     <>
       <motion.header
-        className={`fixed top-[2px] left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-[2px] left-0 right-0 z-50 transition duration-300 ${
           scrolled
             ? "bg-white/50 backdrop-blur-lg shadow-warm-sm border-b border-[var(--border)]"
             : "bg-transparent"
@@ -76,7 +76,7 @@ export function Navbar({ user }: { user: NavUser }) {
                 className="text-sm text-[var(--muted-fg)] hover:text-[var(--foreground)] transition-colors duration-200 relative group"
               >
                 {link.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-[var(--accent-color)] group-hover:w-full transition-all duration-300" />
+                <span className="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-[var(--accent-color)] group-hover:w-full transition duration-300" />
               </Link>
             ))}
           </nav>
@@ -133,7 +133,7 @@ export function Navbar({ user }: { user: NavUser }) {
             ) : (
               <Link
                 href="/login"
-                className="text-sm bg-[var(--accent-color)] text-[var(--on-accent)] px-5 py-2.5 rounded-[4px] hover:bg-[var(--accent-dark)] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] font-medium"
+                className="text-sm bg-[var(--accent-color)] text-[var(--on-accent)] px-5 py-2.5 rounded-[4px] hover:bg-[var(--accent-dark)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.97] font-medium"
               >
                 Login / Signup
               </Link>

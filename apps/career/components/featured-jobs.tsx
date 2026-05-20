@@ -23,7 +23,7 @@ export function FeaturedJobs({ jobs }: { jobs: Job[] }) {
         </div>
         <Link
           href="/jobs"
-          className="flex items-center gap-2 text-sm text-[var(--accent-color)] hover:gap-3 transition-all duration-200 font-medium shrink-0"
+          className="flex items-center gap-2 text-sm text-[var(--accent-color)] hover:gap-3 transition duration-200 font-medium shrink-0"
         >
           Browse all roles <ArrowRight size={16} />
         </Link>
@@ -46,7 +46,7 @@ export function FeaturedJobs({ jobs }: { jobs: Job[] }) {
       <Reveal delay={0.2} className="text-center mt-10">
         <Link
           href="/jobs"
-          className="inline-flex items-center gap-2 text-sm border border-[var(--accent-color)] text-[var(--accent-color)] px-6 py-3 rounded-[4px] hover:bg-[var(--accent-color)] hover:text-[var(--on-accent)] transition-all duration-300"
+          className="inline-flex items-center gap-2 text-sm border border-[var(--accent-color)] text-[var(--accent-color)] px-6 py-3 rounded-[4px] hover:bg-[var(--accent-color)] hover:text-[var(--on-accent)] transition duration-300"
         >
           View all opportunities <ArrowRight size={15} />
         </Link>

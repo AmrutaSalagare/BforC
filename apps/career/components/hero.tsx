@@ -41,7 +41,7 @@ export function HeroSection() {
       {/* Headline */}
       <motion.h1
         id="hero-heading"
-        className="font-display text-center text-[clamp(2.8rem,8vw,5.5rem)] font-light leading-[1.08] tracking-[-0.03em] text-[var(--foreground)] max-w-3xl mb-5 flex flex-wrap justify-center"
+        className="font-display text-center text-[clamp(2.8rem,8vw,5.5rem)] font-light leading-[1.08] tracking-[-0.03em] text-[var(--foreground)] max-w-3xl mb-5 flex flex-wrap justify-center text-balance"
         initial="hidden"
         animate="visible"
         variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } } }}
@@ -93,13 +93,13 @@ export function HeroSection() {
       >
         <Link
           href="/jobs"
-          className="inline-flex items-center gap-2 bg-[var(--accent-color)] text-[var(--on-accent)] px-7 py-3 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-dark)] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
+          className="inline-flex items-center gap-2 bg-[var(--accent-color)] text-[var(--on-accent)] px-7 py-3 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-dark)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
         >
           Explore roles <ArrowRight size={15} />
         </Link>
         <Link
           href="/signup"
-          className="inline-flex items-center gap-2 border border-[var(--accent-color)] text-[var(--accent-color)] px-7 py-3 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-color)] hover:text-[var(--on-accent)] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
+          className="inline-flex items-center gap-2 border border-[var(--accent-color)] text-[var(--accent-color)] px-7 py-3 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-color)] hover:text-[var(--on-accent)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
         >
           Sign up free
         </Link>
