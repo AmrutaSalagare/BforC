@@ -11,3 +11,5 @@ Ref_Docs/
 apps/career/AGENTS.md
 apps/career/CLAUDE.md
 CLAUDE.md
+skills-lock.json
+.agents/

@@ -1,0 +1,309 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* BforC User Theme */
+:root {
+  --card: #ffffff;
+  --ring: #db2777;
+  --input: #e7c1dc;
+  --muted: #f6e5f3;
+  --accent: #f1c4e6;
+  --border: #efbdeb;
+  --radius: 0.5rem;
+  --chart-1: #d926a2;
+  --chart-2: #6c12b9;
+  --chart-3: #274754;
+  --chart-4: #e8c468;
+  --chart-5: #f4a462;
+  --popover: #ffffff;
+  --primary: #a84370;
+  --sidebar: #f3e4f6;
+  --secondary: #f1c4e6;
+  --background: #faf5fa;
+  --foreground: #501854;
+  --destructive: #ab4347;
+  --sidebar-ring: #db2777;
+  --sidebar-accent: #f8f8f7;
+  --sidebar-border: #eceae9;
+  --card-foreground: #501854;
+  --sidebar-primary: #454554;
+  --muted-foreground: #834588;
+  --accent-foreground: #77347c;
+  --popover-foreground: #501854;
+  --primary-foreground: #ffffff;
+  --sidebar-foreground: #ac1668;
+  --secondary-foreground: #77347c;
+  --destructive-foreground: #ffffff;
+  --sidebar-accent-foreground: #454554;
+  --sidebar-primary-foreground: #faf1f7;
+
+  /* Custom Variable Mapping to New Theme for Backward Compatibility */
+  --surface: var(--popover);
+  --surface-2: var(--card);
+  --blush: var(--accent);
+  --mint: var(--chart-3);
+  --lavender: var(--secondary);
+  --accent-color: var(--primary);
+  --accent-dark: var(--destructive);
+  --muted-fg: var(--muted-foreground);
+  --faint-fg: var(--muted-foreground);
+  --on-accent: var(--primary-foreground);
+}
+
+.dark {
+  --card: #2c2632;
+  --ring: #db2777;
+  --input: #3e343c;
+  --muted: #28222d;
+  --accent: #463753;
+  --border: #3b3237;
+  --chart-1: #a84370;
+  --chart-2: #934dcb;
+  --chart-3: #e88c30;
+  --chart-4: #af57db;
+  --chart-5: #e23670;
+  --popover: #100a0e;
+  --primary: #a3004c;
+  --sidebar: #181117;
+  --secondary: #362d3d;
+  --background: #221d27;
+  --foreground: #d2c4de;
+  --destructive: #301015;
+  --sidebar-ring: #db2777;
+  --sidebar-accent: #261922;
+  --sidebar-border: #000000;
+  --card-foreground: #dbc5d2;
+  --sidebar-primary: #1d4ed8;
+  --muted-foreground: #c2b6cf;
+  --accent-foreground: #f8f1f5;
+  --popover-foreground: #f8f1f5;
+  --primary-foreground: #efc0d8;
+  --sidebar-foreground: #e0cad6;
+  --secondary-foreground: #d4c7e1;
+  --destructive-foreground: #ffffff;
+  --sidebar-accent-foreground: #f4f4f5;
+  --sidebar-primary-foreground: #ffffff;
+}
+
+@theme inline {
+  --color-card: var(--card);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-radius: var(--radius);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-popover: var(--popover);
+  --color-primary: var(--primary);
+  --color-sidebar: var(--sidebar);
+  --color-secondary: var(--secondary);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-destructive: var(--destructive);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-card-foreground: var(--card-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+
+  /* BforC specific legacy tokens mapped */
+  --color-surface:      var(--surface);
+  --color-surface-2:    var(--surface-2);
+  --color-blush:        var(--blush);
+  --color-mint:         var(--mint);
+  --color-lavender:     var(--lavender);
+  --color-accent-color: var(--accent-color);
+  --color-accent-dark:  var(--accent-dark);
+  --color-faint-fg:     var(--faint-fg);
+  --color-on-accent:    var(--on-accent);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+
+  /* fonts */
+  --font-sans:    var(--font-dm-sans);
+  --font-display: var(--font-cormorant);
+  --font-mono:    var(--font-dm-mono);
+}
+
+/* Base Layer */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+
+  html {
+    @apply antialiased;
+    font-family: var(--font-dm-sans), system-ui, sans-serif;
+    /* Removed scroll-behavior: smooth; as it severely conflicts with Lenis */
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    @apply min-h-screen;
+    /* Promote body to its own compositing layer for smoother fixed bg */
+    isolation: isolate;
+    /* Remove tap highlight on mobile */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent iOS zoom on input focus */
+  input, select, textarea {
+    font-size: max(16px, 1em);
+  }
+
+  /* Improve touch scrolling on iOS for marquee containers */
+  .hide-scrollbar {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Reduced motion - framer-motion handles this via useReducedMotion() in JS.
+     We only silence CSS animations/transitions (not framer-motion) here. */
+  @media (prefers-reduced-motion: reduce) {
+    *:not([data-framer-motion]) {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Utility classes */
+@layer utilities {
+  /* GPU compositing hint - applied by framer-motion's will-change-transform.
+     Listed here so Tailwind purge keeps it. */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  /* Hide scrollbar while keeping scroll functional (horizontal gallery) */
+  .hide-scrollbar {
+    scrollbar-width: none;       /* Firefox */
+    -ms-overflow-style: none;    /* IE/Edge */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;               /* Chrome/Safari */
+  }
+
+  .font-display {
+    font-family: var(--font-cormorant), Georgia, serif;
+  }
+  .font-mono-dm {
+    font-family: var(--font-dm-mono), monospace;
+  }
+
+  /* Eyebrow label style */
+  .eyebrow {
+    font-family: var(--font-dm-mono), monospace;
+    font-size: 0.688rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--faint-fg);
+  }
+
+  /* Women-Friendly badge */
+  .badge-women-friendly {
+    background-color: oklch(from var(--accent-color) l c h / 0.12);
+    color: var(--accent-dark);
+    border: 1px solid oklch(from var(--accent-color) l c h / 0.30);
+    font-size: 0.75rem;
+    padding: 2px 10px;
+    border-radius: 20px;
+  }
+
+  /* Warm shadow */
+  .shadow-warm-sm {
+    box-shadow: 0 1px 4px oklch(from var(--foreground) l c h / 0.06),
+                0 2px 8px oklch(from var(--foreground) l c h / 0.04);
+  }
+  .shadow-warm-md {
+    box-shadow: 0 4px 12px oklch(from var(--foreground) l c h / 0.08),
+                0 2px 6px oklch(from var(--foreground) l c h / 0.04);
+  }
+  .shadow-warm-lg {
+    box-shadow: 0 8px 24px oklch(from var(--foreground) l c h / 0.10),
+                0 4px 12px oklch(from var(--foreground) l c h / 0.06);
+  }
+
+  /* Orbital Timeline specific animations */
+  @keyframes orbital-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  @keyframes orbital-ping {
+    75%, 100% { transform: scale(2); opacity: 0; }
+  }
+
+  .animate-pulse {
+    animation: orbital-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-ping {
+    animation: orbital-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  /* Lenis smooth scrolling rules */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  .lenis.lenis-scrolling iframe {
+    pointer-events: none;
+  }
+}
+
+/* Infinite Marquee animations */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 45s linear infinite;
+}
+
+.animate-marquee-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee 45s linear infinite reverse;
+}
+
+.pause-on-hover:hover .animate-marquee,
+.pause-on-hover:hover .animate-marquee-reverse {
+  animation-play-state: paused;
+}
