@@ -790,7 +790,7 @@ export default function Home() {
                 </p>
               </div>
               <PremiumButton 
-                href="/contact" 
+                href="https://career.bforc.in" 
                 label="Become a member now" 
                 variant="purple" 
               />
@@ -855,9 +855,13 @@ export default function Home() {
                     <span className="text-xs font-bold tracking-widest uppercase text-[var(--muted-foreground)] font-mono-dm block mb-4">
                       {p.title}
                     </span>
-                    <div className="flex items-baseline gap-1 mb-6">
-                      <span className="text-3xl md:text-4xl font-light text-[var(--foreground)] tracking-tight">{p.price}</span>
-                      <span className="text-xs text-[var(--muted-foreground)] font-light ml-1">{p.period}</span>
+                    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 mb-6">
+                      <span className="text-3xl md:text-4xl font-light text-[var(--foreground)] tracking-tight whitespace-nowrap">
+                        {p.price}
+                      </span>
+                      <span className="text-xs text-[var(--muted-foreground)] font-light">
+                        {p.period}
+                      </span>
                     </div>
                     <p className="text-xs md:text-sm text-[var(--muted-foreground)] leading-[1.7] font-light mb-6 flex-1">
                       {p.desc}
@@ -866,7 +870,7 @@ export default function Home() {
 
                   <div className="pt-6 border-t border-[var(--primary)]/10 mt-auto">
                     <PremiumButton 
-                      href="/contact" 
+                      href="https://career.bforc.in" 
                       label="Get Onboarded" 
                       variant="purple" 
                     />

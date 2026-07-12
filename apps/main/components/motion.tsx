@@ -59,7 +59,7 @@ export function Reveal({
     <motion.div
       initial={{ opacity: 0, y, x }}
       whileInView={{ opacity: 1, y: 0, x: 0 }}
-      viewport={{ once: false, margin: "-60px" }}
+      viewport={{ once: true, margin: "-60px" }}
       transition={{ duration, delay, ease: EASE }}
       className={className}
     >
@@ -83,7 +83,7 @@ export function StaggerReveal({
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: false, margin: "-60px" }}
+      viewport={{ once: true, margin: "-60px" }}
       variants={{
         hidden: {},
         visible: { transition: { staggerChildren: stagger } },

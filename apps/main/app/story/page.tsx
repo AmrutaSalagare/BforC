@@ -31,15 +31,6 @@ const values = [
   },
 ];
 
-const team = [
-  { name: "Varsha Kothari", role: "Founder", desc: "A visionary social catalyst driving strategic development and women-led community empowerment across India." },
-  { name: "Jyothi G Swamy", role: "Director", desc: "A program design expert managing institutional partnerships and CSR program implementations." },
-  { name: "Tatsama", role: "Freelance Consultant & Advisor", desc: "Specializes in donor landscape audits, baseline studies, and strategic advisory." },
-  { name: "Ashlesha", role: "Freelance Consultant", desc: "Leading monitor & evaluation audits and field implementation strategies." },
-  { name: "Savitri", role: "Freelance Consultant", desc: "Expert in soft skills training, life visioning, and capacity building." },
-  { name: "Tanishi", role: "Freelance Consultant", desc: "Focuses on content writing, programmatic donor reporting, and success stories." },
-];
-
 const advisors = [
   { name: "Guldana", country: "Kazakhstan" },
   { name: "Yvonne", country: "United States" },
@@ -212,47 +203,10 @@ export default function Story() {
               “We built Brains for Compassion to bring global wisdom to local change-makers. Many NGOs and institutions are driving beautiful change but remain in the veil due to lacks of structural resources. We exist to scale them up, with quiet confidence, dignity, and deep empathy.”
             </blockquote>
             <div>
-              <p className="text-sm font-semibold text-[var(--foreground)]">Varsha Kothari & Jyothi G Swamy</p>
-              <p className="text-xs text-[var(--muted-foreground)] mt-0.5">Founders & Leadership Cohort, BforC</p>
+              <p className="text-sm font-semibold text-[var(--foreground)]">Founders & Leadership Cohort</p>
+              <p className="text-xs text-[var(--muted-foreground)] mt-0.5">Brains for Compassion</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* TEAM DIRECTORY */}
-      <section className="py-24 px-6 bg-[var(--muted)]/10 border-t border-[var(--border)]/20">
-        <div className="mx-auto max-w-5xl">
-          
-          <div className="text-center mb-16">
-            <Reveal>
-              <span className="text-[10px] font-semibold tracking-widest uppercase text-[var(--primary)] font-mono-dm mb-3 block">
-                The Cohort
-              </span>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <h2 className="font-display text-3xl sm:text-4xl font-light tracking-tight">
-                Our Core Team & Consultants
-              </h2>
-            </Reveal>
-          </div>
-
-          <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {team.map((member) => (
-              <StaggerItem
-                key={member.name}
-                className="bg-[var(--surface)] border border-[var(--border)]/30 rounded-xl p-8 shadow-warm-sm hover:border-[var(--primary)]/30 transition-all duration-300"
-              >
-                <h3 className="text-lg font-semibold leading-tight">{member.name}</h3>
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-[var(--primary)] font-mono-dm mt-1.5 mb-4">
-                  {member.role}
-                </p>
-                <p className="text-xs text-[var(--muted-foreground)] leading-relaxed">
-                  {member.desc}
-                </p>
-              </StaggerItem>
-            ))}
-          </StaggerReveal>
-
         </div>
       </section>
 

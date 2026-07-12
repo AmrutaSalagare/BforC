@@ -88,7 +88,7 @@ export function Header() {
           {/* Call to Action Button */}
           <div className="hidden md:block">
             <Link
-              href="/contact"
+              href="https://career.bforc.in"
               className="inline-flex items-center gap-2 bg-[var(--primary)] text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-[#8c365c] transition-all duration-300 active:scale-[0.98] shadow-warm-sm"
             >
               Partner with us
@@ -161,7 +161,7 @@ export function Header() {
                 className="mt-auto mb-10 pt-6 border-t border-[var(--border)] flex flex-col gap-4"
               >
                 <Link
-                  href="/contact"
+                  href="https://career.bforc.in"
                   onClick={() => setMobileMenuOpen(false)}
                   className="w-full inline-flex items-center justify-center gap-2 bg-[var(--primary)] text-white py-4 rounded-xl font-medium shadow-warm-md hover:bg-[#8c365c] transition-colors text-base"
                 >
