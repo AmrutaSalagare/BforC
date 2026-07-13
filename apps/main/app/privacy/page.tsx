@@ -2,6 +2,8 @@
 
 import { Reveal } from "@/components/motion";
 
+const CAREER_SITE_URL = process.env.NEXT_PUBLIC_CAREER_SITE_URL || "https://career.bforc.in";
+
 export default function Privacy() {
   return (
     <div className="flex flex-col bg-[var(--background)] text-[var(--foreground)] min-h-screen">
@@ -22,7 +24,7 @@ export default function Privacy() {
 
           <h2 className="text-sm font-semibold text-[var(--foreground)] mt-8 mb-2">1. Information We Collect</h2>
           <p>
-            We collect personal details submitted via our contact forms (such as name, organization name, email address, and subject files). For career-specific data (resumes, application histories), please refer to the dedicated privacy policy on our Career Portal at <a href="https://career.bforc.in" className="text-[var(--primary)] hover:underline">career.bforc.in</a>.
+            We collect personal details submitted via our contact forms (such as name, organization name, email address, and subject files). For career-specific data (resumes, application histories), please refer to the dedicated privacy policy on our Career Portal at <a href={CAREER_SITE_URL} className="text-[var(--primary)] hover:underline">{CAREER_SITE_URL.replace(/^https?:\/\//, "")}</a>.
           </p>
 
           <h2 className="text-sm font-semibold text-[var(--foreground)] mt-8 mb-2">2. How We Use Your Information</h2>

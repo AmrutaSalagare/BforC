@@ -2,9 +2,13 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { EASE, CountUp } from "@/components/motion";
+import { EASE, CountUp, MagneticButton } from "@/components/motion";
+
+type HeroUser = {
+  role: "seeker" | "employer";
+} | null;
 
 const stats = [
   { value: 2400, suffix: "+", label: "Women Placed" },
@@ -12,127 +16,120 @@ const stats = [
   { value: 18,   suffix: "",  label: "Countries" },
 ];
 
-export function HeroSection() {
+export function HeroSection({ user }: { user: HeroUser }) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "35%"]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
+  const ctaHref = !user ? "/signup" : user.role === "employer" ? "/employers/dashboard" : "/dashboard";
+  const ctaLabel = !user ? "Sign up free" : "Go to Dashboard";
 
   return (
     <section
       ref={ref}
-      className="relative min-h-[88svh] flex flex-col items-center justify-center px-6 pt-24 pb-20 overflow-hidden"
+      className="relative min-h-[85svh] w-full flex flex-col items-center justify-center overflow-hidden pt-28 pb-20 px-6"
       aria-labelledby="hero-heading"
     >
-      {/* Parallax background ellipse */}
-      <motion.div
-        aria-hidden
-        style={{ y: bgY }}
-        className="absolute inset-0 pointer-events-none"
-      >
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 60% at 50% 0%, color-mix(in oklch, var(--accent) 55%, transparent) 0%, transparent 70%)",
-          }}
-        />
-      </motion.div>
+      {/* Minimal Geometric Background Element */}
+      <motion.div 
+        className="absolute top-0 right-0 w-[40vw] h-[100vh] border-l border-[var(--foreground)] opacity-10 pointer-events-none -z-10"
+        style={{ y }}
+      />
 
-      {/* Headline */}
-      <motion.h1
-        id="hero-heading"
-        className="font-display text-center text-[clamp(2.8rem,8vw,5.5rem)] font-light leading-[1.08] tracking-[-0.03em] text-[var(--foreground)] max-w-3xl mb-5 flex flex-wrap justify-center text-balance"
-        initial="hidden"
-        animate="visible"
-        variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } } }}
-        style={{ columnGap: "0.28em", rowGap: "0.02em" }}
-      >
-        {["Where", "Compassion"].map((w) => (
+      <div className="container mx-auto max-w-4xl flex flex-col items-center text-center z-10 relative">
+        <motion.div
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--primary)]/5 text-[var(--primary)] text-sm font-medium mb-8 shadow-warm-md"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: EASE }}
+        >
+          <Sparkles size={14} />
+          <span>Empowering Women in the Social Sector</span>
+        </motion.div>
+
+        <motion.p
+          className="text-[var(--foreground)] text-sm md:text-base font-sans font-normal opacity-80 mb-5"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
+        >
+          Where Compassion Meets Careers.
+        </motion.p>
+
+        <motion.h1
+          id="hero-heading"
+          className="font-display text-[clamp(3rem,8vw,6.5rem)] font-medium leading-[0.95] tracking-tight text-[var(--foreground)] text-balance mb-8"
+          initial="hidden"
+          animate="visible"
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 0.2 } } }}
+        >
           <motion.span
-            key={w}
+            className="inline-block"
             variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } } }}
           >
-            {w}
+            Rebuild your <em className="not-italic text-[var(--primary)]">career</em>.
           </motion.span>
-        ))}
-        <motion.em
-          className="font-display not-italic text-[var(--primary)]"
-          variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EASE } } }}
-        >
-          Meets
-        </motion.em>
-        <motion.span
-          variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } } }}
-        >
-          Careers
-        </motion.span>
-      </motion.h1>
+          <br className="hidden sm:block" />
+          <motion.span
+            className="inline-block ml-3 sm:ml-0"
+            variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } } }}
+          >
+            Fuel your <em className="not-italic text-[var(--primary)]">dreams</em>.
+          </motion.span>
+        </motion.h1>
 
-      {/* Subtitle */}
-      <motion.div
-        className="text-center max-w-lg mb-10"
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.55, ease: EASE }}
-      >
-        <p className="text-[var(--foreground)] text-lg font-light mb-2">
-          Rebuild your career. Fuel your dreams.
-        </p>
-        <p className="text-[var(--muted-fg)] text-base leading-relaxed">
-          Find roles in social impact, NGOs, and purpose-driven organisations,
-          and become a part of a community. Women-friendly workplaces. Real opportunities.
-        </p>
-      </motion.div>
-
-      {/* CTAs */}
-      <motion.div
-        className="flex flex-wrap items-center justify-center gap-3 mb-14"
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.75, ease: EASE }}
-      >
-        <Link
-          href="/jobs"
-          className="inline-flex items-center gap-2 bg-[var(--accent-color)] text-[var(--on-accent)] px-7 py-3 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-dark)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
+        <motion.p
+          className="text-[var(--foreground)] text-lg md:text-xl font-sans opacity-90 leading-relaxed max-w-2xl mb-12 text-balance"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: EASE }}
         >
-          Explore roles <ArrowRight size={15} />
-        </Link>
-        <Link
-          href="/signup"
-          className="inline-flex items-center gap-2 border border-[var(--accent-color)] text-[var(--accent-color)] px-7 py-3 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-color)] hover:text-[var(--on-accent)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.97]"
+          Find roles in NGOs and purpose-driven organisations, and become part of a global community supporting women.
+        </motion.p>
+
+        <motion.div
+          className="flex flex-wrap items-center justify-center gap-6 mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.8, ease: EASE }}
         >
-          Sign up free
-        </Link>
-      </motion.div>
+          <MagneticButton>
+            <Link
+              href="/jobs"
+              className="group relative inline-flex items-center gap-2 bg-[var(--primary)] text-[var(--background)] px-8 py-4 rounded-xl text-sm font-medium transition-all duration-300 hover:opacity-90 shadow-warm-md"
+            >
+              Explore Roles 
+              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+            </Link>
+          </MagneticButton>
+          <MagneticButton>
+            <Link
+              href={ctaHref}
+              className="inline-flex items-center gap-2 text-[var(--foreground)] px-8 py-4 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-[var(--foreground)]/5 shadow-warm-md border border-[var(--primary)]/10"
+            >
+              {ctaLabel}
+            </Link>
+          </MagneticButton>
+        </motion.div>
 
-      {/* Stats strip */}
-      <motion.div
-        className="w-full max-w-xl border-y border-[var(--border)] py-5"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.9, ease: EASE }}
-      >
-        <div className="flex items-center justify-center divide-x divide-[var(--border)]">
-          {stats.map(({ value, suffix, label }) => (
-            <div key={label} className="text-center px-6 sm:px-10">
-              <p className="font-display text-[clamp(1.6rem,3.5vw,2.2rem)] font-light text-[var(--foreground)] leading-none">
-                <CountUp target={value} suffix={suffix} />
-              </p>
-              <p className="eyebrow mt-1.5">{label}</p>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Scroll cue */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        animate={{ y: [0, 6, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        aria-hidden
-      >
-        <div className="w-[1px] h-8 bg-[var(--faint-fg)]" />
-      </motion.div>
+        {/* Integrated Stats */}
+        <motion.div
+          className="w-full max-w-3xl pt-10 border-t border-[var(--primary)]/10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1, ease: EASE }}
+        >
+          <div className="grid grid-cols-3 gap-4 divide-x divide-[var(--primary)]/10">
+            {stats.map(({ value, suffix, label }, index) => (
+              <div key={label} className="text-center px-4">
+                <p className="font-display text-4xl md:text-5xl font-medium text-[var(--foreground)] leading-none mb-2">
+                  <CountUp target={value} suffix={suffix} delay={800 + index * 200} />
+                </p>
+                <p className="text-sm font-sans font-medium opacity-70 text-[var(--foreground)]">{label}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 }

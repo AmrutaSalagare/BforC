@@ -1,7 +1,8 @@
 "use client";
 import { useActionState } from "react";
 import { useEffect, useRef, useState } from "react";
-import { User, Lock, ArrowRight } from "lucide-react";
+import { User, Lock, ArrowRight, CheckCircle2, XCircle } from "lucide-react";
+import { Spinner } from "@/components/motion";
 import Link from "next/link";
 import { loginAction, signupAction } from "@/app/auth/actions";
 import { initialAuthActionState, type AuthActionState } from "@/lib/auth/types";
@@ -227,45 +228,72 @@ export function SmokeyBackground({
   );
 }
 
-export function LoginForm() {
+export function LoginForm({ initialEmail = "", registered = false }: { initialEmail?: string; registered?: boolean }) {
   const [state, formAction, pending] = useActionState(
     loginAction,
     initialAuthActionState
   );
 
   return (
-    <div className="w-full max-w-sm p-8 space-y-8 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/80 shadow-[0_8px_40px_rgb(0,0,0,0.15)] relative z-10">
-      <div className="text-center">
+    <div className="w-full max-w-sm p-8 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/80 shadow-[0_8px_40px_rgb(0,0,0,0.15)] relative z-10">
+
+      {registered && (
+        <div className="flex items-start gap-3 rounded-[4px] border border-green-600/20 bg-green-50 px-4 py-3 mb-5">
+          <CheckCircle2 size={16} className="text-green-600 mt-0.5 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-semibold text-green-800">Account created!</p>
+            <p className="text-xs text-green-700 mt-0.5">Sign in below to get started.</p>
+          </div>
+        </div>
+      )}
+
+      <div className="text-center mb-6">
         <h2 className="text-4xl font-display font-light tracking-tight text-[var(--foreground)]">Welcome Back</h2>
         <p className="mt-2 text-sm text-[var(--muted-foreground)]">Sign in to continue</p>
       </div>
 
-      <form action={formAction} className="space-y-6 mt-8">
+      <form action={formAction} className="space-y-5">
         <FormMessage state={state} />
 
-        {/* Email Input */}
-        <div className="relative z-0 mt-6">
+        {/* Role selection — top of form */}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-[var(--muted-foreground)]">I am signing in as</p>
+          <div className="grid grid-cols-2 gap-2">
+            <label className="flex cursor-pointer items-center gap-2 rounded-[4px] border border-white/80 bg-white/50 px-3 py-2 text-xs font-medium text-[var(--foreground)] transition-colors has-[:checked]:border-[var(--primary)] has-[:checked]:bg-[var(--blush)]">
+              <input type="radio" name="role" value="seeker" defaultChecked className="accent-[var(--primary)]" />
+              Job seeker
+            </label>
+            <label className="flex cursor-pointer items-center gap-2 rounded-[4px] border border-white/80 bg-white/50 px-3 py-2 text-xs font-medium text-[var(--foreground)] transition-colors has-[:checked]:border-[var(--primary)] has-[:checked]:bg-[var(--blush)]">
+              <input type="radio" name="role" value="employer" className="accent-[var(--primary)]" />
+              Employer
+            </label>
+          </div>
+          <FieldError message={state.fieldErrors?.role} />
+        </div>
+
+        <div className="border-t border-[var(--border)]" />
+
+        {/* Email */}
+        <div className="relative z-0">
           <input
             type="email"
             id="floating_email"
             name="email"
+            defaultValue={initialEmail}
             className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-[var(--primary)] peer transition-colors"
             placeholder=" "
             autoComplete="email"
             required
           />
-          <label
-            htmlFor="floating_email"
-            className="absolute text-sm text-[var(--muted-foreground)] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[var(--primary)] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
+          <label htmlFor="floating_email" className="absolute text-sm text-[var(--muted-foreground)] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[var(--primary)] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
             <User className="inline-block mr-2 -mt-1 text-[var(--primary)]" size={16} />
             Email Address
           </label>
           <FieldError message={state.fieldErrors?.email} />
         </div>
 
-        {/* Password Input */}
-        <div className="relative z-0 mt-6">
+        {/* Password */}
+        <div className="relative z-0">
           <input
             type="password"
             id="floating_password"
@@ -275,29 +303,25 @@ export function LoginForm() {
             autoComplete="current-password"
             required
           />
-          <label
-            htmlFor="floating_password"
-            className="absolute text-sm text-[var(--muted-foreground)] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[var(--primary)] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
+          <label htmlFor="floating_password" className="absolute text-sm text-[var(--muted-foreground)] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[var(--primary)] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
             <Lock className="inline-block mr-2 -mt-1 text-[var(--primary)]" size={16} />
             Password
           </label>
           <FieldError message={state.fieldErrors?.password} />
         </div>
 
-        <div className="flex items-center justify-end">
-          <Link href="/forgot-password" className="text-xs text-[var(--primary)] hover:text-[var(--accent-dark)] transition-colors font-medium">
-            Forgot Password?
+        <div className="flex justify-end -mt-1">
+          <Link href="/forgot-password" className="text-xs font-medium text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors">
+            Forgot password?
           </Link>
         </div>
 
         <button
           type="submit"
           disabled={pending}
-          className="group w-full flex items-center justify-center py-3.5 px-4 bg-[var(--accent-color)] hover:bg-[var(--accent-dark)] rounded-[4px] text-white font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--primary)] transition duration-300 shadow-sm"
+          className="group w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-[var(--accent-color)] hover:bg-[var(--accent-dark)] rounded-[4px] text-white font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--primary)] transition duration-300 shadow-sm disabled:opacity-70"
         >
-          {pending ? "Signing In..." : "Sign In"}
-          <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+          {pending ? <><Spinner /> Signing In…</> : <>Sign In <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" /></>}
         </button>
 
         {/* Divider */}
@@ -336,23 +360,48 @@ export function LoginForm() {
 }
 
 export function SignupForm() {
-  const [state, formAction, pending] = useActionState(
-    signupAction,
-    initialAuthActionState
-  );
+  const [state, formAction, pending] = useActionState(signupAction, initialAuthActionState);
+  const [emailValue, setEmailValue] = useState("");
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordValue, setPasswordValue] = useState("");
+
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
+  const pw = {
+    length: passwordValue.length >= 8,
+    letter: /[A-Za-z]/.test(passwordValue),
+    number: /[0-9]/.test(passwordValue),
+  };
 
   return (
-    <div className="w-full max-w-sm p-8 space-y-8 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/80 shadow-[0_8px_40px_rgb(0,0,0,0.15)] relative z-10">
-      <div className="text-center">
+    <div className="w-full max-w-sm p-8 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/80 shadow-[0_8px_40px_rgb(0,0,0,0.15)] relative z-10">
+      <div className="text-center mb-6">
         <h2 className="text-4xl font-display font-light tracking-tight text-[var(--foreground)]">Create Account</h2>
         <p className="mt-2 text-sm text-[var(--muted-foreground)]">Join us to make an impact</p>
       </div>
 
-      <form action={formAction} className="space-y-6 mt-8">
+      <form action={formAction} className="space-y-5">
         <FormMessage state={state} />
 
-        {/* Name Input */}
-        <div className="relative z-0 mt-6">
+        {/* Role selection — top of form */}
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-[var(--muted-foreground)]">I am signing up as</p>
+          <div className="grid grid-cols-2 gap-2">
+            <label className="flex cursor-pointer items-center gap-2 rounded-[4px] border border-white/80 bg-white/50 px-3 py-2 text-xs font-medium text-[var(--foreground)] transition-colors has-[:checked]:border-[var(--primary)] has-[:checked]:bg-[var(--blush)]">
+              <input type="radio" name="role" value="seeker" defaultChecked className="accent-[var(--primary)]" />
+              Job seeker
+            </label>
+            <label className="flex cursor-pointer items-center gap-2 rounded-[4px] border border-white/80 bg-white/50 px-3 py-2 text-xs font-medium text-[var(--foreground)] transition-colors has-[:checked]:border-[var(--primary)] has-[:checked]:bg-[var(--blush)]">
+              <input type="radio" name="role" value="employer" className="accent-[var(--primary)]" />
+              Employer
+            </label>
+          </div>
+          <FieldError message={state.fieldErrors?.role} />
+        </div>
+
+        <div className="border-t border-[var(--border)]" />
+
+        {/* Full Name */}
+        <div className="relative z-0">
           <input
             type="text"
             id="floating_name"
@@ -362,125 +411,109 @@ export function SignupForm() {
             autoComplete="name"
             required
           />
-          <label
-            htmlFor="floating_name"
-            className="absolute text-sm text-[var(--muted-foreground)] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[var(--primary)] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
+          <label htmlFor="floating_name" className="absolute text-sm text-[var(--muted-foreground)] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[var(--primary)] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
             <User className="inline-block mr-2 -mt-1 text-[var(--primary)]" size={16} />
             Full Name
           </label>
           <FieldError message={state.fieldErrors?.fullName} />
         </div>
 
-        {/* Email Input */}
-        <div className="relative z-0 mt-6">
+        {/* Email with live format check */}
+        <div className="relative z-0">
           <input
             type="email"
             id="floating_email_signup"
             name="email"
+            value={emailValue}
+            onChange={(e) => { setEmailValue(e.target.value); setEmailTouched(true); }}
             className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-[var(--primary)] peer transition-colors"
             placeholder=" "
             autoComplete="email"
             required
           />
-          <label
-            htmlFor="floating_email_signup"
-            className="absolute text-sm text-[var(--muted-foreground)] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[var(--primary)] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
+          <label htmlFor="floating_email_signup" className="absolute text-sm text-[var(--muted-foreground)] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[var(--primary)] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
             <User className="inline-block mr-2 -mt-1 text-[var(--primary)]" size={16} />
             Email Address
           </label>
+          {emailTouched && emailValue && (
+            <div className={`flex items-center gap-1.5 mt-1.5 text-xs transition-colors ${emailValid ? "text-green-600" : "text-[var(--destructive)]"}`}>
+              {emailValid
+                ? <CheckCircle2 size={12} className="flex-shrink-0" />
+                : <XCircle size={12} className="flex-shrink-0" />}
+              {emailValid ? "Looks good!" : "Enter a valid email (e.g. name@example.com)"}
+            </div>
+          )}
           <FieldError message={state.fieldErrors?.email} />
         </div>
 
-        {/* Password Input */}
-        <div className="relative z-0 mt-6">
+        {/* Password with criteria checklist */}
+        <div className="relative z-0">
           <input
             type="password"
             id="floating_password_signup"
             name="password"
+            value={passwordValue}
+            onChange={(e) => setPasswordValue(e.target.value)}
             className="block py-2.5 px-0 w-full text-sm text-[var(--foreground)] bg-transparent border-0 border-b-2 border-[var(--border)] appearance-none focus-visible:outline-none focus-visible:ring-0 focus-visible:border-[var(--primary)] peer transition-colors"
             placeholder=" "
             autoComplete="new-password"
             minLength={8}
             required
           />
-          <label
-            htmlFor="floating_password_signup"
-            className="absolute text-sm text-[var(--muted-foreground)] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[var(--primary)] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
+          <label htmlFor="floating_password_signup" className="absolute text-sm text-[var(--muted-foreground)] duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-[var(--primary)] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
             <Lock className="inline-block mr-2 -mt-1 text-[var(--primary)]" size={16} />
             Password
           </label>
+          {passwordValue && (
+            <div className="mt-2 p-2.5 rounded-lg bg-white/60 border border-[var(--border)] space-y-1.5">
+              <PasswordCheck met={pw.length} label="At least 8 characters" />
+              <PasswordCheck met={pw.letter} label="Contains a letter" />
+              <PasswordCheck met={pw.number} label="Contains a number" />
+            </div>
+          )}
           <FieldError message={state.fieldErrors?.password} />
-        </div>
-
-        <div className="space-y-3">
-          <p className="text-xs font-medium text-[var(--muted-foreground)]">I am signing up as</p>
-          <div className="grid grid-cols-2 gap-2">
-            <label className="flex cursor-pointer items-center gap-2 rounded-[4px] border border-white/80 bg-white/50 px-3 py-2 text-xs font-medium text-[var(--foreground)] transition-colors has-[:checked]:border-[var(--primary)] has-[:checked]:bg-[var(--blush)]">
-              <input
-                type="radio"
-                name="role"
-                value="seeker"
-                defaultChecked
-                className="accent-[var(--primary)]"
-              />
-              Job seeker
-            </label>
-            <label className="flex cursor-pointer items-center gap-2 rounded-[4px] border border-white/80 bg-white/50 px-3 py-2 text-xs font-medium text-[var(--foreground)] transition-colors has-[:checked]:border-[var(--primary)] has-[:checked]:bg-[var(--blush)]">
-              <input
-                type="radio"
-                name="role"
-                value="employer"
-                className="accent-[var(--primary)]"
-              />
-              Employer
-            </label>
-          </div>
-          <FieldError message={state.fieldErrors?.role} />
         </div>
 
         <button
           type="submit"
           disabled={pending}
-          className="group w-full flex items-center justify-center py-3.5 px-4 bg-[var(--accent-color)] hover:bg-[var(--accent-dark)] rounded-[4px] text-white font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--primary)] transition duration-300 shadow-sm mt-8"
+          className="group w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-[var(--accent-color)] hover:bg-[var(--accent-dark)] rounded-[4px] text-white font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--primary)] transition duration-300 shadow-sm disabled:opacity-70"
         >
-          {pending ? "Creating Account..." : "Sign Up"}
-          <ArrowRight className="ml-2 h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
+          {pending ? <><Spinner /> Creating Account…</> : <>Sign Up <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" /></>}
         </button>
 
-        {/* Divider */}
-        <div className="relative flex py-2 items-center">
-          <div className="flex-grow border-t border-[var(--border)]"></div>
-          <span className="flex-shrink mx-4 text-[var(--muted-foreground)] text-xs font-mono tracking-widest uppercase">
-            OR CONTINUE WITH
-          </span>
-          <div className="flex-grow border-t border-[var(--border)]"></div>
+        <div className="relative flex py-1 items-center">
+          <div className="flex-grow border-t border-[var(--border)]" />
+          <span className="flex-shrink mx-4 text-[var(--muted-foreground)] text-xs font-mono tracking-widest uppercase">Or continue with</span>
+          <div className="flex-grow border-t border-[var(--border)]" />
         </div>
 
-        {/* Google Login Button */}
-        <button
-          type="button"
-          disabled
-          className="w-full flex items-center justify-center py-3 px-4 bg-white/60 rounded-[4px] text-[var(--muted-foreground)] font-medium border border-white focus-visible:outline-none shadow-sm transition duration-300 cursor-not-allowed"
-        >
+        <button type="button" disabled className="w-full flex items-center justify-center py-3 px-4 bg-white/60 rounded-[4px] text-[var(--muted-foreground)] font-medium border border-white focus-visible:outline-none shadow-sm transition duration-300 cursor-not-allowed">
           <svg className="w-5 h-5 mr-2" viewBox="0 0 48 48">
-            <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039L38.802 8.841C34.553 4.806 29.613 2.5 24 2.5C11.983 2.5 2.5 11.983 2.5 24s9.483 21.5 21.5 21.5S45.5 36.017 45.5 24c0-1.538-.135-3.022-.389-4.417z"></path>
-            <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12.5 24 12.5c3.059 0 5.842 1.154 7.961 3.039l5.839-5.841C34.553 4.806 29.613 2.5 24 2.5C16.318 2.5 9.642 6.723 6.306 14.691z"></path>
-            <path fill="#4CAF50" d="M24 45.5c5.613 0 10.553-2.306 14.802-6.341l-5.839-5.841C30.842 35.846 27.059 38 24 38c-5.039 0-9.345-2.608-11.124-6.481l-6.571 4.819C9.642 41.277 16.318 45.5 24 45.5z"></path>
-            <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l5.839 5.841C44.196 35.123 45.5 29.837 45.5 24c0-1.538-.135-3.022-.389-4.417z"></path>
+            <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039L38.802 8.841C34.553 4.806 29.613 2.5 24 2.5C11.983 2.5 2.5 11.983 2.5 24s9.483 21.5 21.5 21.5S45.5 36.017 45.5 24c0-1.538-.135-3.022-.389-4.417z" />
+            <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12.5 24 12.5c3.059 0 5.842 1.154 7.961 3.039l5.839-5.841C34.553 4.806 29.613 2.5 24 2.5C16.318 2.5 9.642 6.723 6.306 14.691z" />
+            <path fill="#4CAF50" d="M24 45.5c5.613 0 10.553-2.306 14.802-6.341l-5.839-5.841C30.842 35.846 27.059 38 24 38c-5.039 0-9.345-2.608-11.124-6.481l-6.571 4.819C9.642 41.277 16.318 45.5 24 45.5z" />
+            <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571l5.839 5.841C44.196 35.123 45.5 29.837 45.5 24c0-1.538-.135-3.022-.389-4.417z" />
           </svg>
           Google sign-up coming next
         </button>
       </form>
 
-      <p className="text-center text-sm text-[var(--muted-foreground)]">
+      <p className="text-center text-sm text-[var(--muted-foreground)] mt-5">
         Already have an account?{" "}
-        <Link href="/login" className="font-semibold text-[var(--primary)] hover:text-[var(--accent-dark)] transition-colors">
-          Sign In
-        </Link>
+        <Link href="/login" className="font-semibold text-[var(--primary)] hover:text-[var(--accent-dark)] transition-colors">Sign In</Link>
       </p>
+    </div>
+  );
+}
+
+function PasswordCheck({ met, label }: { met: boolean; label: string }) {
+  return (
+    <div className={`flex items-center gap-1.5 text-xs transition-colors ${met ? "text-green-600" : "text-[var(--muted-foreground)]"}`}>
+      {met
+        ? <CheckCircle2 size={11} className="flex-shrink-0" />
+        : <span className="w-2.5 h-2.5 rounded-full border border-current flex-shrink-0 inline-block" />}
+      {label}
     </div>
   );
 }

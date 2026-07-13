@@ -3,13 +3,12 @@
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/lib/auth/session";
 import { upsertSeekerProfile, computeProfileStrength } from "@/lib/data/profile";
+import { cleanText, normalizeOptionalPhone, normalizeOptionalUrl, parseSkills, readFormString } from "@/lib/validation";
 
 export type ProfileActionState = {
   status: "idle" | "success" | "error";
   message?: string;
 };
-
-export const initialProfileState: ProfileActionState = { status: "idle" };
 
 export async function saveProfileAction(
   _state: ProfileActionState,
@@ -17,24 +16,37 @@ export async function saveProfileAction(
 ): Promise<ProfileActionState> {
   const session = await getCurrentSession();
   if (!session?.userId) redirect("/login");
+  if (session.role === "employer") {
+    redirect("/employers/dashboard/profile");
+  }
 
-  const full_name = (formData.get("full_name") as string ?? "").trim();
+  const full_name = cleanText(readFormString(formData, "full_name"), 120);
   if (full_name.length < 2) {
     return { status: "error", message: "Full name must be at least 2 characters." };
   }
 
-  const str = (key: string) => (formData.get(key) as string ?? "").trim() || null;
-  const title              = str("title");
-  const location           = str("location");
-  const phone              = str("phone");
-  const experience_summary = str("experience_summary");
-  const education_summary  = str("education_summary");
-  const linkedin_url       = str("linkedin_url");
-  const website_url        = str("website_url");
-  const skills = (formData.get("skills") as string ?? "")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
+  const optionalText = (key: string, maxLength: number) => {
+    const value = cleanText(readFormString(formData, key), maxLength);
+    return value || null;
+  };
+
+  const phoneResult = normalizeOptionalPhone(readFormString(formData, "phone"));
+  if (!phoneResult.ok) return { status: "error", message: phoneResult.message };
+
+  const linkedinResult = normalizeOptionalUrl(readFormString(formData, "linkedin_url"), "LinkedIn URL");
+  if (!linkedinResult.ok) return { status: "error", message: linkedinResult.message };
+
+  const websiteResult = normalizeOptionalUrl(readFormString(formData, "website_url"), "Website URL");
+  if (!websiteResult.ok) return { status: "error", message: websiteResult.message };
+
+  const title = optionalText("title", 120);
+  const location = optionalText("location", 120);
+  const phone = phoneResult.value;
+  const experience_summary = readFormString(formData, "experience_summary").slice(0, 3000).trim() || null;
+  const education_summary = readFormString(formData, "education_summary").slice(0, 1500).trim() || null;
+  const linkedin_url = linkedinResult.value;
+  const website_url = websiteResult.value;
+  const skills = parseSkills(readFormString(formData, "skills"));
 
   const profile_strength = computeProfileStrength({
     full_name, title, location, phone,

@@ -1,11 +1,19 @@
 import { SmokeyBackground, LoginForm } from "@/components/ui/login-form";
 
 export const metadata = {
-  title: "Sign In - BforC Careers",
+  title: "Sign In",
   description: "Sign in to BforC Careers to continue.",
 };
 
-export default function LoginPage() {
+type LoginPageProps = {
+  searchParams?: Promise<{ email?: string; registered?: string }>;
+};
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const params = (await searchParams) ?? {};
+  const initialEmail = typeof params.email === "string" ? params.email : "";
+  const registered = params.registered === "true";
+
   return (
     <main className="relative w-full h-screen min-h-[600px] overflow-hidden bg-[var(--background)] flex items-center justify-center">
       <SmokeyBackground
@@ -14,7 +22,7 @@ export default function LoginPage() {
         backdropBlurAmount="2xl"
       />
       <div className="relative z-10 flex items-center justify-center w-full h-full p-4">
-        <LoginForm />
+        <LoginForm initialEmail={initialEmail} registered={registered} />
       </div>
     </main>
   );

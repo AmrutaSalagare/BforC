@@ -8,8 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { EASE } from "@/components/motion";
 
+const CAREER_SITE_URL = process.env.NEXT_PUBLIC_CAREER_SITE_URL || "https://career.bforc.in";
+
 const navLinks = [
-  { label: "BforC Careers", href: "https://career.bforc.in" },
+  { label: "BforC Careers", href: CAREER_SITE_URL },
   { label: "About us", href: "/story" },
   { label: "Member benefits", href: "/#benefits" },
   { label: "Pricing plans", href: "/#pricing" },
@@ -62,15 +64,32 @@ export function Header() {
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
+              const isExternal = link.href.startsWith("http");
+              const linkClassName = `text-sm font-medium px-4 py-2 rounded-lg transition-all duration-300 relative ${
+                isActive
+                  ? "text-[var(--foreground)]"
+                  : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+              }`;
+
+              if (isExternal) {
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={linkClassName}
+                  >
+                    {link.label}
+                  </a>
+                );
+              }
+
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-sm font-medium px-4 py-2 rounded-lg transition-all duration-300 relative ${
-                    isActive
-                      ? "text-[var(--foreground)]"
-                      : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
-                  }`}
+                  className={linkClassName}
                 >
                   {isActive && (
                     <motion.div
@@ -87,12 +106,14 @@ export function Header() {
 
           {/* Call to Action Button */}
           <div className="hidden md:block">
-            <Link
-              href="https://career.bforc.in"
+            <a
+              href={CAREER_SITE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-[var(--primary)] text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-[#8c365c] transition-all duration-300 active:scale-[0.98] shadow-warm-sm"
             >
               Partner with us
-            </Link>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -131,6 +152,12 @@ export function Header() {
               <div className="flex flex-col gap-3">
                 {navLinks.map((link, index) => {
                   const isActive = pathname === link.href;
+                  const isExternal = link.href.startsWith("http");
+                  const linkClass = `font-display text-4xl font-light leading-none tracking-tight block py-3 border-b border-[var(--border)]/20 last:border-0 ${
+                    isActive
+                      ? "text-[var(--primary)] font-normal"
+                      : "text-[var(--foreground)] hover:text-[var(--primary)]"
+                  }`;
                   return (
                     <motion.div
                       key={link.href}
@@ -138,17 +165,25 @@ export function Header() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05, duration: 0.4, ease: EASE }}
                     >
-                      <Link
-                        href={link.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className={`font-display text-4xl font-light leading-none tracking-tight block py-3 border-b border-[var(--border)]/20 last:border-0 ${
-                          isActive
-                            ? "text-[var(--primary)] font-normal"
-                            : "text-[var(--foreground)] hover:text-[var(--primary)]"
-                        }`}
-                      >
-                        {link.label}
-                      </Link>
+                      {isExternal ? (
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={linkClass}
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={linkClass}
+                        >
+                          {link.label}
+                        </Link>
+                      )}
                     </motion.div>
                   );
                 })}
@@ -160,13 +195,15 @@ export function Header() {
                 transition={{ delay: 0.3, duration: 0.4, ease: EASE }}
                 className="mt-auto mb-10 pt-6 border-t border-[var(--border)] flex flex-col gap-4"
               >
-                <Link
-                  href="https://career.bforc.in"
+                <a
+                  href={CAREER_SITE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
                   className="w-full inline-flex items-center justify-center gap-2 bg-[var(--primary)] text-white py-4 rounded-xl font-medium shadow-warm-md hover:bg-[#8c365c] transition-colors text-base"
                 >
                   Partner with us <ArrowRight size={16} />
-                </Link>
+                </a>
                 <p className="text-xs text-[var(--muted-foreground)] text-center">
                   brainsforcompassion@gmail.com
                 </p>

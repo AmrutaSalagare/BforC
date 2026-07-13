@@ -30,6 +30,8 @@ const faqs = [
   }
 ];
 
+const CAREER_SITE_URL = process.env.NEXT_PUBLIC_CAREER_SITE_URL || "https://career.bforc.in";
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
@@ -128,12 +130,12 @@ export default function Contact() {
                   <p className="text-xs text-[var(--muted-foreground)] mt-1.5 leading-relaxed">
                     For career board queries, visit{" "}
                     <a 
-                      href="https://career.bforc.in" 
+                      href={CAREER_SITE_URL} 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="text-[var(--primary)] hover:underline"
                     >
-                      career.bforc.in
+                      {CAREER_SITE_URL.replace(/^https?:\/\//, "")}
                     </a>
                   </p>
                 </div>

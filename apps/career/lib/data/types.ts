@@ -12,6 +12,7 @@ export type Job = {
   womenFriendly: boolean;
   postedDaysAgo: number;
   type: JobType;
+  isVerified?: boolean;
 };
 
 export type Company = {
@@ -23,6 +24,8 @@ export type Company = {
   womenFriendly: boolean;
   location: string;
   category: string;
+  logoUrl?: string | null;
+  isVerified?: boolean;
 };
 
 export type JobQuery = {

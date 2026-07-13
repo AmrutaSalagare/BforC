@@ -1,10 +1,13 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Building2, Users, ShieldCheck, ArrowRight } from "lucide-react";
 import { Reveal, StaggerReveal, StaggerItem } from "@/components/motion";
+import { getCurrentSession } from "@/lib/auth/session";
 
 export const metadata = {
-  title: "For Employers — BforC Careers",
-  description: "Find passionate, purpose-driven talent for your NGO or social enterprise.",
+  title: "For Employers",
+  description:
+    "Find passionate, purpose-driven talent for your NGO or social enterprise.",
 };
 
 const features = [
@@ -28,7 +31,9 @@ const features = [
   },
 ];
 
-export default function EmployersPage() {
+export default async function EmployersPage() {
+  const session = await getCurrentSession();
+  if (session?.role === "employer") redirect("/employers/dashboard");
   return (
     <main className="min-h-screen pt-32 pb-24 px-6">
       <div className="max-w-5xl mx-auto">
@@ -36,20 +41,21 @@ export default function EmployersPage() {
         <Reveal className="text-center mb-16">
           <p className="eyebrow mb-4">For Organisations</p>
           <h1 className="font-display text-[clamp(2.4rem,6vw,4rem)] font-light leading-tight text-[var(--foreground)] mb-6">
-            Find talent that <em className="not-italic text-[var(--primary)]">cares</em>
+            Find the right{" "}
+            <em className="not-italic text-[var(--primary)]">Talent</em>
           </h1>
           <p className="text-[var(--muted-fg)] text-lg max-w-xl mx-auto mb-10 leading-relaxed">
-            BforC Careers connects NGOs, social enterprises, and impact-driven
-            organisations with passionate professionals ready to make a difference.
+            Select from our curated pool of purpose-driven talented women. BforC
+            supports your hunt for suitable, academically-trained professionals
+            who are ready to work from day one!
           </p>
-
-          <div className="inline-flex items-center gap-2 bg-[var(--accent-color)]/10 border border-[var(--accent-color)]/20 text-[var(--accent-color)] px-5 py-2.5 rounded-full text-sm font-medium">
-            Employer portal launching soon
-          </div>
         </Reveal>
 
         {/* Feature cards */}
-        <StaggerReveal className="grid md:grid-cols-3 gap-6 mb-16" stagger={0.1}>
+        <StaggerReveal
+          className="grid md:grid-cols-3 gap-6 mb-16"
+          stagger={0.1}
+        >
           {features.map(({ icon: Icon, title, body, color }) => (
             <StaggerItem key={title}>
               <div className="flex flex-col gap-4 p-7 bg-white/40 backdrop-blur-md rounded-xl border border-white/60 h-full">
@@ -60,8 +66,12 @@ export default function EmployersPage() {
                   <Icon size={20} className="text-[var(--foreground)]" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-base text-[var(--foreground)] mb-2">{title}</h3>
-                  <p className="text-sm text-[var(--muted-fg)] leading-relaxed">{body}</p>
+                  <h3 className="font-semibold text-base text-[var(--foreground)] mb-2">
+                    {title}
+                  </h3>
+                  <p className="text-sm text-[var(--muted-fg)] leading-relaxed">
+                    {body}
+                  </p>
                 </div>
               </div>
             </StaggerItem>

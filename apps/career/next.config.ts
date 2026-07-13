@@ -1,9 +1,37 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  assetPrefix: "/career-assets",
+  turbopack: {
+    root: __dirname,
+  },
   // Allow mobile testing on the local network
-  // @ts-ignore: This option exists in newer Next.js versions for dev environments
-  allowedDevOrigins: ["10.136.158.247"],
+  allowedDevOrigins: [
+    "localhost",
+    "localhost:3000",
+    "127.0.0.1",
+    "127.0.0.1:3000",
+    "10.136.158.247",
+    "10.136.158.247:3000",
+    "192.168.0.102",
+    "192.168.0.102:3000",
+    "192.168.0.103",
+    "192.168.0.103:3000",
+    "192.168.0.104",
+    "192.168.0.104:3000",
+    "192.168.0.105",
+    "192.168.0.105:3000",
+    "192.168.1.100",
+    "192.168.1.100:3000",
+    "192.168.1.101",
+    "192.168.1.101:3000",
+    "192.168.1.102",
+    "192.168.1.102:3000",
+    "192.168.1.103",
+    "192.168.1.103:3000",
+    "192.168.1.104",
+    "192.168.1.104:3000",
+  ],
 };
 
 export default nextConfig;

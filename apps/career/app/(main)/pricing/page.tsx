@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Reveal, StaggerReveal, StaggerItem } from "@/components/motion";
 
 export const metadata = {
-  title: "Pricing — BforC Careers",
+  title: "Pricing",
   description: "Simple, transparent pricing for purpose-driven job seekers.",
 };
 

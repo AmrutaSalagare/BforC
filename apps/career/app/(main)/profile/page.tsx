@@ -4,7 +4,7 @@ import { getSeekerProfile } from "@/lib/data/profile";
 import { ProfileForm } from "@/components/profile-form";
 
 export const metadata = {
-  title: "My Profile — BforC Careers",
+  title: "My Profile",
 };
 
 function getFullNameFromToken(token: string): string {
@@ -21,6 +21,7 @@ function getFullNameFromToken(token: string): string {
 export default async function ProfilePage() {
   const session = await getCurrentSession();
   if (!session) redirect("/login");
+  if (session.role === "employer") redirect("/employers/dashboard/profile");
 
   const [profile] = await Promise.all([
     session.userId

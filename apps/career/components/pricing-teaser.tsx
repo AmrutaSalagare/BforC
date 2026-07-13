@@ -20,9 +20,9 @@ const tiers = [
     href: "/signup?plan=free",
     highlight: false,
     style: {
-      card: "bg-white/40 backdrop-blur-md border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.06)]",
+      card: "bg-transparent border border-[var(--primary)]/10 shadow-warm-md",
       price: "text-[var(--foreground)]",
-      cta: "border border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-[var(--on-accent)]",
+      cta: "bg-transparent border border-[var(--primary)]/10 text-[var(--foreground)] hover:bg-[var(--foreground)]/5 shadow-sm",
     },
   },
   {
@@ -40,9 +40,9 @@ const tiers = [
     href: "/signup?plan=starter",
     highlight: false,
     style: {
-      card: "bg-white/50 backdrop-blur-md border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.08)]",
+      card: "bg-transparent border border-[var(--primary)]/10 shadow-warm-md text-[var(--foreground)]",
       price: "text-[var(--foreground)]",
-      cta: "border border-[var(--accent-color)] text-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-[var(--on-accent)]",
+      cta: "bg-[var(--foreground)]/5 border border-[var(--primary)]/10 text-[var(--foreground)] hover:bg-[var(--foreground)]/10 shadow-warm-md",
     },
   },
   {
@@ -60,9 +60,9 @@ const tiers = [
     href: "/signup?plan=premium",
     highlight: true,
     style: {
-      card: "bg-[var(--accent-color)]/10 backdrop-blur-xl border-2 border-[var(--accent-color)] shadow-[0_8px_30px_var(--accent-color)] scale-[1.02]",
-      price: "text-[var(--accent-color)]",
-      cta: "bg-[var(--accent-color)] text-[var(--on-accent)] hover:bg-[var(--accent-dark)]",
+      card: "bg-[var(--primary)]/90 backdrop-blur-md border border-[var(--primary)] text-white shadow-warm-lg scale-[1.02]",
+      price: "text-white",
+      cta: "bg-white text-[var(--primary)] hover:opacity-90 shadow-warm-md",
     },
   },
 ];
@@ -71,17 +71,17 @@ export function PricingTeaser() {
   return (
     <section id="pricing" className="py-20 px-6 max-w-7xl mx-auto" aria-labelledby="pricing-heading">
       <Reveal className="text-center mb-14">
-        <p className="eyebrow mb-3">Plans</p>
+        <p className="text-[var(--primary)] text-sm font-medium mb-3">Plans</p>
         <h2
           id="pricing-heading"
-          className="font-display text-[clamp(1.8rem,4vw,2.8rem)] font-light text-[var(--foreground)]"
+          className="font-display text-[clamp(2.5rem,5vw,4rem)] font-medium text-[var(--foreground)] leading-none"
         >
           Start free.{" "}
-          <em className="font-display not-italic text-[var(--accent-color)]">
+          <em className="font-sans not-italic text-[var(--primary)]">
             Grow with purpose.
           </em>
         </h2>
-        <p className="text-[var(--muted-fg)] mt-3 max-w-md mx-auto text-sm">
+        <p className="font-sans text-[var(--foreground)] mt-3 max-w-md mx-auto text-sm opacity-80">
           Cost is never a barrier. Pick a plan that fits where you are right now.
         </p>
       </Reveal>
@@ -89,31 +89,31 @@ export function PricingTeaser() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-center max-w-4xl mx-auto">
         {tiers.map(({ name, price, period, tagline, features, cta, href, highlight, style }, i) => (
           <Reveal key={name} delay={i * 0.1}>
-            <div className={`rounded-2xl border p-7 flex flex-col gap-5 h-full ${style.card} transition duration-300`}>
+            <div className={`rounded-2xl p-7 flex flex-col gap-5 h-full ${style.card} transition duration-300`}>
               {/* Header */}
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="font-mono-dm text-xs tracking-widest uppercase text-[var(--muted-fg)]">
+                  <span className="font-sans font-medium text-sm text-current opacity-80">
                     {name}
                   </span>
                   {highlight && (
-                    <span className="text-[10px] font-mono-dm tracking-wider uppercase text-[var(--accent-color)] bg-[var(--accent-color)]/10 px-2 py-0.5 rounded-full">
+                    <span className="text-xs font-sans font-medium text-current bg-white/20 px-2 py-0.5 rounded-xl border border-current">
                       Popular
                     </span>
                   )}
                 </div>
                 <div className="flex items-end gap-1">
-                  <span className={`font-display text-4xl font-light ${style.price}`}>{price}</span>
-                  <span className="text-sm text-[var(--muted-fg)] mb-1">{period}</span>
+                  <span className={`font-sans text-5xl font-medium ${style.price}`}>{price}</span>
+                  <span className="text-sm text-current opacity-80 mb-1 font-sans">{period}</span>
                 </div>
-                <p className="text-xs text-[var(--faint-fg)] mt-1">{tagline}</p>
+                <p className="text-sm text-current opacity-70 mt-1 font-sans">{tagline}</p>
               </div>
 
               {/* Features */}
               <ul className="flex flex-col gap-2.5 flex-1" aria-label={`${name} plan features`}>
                 {features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm text-[var(--muted-fg)]">
-                    <Check size={15} className="text-[var(--success)] shrink-0 mt-0.5" />
+                  <li key={f} className="flex items-start gap-2.5 text-sm text-current opacity-90 font-sans">
+                    <Check size={15} className="text-current shrink-0 mt-0.5" />
                     {f}
                   </li>
                 ))}
@@ -122,7 +122,7 @@ export function PricingTeaser() {
               {/* CTA */}
               <Link
                 href={href}
-                className={`flex items-center justify-center gap-2 py-3 rounded-[4px] text-sm font-medium transition duration-200 hover:-translate-y-0.5 ${style.cta}`}
+                className={`flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-sans font-medium transition duration-200 hover:-translate-y-0.5 ${style.cta}`}
               >
                 {cta} <ArrowRight size={14} />
               </Link>
@@ -132,7 +132,7 @@ export function PricingTeaser() {
       </div>
 
       <Reveal delay={0.3} className="text-center mt-8">
-        <p className="text-xs text-[var(--faint-fg)]">
+        <p className="text-xs text-[var(--foreground)] opacity-60 font-sans">
           No hidden fees | Cancel anytime | Your data, your control
         </p>
       </Reveal>

@@ -4,6 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, ArrowUpRight } from "lucide-react";
 
+const CAREER_SITE_URL = process.env.NEXT_PUBLIC_CAREER_SITE_URL || "https://career.bforc.in";
+
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -69,7 +71,7 @@ export function Footer() {
           </span>
           <ul className="flex flex-col gap-2.5 text-sm text-[#c4beba]">
             <li>
-              <a href="https://career.bforc.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-200 flex items-center gap-1">
+              <a href={CAREER_SITE_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-200 flex items-center gap-1">
                 BforC Careers <ArrowUpRight size={11} className="text-[var(--primary)]" />
               </a>
             </li>
@@ -99,7 +101,7 @@ export function Footer() {
           <ul className="flex flex-col gap-2.5 text-sm text-[#c4beba]">
             <li>
               <a
-                href="https://career.bforc.in/jobs"
+                href={`${CAREER_SITE_URL}/jobs`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white transition-colors duration-200"
@@ -109,7 +111,7 @@ export function Footer() {
             </li>
             <li>
               <a
-                href="https://career.bforc.in/auth/signup"
+                href={`${CAREER_SITE_URL}/signup`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white transition-colors duration-200"
@@ -118,9 +120,9 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <Link href="/contact" className="hover:text-white transition-colors duration-200">
+              <a href="mailto:brainsforcompassion@gmail.com" className="hover:text-white transition-colors duration-200">
                 Contact & Support
-              </Link>
+              </a>
             </li>
           </ul>
         </div>

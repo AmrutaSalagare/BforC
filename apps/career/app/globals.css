@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
@@ -51,6 +50,16 @@
   --muted-fg: var(--muted-foreground);
   --faint-fg: var(--muted-foreground);
   --on-accent: var(--primary-foreground);
+
+  /* BforC brand extension — logo globe greens + deep purple */
+  --brand-green:        #d4edda;  /* pastel green (logo globe light) */
+  --brand-green-mid:    #81c784;  /* mid green for icons/accents */
+  --brand-green-deep:   #2e7d32;  /* dark green for text on green bg */
+  --brand-purple:       #e8d5f5;  /* pastel purple */
+  --brand-purple-deep:  #6a1b9a;  /* deep purple for text */
+  --brand-teal:         #d0f0f0;  /* soft teal for variety */
+  --brand-teal-deep:    #00695c;  /* deep teal */
+  --section-alt:        oklch(from var(--accent) calc(l + 0.04) c h / 0.35); /* faint warm tint */
 }
 
 .dark {
@@ -129,10 +138,18 @@
   --color-blush:        var(--blush);
   --color-mint:         var(--mint);
   --color-lavender:     var(--lavender);
-  --color-accent-color: var(--accent-color);
-  --color-accent-dark:  var(--accent-dark);
-  --color-faint-fg:     var(--faint-fg);
-  --color-on-accent:    var(--on-accent);
+  --color-accent-color:       var(--accent-color);
+  --color-accent-dark:        var(--accent-dark);
+  --color-faint-fg:           var(--faint-fg);
+  --color-on-accent:          var(--on-accent);
+  --color-brand-green:        var(--brand-green);
+  --color-brand-green-mid:    var(--brand-green-mid);
+  --color-brand-green-deep:   var(--brand-green-deep);
+  --color-brand-purple:       var(--brand-purple);
+  --color-brand-purple-deep:  var(--brand-purple-deep);
+  --color-brand-teal:         var(--brand-teal);
+  --color-brand-teal-deep:    var(--brand-teal-deep);
+  --color-section-alt:        var(--section-alt);
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -167,6 +184,26 @@
     @apply min-h-screen;
     /* Promote body to its own compositing layer for smoother fixed bg */
     isolation: isolate;
+  }
+
+  /* Global cursor: every interactive element shows pointer */
+  a,
+  button:not(:disabled),
+  [role="button"],
+  select,
+  label[for],
+  input[type="checkbox"],
+  input[type="radio"],
+  input[type="range"],
+  input[type="file"],
+  summary {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  input:disabled,
+  select:disabled {
+    cursor: not-allowed;
   }
 
   /* Reduced motion - framer-motion handles this via useReducedMotion() in JS.
@@ -234,6 +271,38 @@
   .shadow-warm-lg {
     box-shadow: 0 8px 24px oklch(from var(--foreground) l c h / 0.10),
                 0 4px 12px oklch(from var(--foreground) l c h / 0.06);
+  }
+
+  /* Skeleton shimmer */
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+  }
+
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      oklch(from var(--muted) l c h / 0.6) 25%,
+      oklch(from var(--muted) calc(l + 0.06) c h / 0.9) 50%,
+      oklch(from var(--muted) l c h / 0.6) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+  }
+
+  /* Spinner */
+  @keyframes spin-fast {
+    to { transform: rotate(360deg); }
+  }
+  .spinner {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin-fast 0.65s linear infinite;
+    flex-shrink: 0;
   }
 
   /* Orbital Timeline specific animations */

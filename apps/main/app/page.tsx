@@ -198,6 +198,8 @@ function InteractiveMarquee({
   );
 }
 
+const CAREER_SITE_URL = process.env.NEXT_PUBLIC_CAREER_SITE_URL || "https://career.bforc.in";
+
 export default function Home() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
@@ -451,7 +453,7 @@ export default function Home() {
 
             <Reveal delay={0.3} className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-2 w-full sm:w-auto">
               <PremiumButton 
-                href="https://career.bforc.in" 
+                href={CAREER_SITE_URL} 
                 label="Find your passion with BforC careers" 
                 variant="purple" 
                 size="lg"
@@ -729,7 +731,7 @@ export default function Home() {
                 </p>
               </div>
               <PremiumButton 
-                href="https://career.bforc.in" 
+                href={CAREER_SITE_URL} 
                 label="Visit BforC career portal" 
                 variant="white" 
               />
@@ -790,7 +792,7 @@ export default function Home() {
                 </p>
               </div>
               <PremiumButton 
-                href="https://career.bforc.in" 
+                href={CAREER_SITE_URL} 
                 label="Become a member now" 
                 variant="purple" 
               />
@@ -870,7 +872,7 @@ export default function Home() {
 
                   <div className="pt-6 border-t border-[var(--primary)]/10 mt-auto">
                     <PremiumButton 
-                      href="https://career.bforc.in" 
+                      href={CAREER_SITE_URL} 
                       label="Get Onboarded" 
                       variant="purple" 
                     />

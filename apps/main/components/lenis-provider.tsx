@@ -17,13 +17,28 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
+    // 1. Force reload if page is recovered from back-forward cache (bfcache)
     const handlePageShow = (event: PageTransitionEvent) => {
       if (event.persisted) {
         window.location.reload();
       }
     };
     window.addEventListener("pageshow", handlePageShow);
-    return () => window.removeEventListener("pageshow", handlePageShow);
+
+    // 2. Force reload if navigation type is back/forward (e.g. returning from local port 3001)
+    if (typeof window !== "undefined" && window.performance) {
+      const navigationEntries = window.performance.getEntriesByType("navigation");
+      if (navigationEntries.length > 0) {
+        const timing = navigationEntries[0] as PerformanceNavigationTiming;
+        if (timing.type === "back_forward") {
+          window.location.reload();
+        }
+      }
+    }
+
+    return () => {
+      window.removeEventListener("pageshow", handlePageShow);
+    };
   }, []);
 
   useEffect(() => {

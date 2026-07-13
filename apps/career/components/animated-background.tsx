@@ -42,8 +42,14 @@ export function AnimatedBackground() {
         />
       </motion.div>
 
-      {/* Master frosted glass overlay to blend everything elegantly and preserve contrast */}
-      <div className="absolute inset-0 backdrop-blur-[80px] bg-white/40" />
+      {/* Elegant translucent overlay — lets the color orbs show through without paint waterfalls or scroll lag */}
+      <div className="absolute inset-0 bg-[var(--background)]/80" />
+
+      {/* Topography Grid Pattern */}
+      <div 
+        className="absolute inset-0 opacity-[0.04] dark:invert dark:opacity-[0.06]" 
+        style={{ backgroundImage: "url('/topography.svg')", backgroundSize: "600px", backgroundRepeat: "repeat" }} 
+      />
     </div>
   );
 }

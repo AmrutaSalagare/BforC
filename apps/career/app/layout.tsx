@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from "next/font/google";
 import "./globals.css";
+import { LenisProvider } from "@/components/lenis-provider";
+import { CursorSpotlight, ScrollProgressBar } from "@/components/motion";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -25,7 +27,10 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BforC Careers :: Where Compassion Meets Career",
+  title: {
+    default: "BforC Careers | Where Compassion Meets Career",
+    template: "%s | BforC Careers",
+  },
   description:
     "Find purpose-driven jobs at NGOs, social enterprises, and impact organisations across India. Women-friendly workplaces, flexible roles, and meaningful careers.",
   keywords: [
@@ -36,7 +41,7 @@ export const metadata: Metadata = {
     "BforC careers",
   ],
   openGraph: {
-    title: "BforC Careers :: Where Compassion Meets Career",
+    title: "BforC Careers | Where Compassion Meets Career",
     description:
       "Curated roles in social impact, NGOs, and purpose-driven organisations across India.",
     type: "website",
@@ -52,8 +57,12 @@ export default function RootLayout({
       lang="en"
       className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable} min-h-screen`}
     >
-      <body className="min-h-screen flex flex-col antialiased">
-        {children}
+      <body className="min-h-screen flex flex-col antialiased relative">
+        <CursorSpotlight />
+        <ScrollProgressBar />
+        <LenisProvider>
+          {children}
+        </LenisProvider>
       </body>
     </html>
   );

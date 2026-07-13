@@ -82,22 +82,26 @@ alter table public.seeker_profiles enable row level security;
 alter table public.saved_jobs enable row level security;
 alter table public.applications enable row level security;
 
+drop policy if exists "Public can read verified employer profiles" on public.employer_profiles;
 create policy "Public can read verified employer profiles"
   on public.employer_profiles
   for select
   using (is_verified = true);
 
+drop policy if exists "Public can read active jobs" on public.jobs;
 create policy "Public can read active jobs"
   on public.jobs
   for select
   using (status = 'active');
 
+drop policy if exists "Employers can manage their own profile" on public.employer_profiles;
 create policy "Employers can manage their own profile"
   on public.employer_profiles
   for all
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 
+drop policy if exists "Employers can manage their jobs" on public.jobs;
 create policy "Employers can manage their jobs"
   on public.jobs
   for all
@@ -118,12 +122,41 @@ create policy "Employers can manage their jobs"
     )
   );
 
+drop policy if exists "Seekers can manage their own profile" on public.seeker_profiles;
 create policy "Seekers can manage their own profile"
   on public.seeker_profiles
   for all
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 
+create or replace function public.can_employer_view_seeker(seeker_uuid uuid)
+returns boolean
+language sql
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1
+    from public.applications
+    join public.jobs
+      on jobs.id = applications.job_id
+    join public.employer_profiles
+      on employer_profiles.id = jobs.employer_id
+    where applications.seeker_id = seeker_uuid
+      and employer_profiles.user_id = auth.uid()
+  );
+$$;
+
+revoke all on function public.can_employer_view_seeker(uuid) from public;
+grant execute on function public.can_employer_view_seeker(uuid) to authenticated;
+
+drop policy if exists "Employers can read seeker profiles for their applicants" on public.seeker_profiles;
+create policy "Employers can read seeker profiles for their applicants"
+  on public.seeker_profiles
+  for select
+  using (public.can_employer_view_seeker(id));
+
+drop policy if exists "Seekers can manage their saved jobs" on public.saved_jobs;
 create policy "Seekers can manage their saved jobs"
   on public.saved_jobs
   for all
@@ -144,6 +177,7 @@ create policy "Seekers can manage their saved jobs"
     )
   );
 
+drop policy if exists "Seekers can manage their applications" on public.applications;
 create policy "Seekers can manage their applications"
   on public.applications
   for all
@@ -174,3 +208,87 @@ create index if not exists jobs_search_idx
 
 create index if not exists employer_profiles_slug_idx
   on public.employer_profiles (slug);
+
+-- Employers need to read and update applications for their jobs
+drop policy if exists "Employers can read applications for their jobs" on public.applications;
+create policy "Employers can read applications for their jobs"
+  on public.applications
+  for select
+  using (
+    exists (
+      select 1
+      from public.jobs
+      where jobs.id = applications.job_id
+        and exists (
+          select 1
+          from public.employer_profiles
+          where employer_profiles.id = jobs.employer_id
+            and employer_profiles.user_id = auth.uid()
+        )
+    )
+  );
+
+drop policy if exists "Employers can update applications for their jobs" on public.applications;
+create policy "Employers can update applications for their jobs"
+  on public.applications
+  for update
+  using (
+    exists (
+      select 1
+      from public.jobs
+      where jobs.id = applications.job_id
+        and exists (
+          select 1
+          from public.employer_profiles
+          where employer_profiles.id = jobs.employer_id
+            and employer_profiles.user_id = auth.uid()
+      )
+    )
+  );
+
+create index if not exists applications_job_id_applied_at_idx
+  on public.applications (job_id, applied_at desc);
+
+create index if not exists applications_seeker_id_applied_at_idx
+  on public.applications (seeker_id, applied_at desc);
+
+-- Re-run this block if employers can post jobs but cannot see applications.
+drop policy if exists "Employers can read applications for their jobs" on public.applications;
+create policy "Employers can read applications for their jobs"
+  on public.applications
+  for select
+  using (
+    exists (
+      select 1
+      from public.jobs
+      join public.employer_profiles
+        on employer_profiles.id = jobs.employer_id
+      where jobs.id = applications.job_id
+        and employer_profiles.user_id = auth.uid()
+    )
+  );
+
+drop policy if exists "Employers can update applications for their jobs" on public.applications;
+create policy "Employers can update applications for their jobs"
+  on public.applications
+  for update
+  using (
+    exists (
+      select 1
+      from public.jobs
+      join public.employer_profiles
+        on employer_profiles.id = jobs.employer_id
+      where jobs.id = applications.job_id
+        and employer_profiles.user_id = auth.uid()
+    )
+  )
+  with check (
+    exists (
+      select 1
+      from public.jobs
+      join public.employer_profiles
+        on employer_profiles.id = jobs.employer_id
+      where jobs.id = applications.job_id
+        and employer_profiles.user_id = auth.uid()
+    )
+  );

@@ -10,7 +10,7 @@ export function getSupabaseConfig(): SupabaseConfig {
     return {
       ok: false,
       reason:
-        "Supabase is not configured. Rendering from local seed data instead.",
+        "Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local.",
     };
   }
 
@@ -42,7 +42,7 @@ export async function fetchSupabaseRows<T>(
   if (!response.ok) {
     return {
       ok: false as const,
-      reason: `Supabase ${table} query failed with ${response.status}. Rendering from seed data.`,
+      reason: `Supabase ${table} query failed with ${response.status}.`,
     };
   }
 

@@ -3,19 +3,30 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, UserCircle, ChevronDown, LogOut } from "lucide-react";
+import { Menu, X, UserCircle, ChevronDown, LogOut, Building, Briefcase, CreditCard } from "lucide-react";
 import Image from "next/image";
 import { logoutAction } from "@/app/auth/actions";
 
 export type NavUser = { role: "seeker" | "employer" } | null;
 
 const publicLinks = [
-  { label: "Find a role", href: "/jobs" },
-  { label: "Find talent", href: "/employers" },
+  { label: "Find a role",  href: "/jobs" },
+  { label: "Companies",    href: "/companies" },
+  { label: "For Employers", href: "/employers" },
+  { label: "Pricing",      href: "/pricing" },
 ];
 
 const seekerLinks = [
-  { label: "Find a role", href: "/jobs" },
+  { label: "Dashboard",   href: "/dashboard" },
+  { label: "Browse Jobs", href: "/jobs" },
+  { label: "Companies",   href: "/companies" },
+  { label: "Pricing",     href: "/pricing" },
+];
+
+const employerLinks = [
+  { label: "Dashboard",     href: "/employers/dashboard" },
+  { label: "Talent Search", href: "/employers/search" },
+  { label: "Plans",         href: "/employers/pricing" },
 ];
 
 export function Navbar({ user }: { user: NavUser }) {
@@ -24,7 +35,7 @@ export function Navbar({ user }: { user: NavUser }) {
   const [profileOpen, setProfileOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const navLinks = user ? seekerLinks : publicLinks;
+  const navLinks = !user ? publicLinks : user.role === "employer" ? employerLinks : seekerLinks;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -45,9 +56,9 @@ export function Navbar({ user }: { user: NavUser }) {
   return (
     <>
       <motion.header
-        className={`fixed top-[2px] left-0 right-0 z-50 transition duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition duration-300 ${
           scrolled
-            ? "bg-white/50 backdrop-blur-lg shadow-warm-sm border-b border-[var(--border)]"
+            ? "bg-[var(--background)]/60 backdrop-blur-sm shadow-warm-md"
             : "bg-transparent"
         }`}
         initial={{ y: -80, opacity: 0 }}
@@ -56,7 +67,7 @@ export function Navbar({ user }: { user: NavUser }) {
       >
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center group">
+          <a href="/" className="flex items-center group">
             <Image
               src="/logo_bforc.png"
               alt="Brains For Compassion"
@@ -65,7 +76,7 @@ export function Navbar({ user }: { user: NavUser }) {
               className="h-10 w-auto mix-blend-multiply contrast-125"
               priority
             />
-          </Link>
+          </a>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
@@ -73,10 +84,10 @@ export function Navbar({ user }: { user: NavUser }) {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm text-[var(--muted-fg)] hover:text-[var(--foreground)] transition-colors duration-200 relative group"
+                className="text-sm font-sans font-medium text-[var(--foreground)] opacity-80 hover:opacity-100 transition-opacity duration-200 relative group"
               >
                 {link.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-[var(--accent-color)] group-hover:w-full transition duration-300" />
+                <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-[var(--primary)] group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
           </nav>
@@ -107,20 +118,61 @@ export function Navbar({ user }: { user: NavUser }) {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 4, scale: 0.97 }}
                       transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-                      className="absolute right-0 top-full mt-1 w-48 bg-white/90 backdrop-blur-lg border border-[var(--border)] rounded-xl shadow-lg overflow-hidden"
+                      className="absolute right-0 top-full mt-2 w-48 bg-[var(--background)]/80 backdrop-blur-md shadow-warm-lg rounded-2xl overflow-hidden"
                     >
-                      <Link
-                        href="/profile"
-                        onClick={() => setProfileOpen(false)}
-                        className="flex items-center gap-2.5 px-4 py-3 text-sm text-[var(--foreground)] hover:bg-[var(--surface-2)] transition-colors"
-                      >
-                        <UserCircle size={16} className="text-[var(--muted-fg)]" />
-                        My Profile
-                      </Link>
+                      {user?.role === "employer" ? (
+                        <>
+                          <Link
+                            href="/employers/dashboard/profile"
+                            onClick={() => setProfileOpen(false)}
+                            className="flex items-center gap-2.5 px-4 py-3 text-sm font-medium text-[var(--foreground)] hover:bg-[var(--foreground)]/5 transition-colors"
+                          >
+                            <Building size={16} className="text-[var(--muted-fg)]" />
+                            Company Profile
+                          </Link>
+                          <Link
+                            href="/employers/dashboard/billing"
+                            onClick={() => setProfileOpen(false)}
+                            className="flex items-center gap-2.5 px-4 py-3 text-sm font-medium text-[var(--foreground)] hover:bg-[var(--foreground)]/5 transition-colors"
+                          >
+                            <CreditCard size={16} className="text-[var(--muted-fg)]" />
+                            Billing & Plan
+                          </Link>
+                        </>
+                      ) : (
+                        <>
+                          <Link
+                            href="/dashboard"
+                            onClick={() => setProfileOpen(false)}
+                            className="flex items-center gap-2.5 px-4 py-3 text-sm font-medium text-[var(--foreground)] hover:bg-[var(--foreground)]/5 transition-colors"
+                          >
+                            <Briefcase size={16} className="text-[var(--muted-fg)]" />
+                            My Dashboard
+                          </Link>
+                          <Link
+                            href="/dashboard/billing"
+                            onClick={() => setProfileOpen(false)}
+                            className="flex items-center gap-2.5 px-4 py-3 text-sm font-medium text-[var(--foreground)] hover:bg-[var(--foreground)]/5 transition-colors"
+                          >
+                            <CreditCard size={16} className="text-[var(--muted-fg)]" />
+                            Billing & Plan
+                          </Link>
+                        </>
+                      )}
+                      {user?.role === "seeker" && (
+                        <Link
+                          href="/profile"
+                          onClick={() => setProfileOpen(false)}
+                          className="flex items-center gap-2.5 px-4 py-3 text-sm font-medium text-[var(--foreground)] hover:bg-[var(--foreground)]/5 transition-colors"
+                        >
+                          <UserCircle size={16} className="text-[var(--muted-fg)]" />
+                          My Profile
+                        </Link>
+                      )}
                       <form action={logoutAction}>
                         <button
                           type="submit"
-                          className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-[var(--foreground)] hover:bg-[var(--surface-2)] transition-colors border-t border-[var(--border)]"
+                          className="w-full flex items-center gap-2.5 px-4 py-3 text-sm font-medium text-[var(--foreground)] hover:bg-[var(--foreground)]/5 transition-colors border-t border-[var(--primary)]/10"
                         >
                           <LogOut size={16} className="text-[var(--muted-fg)]" />
                           Sign out
@@ -131,19 +183,27 @@ export function Navbar({ user }: { user: NavUser }) {
                 </AnimatePresence>
               </div>
             ) : (
-              <Link
-                href="/login"
-                className="text-sm bg-[var(--accent-color)] text-[var(--on-accent)] px-5 py-2.5 rounded-[4px] hover:bg-[var(--accent-dark)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.97] font-medium"
-              >
-                Login / Signup
-              </Link>
+              <>
+                  <Link
+                    href="/login"
+                    className="text-sm font-sans font-medium text-[var(--foreground)] px-4 py-2 rounded-xl hover:bg-[var(--foreground)]/5 transition-colors duration-200"
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="text-sm font-sans font-medium bg-[var(--primary)] text-[var(--background)] px-5 py-2.5 rounded-xl hover:opacity-90 transition duration-200 hover:-translate-y-0.5 active:scale-[0.97] shadow-warm-md"
+                  >
+                    Sign up
+                  </Link>
+              </>
             )}
           </div>
 
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(true)}
-            className="md:hidden p-2 text-[var(--muted-fg)] hover:text-[var(--foreground)]"
+            className="md:hidden p-2 text-[var(--foreground)] cursor-pointer"
             aria-label="Open menu"
           >
             <Menu size={22} />
@@ -155,7 +215,7 @@ export function Navbar({ user }: { user: NavUser }) {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            className="fixed inset-0 z-[60] bg-[var(--background)]"
+            className="fixed inset-0 z-[60] bg-[var(--background)]/90 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -164,16 +224,16 @@ export function Navbar({ user }: { user: NavUser }) {
             <div className="flex flex-col h-full px-6 pt-6 pb-12">
               {/* Header */}
               <div className="flex items-center justify-between mb-12">
-                <Link
+                <a
                   href="/"
-                  className="font-display text-lg font-medium"
+                  className="font-sans text-lg font-medium"
                   onClick={() => setMobileOpen(false)}
                 >
                   BforC Careers
-                </Link>
+                </a>
                 <button
                   onClick={() => setMobileOpen(false)}
-                  className="p-2 text-[var(--muted-fg)]"
+                  className="p-2 text-[var(--foreground)]"
                   aria-label="Close menu"
                 >
                   <X size={22} />
@@ -192,7 +252,7 @@ export function Navbar({ user }: { user: NavUser }) {
                     <Link
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className="font-display text-3xl font-light text-[var(--foreground)] py-3 border-b border-[var(--border)] block hover:text-[var(--accent-color)] transition-colors"
+                      className="font-sans text-2xl font-medium text-[var(--foreground)] py-3 block hover:text-[var(--primary)] transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -204,17 +264,54 @@ export function Navbar({ user }: { user: NavUser }) {
               <div className="mt-auto flex flex-col gap-3">
                 {user ? (
                   <>
-                    <Link
-                      href="/profile"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-center py-3.5 border border-[var(--accent-color)] text-[var(--accent-color)] rounded-[4px] font-medium"
-                    >
-                      My Profile
-                    </Link>
+                    {user.role === "employer" ? (
+                      <>
+                        <Link
+                          href="/employers/dashboard/profile"
+                          onClick={() => setMobileOpen(false)}
+                          className="text-center py-3.5 bg-[var(--foreground)]/5 hover:bg-[var(--foreground)]/10 text-[var(--foreground)] rounded-xl font-sans font-medium text-sm transition-colors"
+                        >
+                          Company Profile
+                        </Link>
+                        <Link
+                          href="/employers/dashboard/billing"
+                          onClick={() => setMobileOpen(false)}
+                          className="text-center py-3.5 bg-[var(--foreground)]/5 hover:bg-[var(--foreground)]/10 text-[var(--foreground)] rounded-xl font-sans font-medium text-sm transition-colors"
+                        >
+                          Billing & Plan
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          href="/dashboard"
+                          onClick={() => setMobileOpen(false)}
+                          className="text-center py-3.5 bg-[var(--foreground)]/5 hover:bg-[var(--foreground)]/10 text-[var(--foreground)] rounded-xl font-sans font-medium text-sm transition-colors"
+                        >
+                          My Dashboard
+                        </Link>
+                        <Link
+                          href="/dashboard/billing"
+                          onClick={() => setMobileOpen(false)}
+                          className="text-center py-3.5 bg-[var(--foreground)]/5 hover:bg-[var(--foreground)]/10 text-[var(--foreground)] rounded-xl font-sans font-medium text-sm transition-colors"
+                        >
+                          Billing & Plan
+                        </Link>
+                      </>
+                    )}
+                    {user.role === "seeker" && (
+                      <Link
+                        href="/profile"
+                        onClick={() => setMobileOpen(false)}
+                        className="text-center py-3.5 bg-[var(--foreground)]/5 hover:bg-[var(--foreground)]/10 text-[var(--foreground)] rounded-xl font-sans font-medium text-sm transition-colors"
+                      >
+                        My Profile
+                      </Link>
+                    )}
                     <form action={logoutAction}>
                       <button
                         type="submit"
-                        className="w-full py-3.5 text-[var(--muted-fg)] text-sm"
+                        className="w-full py-3.5 bg-[var(--foreground)]/5 hover:bg-[var(--foreground)]/10 text-[var(--foreground)] rounded-xl font-sans font-medium text-sm transition-colors"
                       >
                         Sign out
                       </button>
@@ -222,20 +319,20 @@ export function Navbar({ user }: { user: NavUser }) {
                   </>
                 ) : (
                   <>
-                    <Link
-                      href="/login"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-center py-3.5 border border-[var(--accent-color)] text-[var(--accent-color)] rounded-[4px] font-medium"
-                    >
-                      Log in
-                    </Link>
-                    <Link
-                      href="/signup"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-center py-3.5 bg-[var(--accent-color)] text-[var(--on-accent)] rounded-[4px] font-medium"
-                    >
-                      Sign up
-                    </Link>
+                      <Link
+                        href="/login"
+                        onClick={() => setMobileOpen(false)}
+                        className="text-center py-3.5 bg-[var(--foreground)]/5 hover:bg-[var(--foreground)]/10 text-[var(--foreground)] rounded-xl font-sans font-medium text-sm transition-colors"
+                      >
+                        Log in
+                      </Link>
+                      <Link
+                        href="/signup"
+                        onClick={() => setMobileOpen(false)}
+                        className="text-center py-3.5 bg-[var(--primary)] text-[var(--background)] rounded-xl font-sans font-medium text-sm shadow-warm-md hover:opacity-90 transition-opacity"
+                      >
+                        Sign up
+                      </Link>
                   </>
                 )}
               </div>

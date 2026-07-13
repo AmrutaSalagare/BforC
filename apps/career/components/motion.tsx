@@ -5,9 +5,11 @@ import {
   useScroll,
   useTransform,
   useSpring,
+  useMotionValue,
   useReducedMotion,
 } from "framer-motion";
 import { type JSX, useRef } from "react";
+import React from "react";
 
 // Shared easing curve
 // The signature "expo ease-out" - starts fast, settles very slowly and elegantly
@@ -241,16 +243,49 @@ export function FadeIn({
   );
 }
 
+// Spinner (inline)
+/** Lightweight CSS spinner — no deps, respects button disabled state */
+export function Spinner({ className }: { className?: string }) {
+  return <span className={`spinner ${className ?? ""}`} aria-hidden />;
+}
+
+// PageTransition
+/**
+ * Wraps page content with a subtle fade+slide-up entrance.
+ * Use inside layout.tsx children or individual page components.
+ */
+export function PageTransition({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const shouldReduce = useReducedMotion();
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: shouldReduce ? 0 : 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, ease: EASE }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 // CountUp
 export function CountUp({
   target,
   suffix = "",
   duration = 1500,
+  delay = 0,
   className,
 }: {
   target: number;
   suffix?: string;
   duration?: number;
+  delay?: number;
   className?: string;
 }) {
   // Simple approach - no state churn on re-renders
@@ -264,19 +299,181 @@ export function CountUp({
       onViewportEnter={() => {
         if (triggered.current) return;
         triggered.current = true;
-        const start = Date.now();
-        const tick = () => {
-          const elapsed = Date.now() - start;
-          const progress = Math.min(elapsed / duration, 1);
-          const ease = 1 - Math.pow(1 - progress, 3);
-          if (nodeRef.current)
-            nodeRef.current.textContent = Math.floor(ease * target) + suffix;
-          if (progress < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
+        
+        setTimeout(() => {
+          const start = Date.now();
+          const tick = () => {
+            const elapsed = Date.now() - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            if (nodeRef.current)
+              nodeRef.current.textContent = Math.floor(ease * target) + suffix;
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }, delay);
       }}
     >
       0{suffix}
     </motion.span>
+  );
+}
+
+// MagneticButton
+/** Creates a tactile "magnetic" pull effect when hovering over elements like buttons */
+export function MagneticButton({
+  children,
+  className,
+  as: Tag = "div",
+  ...props
+}: {
+  children: React.ReactNode;
+  className?: string;
+  as?: React.ElementType;
+} & React.HTMLAttributes<HTMLElement>) {
+  const ref = useRef<HTMLElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  const springConfig = { stiffness: 150, damping: 15, mass: 0.1 };
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
+
+  const shouldReduce = useReducedMotion();
+
+  const handleMouse = (e: React.MouseEvent) => {
+    if (shouldReduce || !ref.current) return;
+    const { clientX, clientY } = e;
+    const { height, width, left, top } = ref.current.getBoundingClientRect();
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
+    x.set(middleX * 0.25); // pull strength
+    y.set(middleY * 0.25);
+  };
+
+  const reset = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <Tag
+      ref={ref}
+      onMouseMove={handleMouse}
+      onMouseLeave={reset}
+      className={className}
+      style={{ display: "inline-block" }}
+      {...props}
+    >
+      <motion.div style={{ x: springX, y: springY }} className="w-full h-full flex items-center justify-center">
+        {children}
+      </motion.div>
+    </Tag>
+  );
+}
+
+// HoverTiltCard
+/** Adds a subtle 3D tilt effect based on mouse position over the card */
+export function HoverTiltCard({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const x = useMotionValue(0.5);
+  const y = useMotionValue(0.5);
+  const springX = useSpring(x, { stiffness: 400, damping: 30 });
+  const springY = useSpring(y, { stiffness: 400, damping: 30 });
+  const rotateX = useTransform(springY, [0, 1], [4, -4]);
+  const rotateY = useTransform(springX, [0, 1], [-4, 4]);
+  const shouldReduce = useReducedMotion();
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduce) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width;
+    const yPct = mouseY / height;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0.5);
+    y.set(0.5);
+  };
+
+  return (
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        perspective: 1000,
+      }}
+      className={className}
+    >
+      <motion.div
+        style={{
+          rotateX: shouldReduce ? 0 : rotateX,
+          rotateY: shouldReduce ? 0 : rotateY,
+        }}
+        className="w-full h-full"
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// CursorSpotlight
+/** Adds a soft, premium gradient spotlight that follows the user's cursor globally */
+export function CursorSpotlight() {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  const springConfig = { damping: 25, stiffness: 200, mass: 0.5 };
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
+
+  const shouldReduce = useReducedMotion();
+
+  React.useEffect(() => {
+    if (shouldReduce) return;
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      x.set(e.clientX);
+      y.set(e.clientY);
+    };
+    
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [x, y, shouldReduce]);
+
+  const transX = useTransform(springX, (val) => val - 200);
+  const transY = useTransform(springY, (val) => val - 200);
+
+  if (shouldReduce) return null;
+
+  return (
+    <motion.div
+      className="pointer-events-none fixed inset-0 z-50 overflow-hidden"
+      style={{ opacity: 0.4 }} // keep it subtle
+    >
+      <motion.div
+        className="absolute rounded-full blur-[100px]"
+        style={{
+          width: 400,
+          height: 400,
+          // Center the spotlight on the cursor
+          x: transX,
+          y: transY,
+          background: "radial-gradient(circle, var(--accent) 0%, transparent 70%)",
+        }}
+      />
+    </motion.div>
   );
 }

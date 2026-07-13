@@ -16,6 +16,13 @@ type SessionCookieInput = {
   role?: string;
 };
 
+export type CurrentSession = {
+  accessToken: string;
+  refreshToken?: string;
+  userId: string;
+  role: "seeker" | "employer" | "admin";
+};
+
 const cookieOptions = {
   httpOnly: true,
   sameSite: "lax" as const,
@@ -70,15 +77,17 @@ export async function clearAuthCookies() {
 export async function getCurrentSession() {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE)?.value;
+  const userId = cookieStore.get(USER_ID_COOKIE)?.value;
+  const role = cookieStore.get(USER_ROLE_COOKIE)?.value;
 
-  if (!accessToken) {
+  if (!accessToken || !userId || (role !== "seeker" && role !== "employer" && role !== "admin")) {
     return null;
   }
 
   return {
     accessToken,
     refreshToken: cookieStore.get(REFRESH_TOKEN_COOKIE)?.value,
-    userId: cookieStore.get(USER_ID_COOKIE)?.value,
-    role: cookieStore.get(USER_ROLE_COOKIE)?.value,
-  };
+    userId,
+    role,
+  } satisfies CurrentSession;
 }

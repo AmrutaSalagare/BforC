@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@bforc/shared/*": ["../../packages/shared/*"]
     }
   },
   "include": [

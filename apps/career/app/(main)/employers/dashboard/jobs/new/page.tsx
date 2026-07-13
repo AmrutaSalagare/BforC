@@ -1,141 +1,95 @@
-"use client";
-
-import { ArrowLeft } from "lucide-react";
+import { redirect } from "next/navigation";
 import Link from "next/link";
-import { CheckBox } from "@/components/ui/checkbox";
+import { AlertCircle, ArrowRight, CheckCircle2 } from "lucide-react";
+import { getCurrentSession } from "@/lib/auth/session";
+import { getEmployerProfile, computeEmployerCompletion } from "@/lib/data/employer";
+import { PostNewJobForm } from "./PostNewJobForm";
 
-export default function PostNewJob() {
-  return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center gap-3 mb-8">
-        <Link 
-          href="/employers/dashboard/jobs"
-          className="p-2 -ml-2 text-[var(--muted-fg)] hover:text-[var(--foreground)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] rounded-full"
-          aria-label="Back to Jobs"
-        >
-          <ArrowLeft size={20} />
-        </Link>
-        <div>
-          <h2 className="text-xl font-semibold text-[var(--foreground)]">Post a New Job</h2>
-          <p className="text-sm text-[var(--muted-fg)] mt-1">Fill out the details below to create a new job posting.</p>
-        </div>
-      </div>
+export default async function PostNewJobPage() {
+  const session = await getCurrentSession();
+  if (!session || session.role !== "employer") redirect("/login");
 
-      <div className="bg-white/40 backdrop-blur-md rounded-2xl border border-white/60 shadow-sm p-6 sm:p-8">
-        <form className="space-y-8">
-          
-          {/* Basic Info */}
-          <section className="space-y-6">
-            <h3 className="text-base font-semibold text-[var(--foreground)] border-b border-[var(--border)] pb-2">Basic Information</h3>
-            
+  const profile = await getEmployerProfile(session.userId!, session.accessToken);
+  const { complete, missing } = computeEmployerCompletion(profile);
+
+  if (!complete) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white/40 backdrop-blur-md rounded-2xl border border-amber-200/60 shadow-sm p-8">
+          <div className="flex items-start gap-4 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center flex-shrink-0">
+              <AlertCircle size={20} className="text-amber-600" />
+            </div>
             <div>
-              <label className="block text-sm font-medium text-[var(--foreground)] mb-2">Job Title *</label>
-              <input 
-                type="text" 
-                placeholder="e.g. Program Manager, Social Worker"
-                className="w-full bg-white/50 border border-[var(--border)] rounded-lg px-4 py-2.5 text-sm text-[var(--foreground)] placeholder:text-[var(--faint-fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] transition-colors"
-                required
-              />
+              <h2 className="text-base font-semibold text-[var(--foreground)] mb-1">
+                Complete your company profile first
+              </h2>
+              <p className="text-sm text-[var(--muted-fg)] leading-relaxed">
+                Job seekers need to know who they&apos;re applying to. Fill in the missing details
+                before posting your first role.
+              </p>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">Job Type *</label>
-                <select className="w-full bg-white/50 border border-[var(--border)] rounded-lg px-4 py-2.5 text-sm text-[var(--foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] transition-colors" required>
-                  <option value="">Select type</option>
-                  <option value="full-time">Full-time</option>
-                  <option value="part-time">Part-time</option>
-                  <option value="contract">Contract</option>
-                  <option value="volunteer">Volunteer</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">Location *</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. Bangalore, Remote, Hybrid"
-                  className="w-full bg-white/50 border border-[var(--border)] rounded-lg px-4 py-2.5 text-sm text-[var(--foreground)] placeholder:text-[var(--faint-fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] transition-colors"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">Minimum Salary (₹)</label>
-                <input 
-                  type="number" 
-                  placeholder="e.g. 300000"
-                  className="w-full bg-white/50 border border-[var(--border)] rounded-lg px-4 py-2.5 text-sm text-[var(--foreground)] placeholder:text-[var(--faint-fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] transition-colors"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">Maximum Salary (₹)</label>
-                <input 
-                  type="number" 
-                  placeholder="e.g. 600000"
-                  className="w-full bg-white/50 border border-[var(--border)] rounded-lg px-4 py-2.5 text-sm text-[var(--foreground)] placeholder:text-[var(--faint-fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] transition-colors"
-                />
-              </div>
-            </div>
-          </section>
-
-          {/* Details */}
-          <section className="space-y-6">
-            <h3 className="text-base font-semibold text-[var(--foreground)] border-b border-[var(--border)] pb-2">Job Details</h3>
-            
-            <div>
-              <label className="block text-sm font-medium text-[var(--foreground)] mb-2">Job Description *</label>
-              <textarea 
-                rows={5}
-                placeholder="Describe the role, responsibilities, and impact..."
-                className="w-full bg-white/50 border border-[var(--border)] rounded-lg px-4 py-2.5 text-sm text-[var(--foreground)] placeholder:text-[var(--faint-fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] transition-colors resize-none"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-[var(--foreground)] mb-2">Requirements</label>
-              <textarea 
-                rows={4}
-                placeholder="List skills, qualifications, or experience required..."
-                className="w-full bg-white/50 border border-[var(--border)] rounded-lg px-4 py-2.5 text-sm text-[var(--foreground)] placeholder:text-[var(--faint-fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] transition-colors resize-none"
-              />
-            </div>
-          </section>
-
-          {/* Preferences */}
-          <section className="space-y-6">
-            <h3 className="text-base font-semibold text-[var(--foreground)] border-b border-[var(--border)] pb-2">Preferences & Tags</h3>
-            
-            <label className="flex items-start gap-3 cursor-pointer group p-4 rounded-xl border border-[var(--border)] bg-white/30 hover:bg-white/50 transition-colors">
-              <div className="mt-0.5">
-                <CheckBox checked={true} onClick={() => {}} color="var(--primary)" size={20} />
-              </div>
-              <div>
-                <p className="text-sm font-medium text-[var(--foreground)]">Women-Friendly Workplace</p>
-                <p className="text-xs text-[var(--muted-fg)] mt-1">This role offers flexible hours, maternity benefits, or is specifically designed to support women in the workforce.</p>
-              </div>
-            </label>
-          </section>
-
-          <div className="pt-6 flex items-center justify-end gap-4 border-t border-[var(--border)]">
-            <Link 
-              href="/employers/dashboard/jobs"
-              className="px-6 py-2.5 rounded-[4px] text-sm font-medium text-[var(--muted-fg)] hover:text-[var(--foreground)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-            >
-              Cancel
-            </Link>
-            <button type="button" className="px-6 py-2.5 rounded-[4px] text-sm font-medium text-[var(--accent-color)] border border-[var(--accent-color)] hover:bg-[var(--accent-color)] hover:text-[var(--on-accent)] transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]">
-              Save as Draft
-            </button>
-            <button type="submit" className="bg-[var(--accent-color)] text-[var(--on-accent)] px-6 py-2.5 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-dark)] transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[var(--primary)]">
-              Publish Job
-            </button>
           </div>
 
-        </form>
+          <div className="mb-8 space-y-2.5">
+            <p className="text-xs font-medium text-[var(--faint-fg)] uppercase tracking-wider mb-3">
+              Missing fields
+            </p>
+            {missing.map((field) => (
+              <div key={field} className="flex items-center gap-2.5 text-sm text-[var(--foreground)]">
+                <div className="w-4 h-4 rounded-full border-2 border-amber-300 flex-shrink-0" />
+                {field}
+              </div>
+            ))}
+            {["Organisation name", "Sector", "Location", "Description"]
+              .filter((f) => !missing.includes(f))
+              .map((field) => (
+                <div key={field} className="flex items-center gap-2.5 text-sm text-[var(--muted-fg)]">
+                  <CheckCircle2 size={16} className="text-green-500 flex-shrink-0" />
+                  {field}
+                </div>
+              ))}
+          </div>
+
+          <Link
+            href="/employers/dashboard/profile"
+            className="inline-flex items-center gap-2 bg-[var(--accent-color)] text-[var(--on-accent)] px-6 py-3 rounded-[4px] text-sm font-medium hover:bg-[var(--accent-dark)] transition duration-200"
+          >
+            Complete profile <ArrowRight size={15} />
+          </Link>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  if (!profile || !profile.is_verified) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white/40 backdrop-blur-md rounded-2xl border border-red-200/60 shadow-sm p-8">
+          <div className="flex items-start gap-4 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-red-50 border border-red-200/60 flex items-center justify-center flex-shrink-0">
+              <AlertCircle size={20} className="text-red-600" />
+            </div>
+            <div>
+              <h2 className="text-base font-semibold text-[var(--foreground)] mb-1">
+                Verification Required
+              </h2>
+              <p className="text-sm text-[var(--muted-fg)] leading-relaxed">
+                You cannot post a job until your organisation has been verified by our team. 
+                Please ensure you have submitted a verification request from your dashboard.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/employers/dashboard"
+            className="inline-flex items-center gap-2 bg-[var(--foreground)] text-[var(--background)] px-6 py-3 rounded-[4px] text-sm font-medium hover:bg-black/80 transition duration-200"
+          >
+            Go to Dashboard <ArrowRight size={15} />
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return <PostNewJobForm />;
 }

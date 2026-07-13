@@ -3,6 +3,8 @@ import type { UserRole } from "@/lib/auth/types";
 type SupabaseUser = {
   id: string;
   email?: string;
+  confirmed_at?: string | null;
+  identities?: Array<{ id?: string; provider?: string }> | null;
   user_metadata?: {
     full_name?: string;
     role?: UserRole;
@@ -48,25 +50,26 @@ function authHeaders(anonKey: string) {
 }
 
 async function parseSupabaseResponse(response: Response): Promise<SupabaseAuthResult> {
-  const payload = (await response.json().catch(() => null)) as
-    | (SupabaseAuthSuccess & { message?: string; error_description?: string; error?: string })
-    | null;
+  const text = await response.text().catch(() => "");
+  let payload: (SupabaseAuthSuccess & { message?: string; error_description?: string; error?: string }) | null = null;
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message:
-        payload?.error_description ??
-        payload?.message ??
-        payload?.error ??
-        "Authentication request failed.",
-    };
+  try {
+    payload = text ? JSON.parse(text) : null;
+  } catch {
+    // non-JSON response (e.g. HTML error page, paused project)
   }
 
-  return {
-    ok: true,
-    data: payload ?? {},
-  };
+  if (!response.ok) {
+    const message =
+      payload?.error_description ??
+      payload?.message ??
+      payload?.error ??
+      (text ? `Server error (${response.status}): ${text.slice(0, 120)}` : `Request failed with status ${response.status}`);
+
+    return { ok: false, message };
+  }
+
+  return { ok: true, data: payload ?? {} };
 }
 
 export async function signInWithPassword(email: string, password: string) {

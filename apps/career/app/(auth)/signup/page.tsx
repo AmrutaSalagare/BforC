@@ -1,7 +1,7 @@
 import { SmokeyBackground, SignupForm } from "@/components/ui/login-form";
 
 export const metadata = {
-  title: "Sign Up - BforC Careers",
+  title: "Sign Up",
   description: "Create an account on BforC Careers to apply for jobs and make an impact.",
 };
 

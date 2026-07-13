@@ -1,9 +1,17 @@
 import { Search, Star, Building2, MapPin, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import Form from "next/form";
-import { Reveal, StaggerReveal, StaggerItem, FadeIn } from "@/components/motion";
+import { Reveal, StaggerReveal, StaggerItem, FadeIn, HoverTiltCard } from "@/components/motion";
 import { getCompanies } from "@/lib/data/companies";
 import type { Company } from "@/lib/data/types";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Vetted Organisations",
+  description: "Browse vetted NGOs, social enterprises, and corporate CSR programs on BforC Careers.",
+};
+
+const SECTORS = ["All", "NGO", "Social Enterprise", "Corporate CSR", "Research", "Healthcare", "Education"];
 
 function CompanyInitials(name: string) {
   return name.split(" ").slice(0, 2).map((word) => word[0]).join("").toUpperCase();
@@ -11,11 +19,12 @@ function CompanyInitials(name: string) {
 
 function CompanyCard({ company }: { company: Company }) {
   return (
-    <Link
-      href={`/companies/${company.slug}`}
-      className="flex flex-col flex-1 bg-white/40 backdrop-blur-md rounded-2xl p-6 border border-white/60 hover:border-[var(--accent-color)]/30 cursor-pointer group shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition duration-300 relative overflow-hidden"
-    >
-      <div className="absolute -top-24 -right-24 w-48 h-48 bg-[var(--blush)] rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+    <HoverTiltCard className="h-full block">
+      <Link
+        href={`/companies/${company.slug}`}
+        className="flex flex-col h-full bg-white/40 backdrop-blur-md rounded-2xl p-6 border border-white/60 hover:border-[var(--accent-color)]/30 cursor-pointer group shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition duration-300 relative overflow-hidden"
+      >
+        <div className="absolute -top-24 -right-24 w-48 h-48 bg-[var(--blush)] rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
       <div className="flex items-start justify-between gap-3 flex-wrap mb-5 relative z-10">
         <div className="w-14 h-14 shrink-0 rounded-xl bg-gradient-to-br from-[var(--blush)] to-white/50 border border-white flex items-center justify-center font-display text-xl font-medium text-[var(--primary)] shadow-sm">
@@ -38,10 +47,6 @@ function CompanyCard({ company }: { company: Company }) {
 
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4">
           <span className="flex items-center gap-1 text-xs text-[var(--muted-fg)]">
-            <Star size={13} className="fill-[var(--accent-color)] text-[var(--accent-color)]" />
-            {company.rating}
-          </span>
-          <span className="flex items-center gap-1 text-xs text-[var(--muted-fg)]">
             <MapPin size={13} />
             {company.location}
           </span>
@@ -56,22 +61,26 @@ function CompanyCard({ company }: { company: Company }) {
         <span className="text-[var(--primary)] bg-[var(--blush)] p-2 rounded-full opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition duration-300">
           <ExternalLink size={14} />
         </span>
-      </div>
-    </Link>
+        </div>
+      </Link>
+    </HoverTiltCard>
   );
 }
 
-type CompaniesRouteSearchParams = {
-  q?: string;
+  type CompaniesPageProps = {
+  searchParams?: Promise<CompaniesRouteSearchParams>;
 };
 
-type CompaniesPageProps = {
-  searchParams?: Promise<CompaniesRouteSearchParams>;
+type CompaniesRouteSearchParams = {
+  q?: string;
+  sector?: string;
 };
 
 export default async function CompaniesPage({ searchParams }: CompaniesPageProps) {
   const params = (await searchParams) ?? {};
-  const { companies, source } = await getCompanies({ q: params.q });
+  const { companies } = await getCompanies({ q: params.q });
+  const activeSector = params.sector ?? "All";
+  const filteredCompanies = activeSector === "All" ? companies : companies.filter((c) => c.category === activeSector);
 
   return (
     <main className="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto">
@@ -92,6 +101,9 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
             <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
               <Search size={20} className="text-[var(--faint-fg)]" />
             </div>
+            {params.sector && params.sector !== "All" && (
+              <input type="hidden" name="sector" value={params.sector} />
+            )}
             <input
               name="q"
               type="text"
@@ -101,18 +113,35 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
             />
           </Form>
         </Reveal>
+
+        {/* Sector filter chips */}
+        <Reveal delay={0.15} className="flex flex-wrap justify-center gap-2 mt-4">
+          {SECTORS.map((sector) => (
+            <Link
+              key={sector}
+              href={sector === "All" ? "/companies" : `/companies?sector=${encodeURIComponent(sector)}`}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 ${
+                activeSector === sector
+                  ? "bg-[var(--primary)] text-white border-[var(--primary)] shadow-sm"
+                  : "bg-white/40 text-[var(--muted-foreground)] border-[var(--border)] hover:border-[var(--primary)]/50 hover:text-[var(--primary)]"
+              }`}
+            >
+              {sector}
+            </Link>
+          ))}
+        </Reveal>
       </div>
 
       <Reveal delay={0.1} className="mb-6 text-sm text-[var(--muted-fg)] font-medium">
-        Showing {companies.length} organisation{companies.length === 1 ? "" : "s"}
-        {source === "seed" ? " from preview data" : ""}
+        Showing {filteredCompanies.length} organisation{filteredCompanies.length === 1 ? "" : "s"}{activeSector !== "All" ? ` in ${activeSector}` : ""}
+
       </Reveal>
 
       <StaggerReveal
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch"
         stagger={0.06}
       >
-        {companies.map((company) => (
+        {filteredCompanies.map((company) => (
           <StaggerItem key={company.id} className="h-full flex flex-col">
             <CompanyCard company={company} />
           </StaggerItem>

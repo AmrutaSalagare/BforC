@@ -1,4 +1,4 @@
-export type UserRole = "seeker" | "employer";
+export type UserRole = "seeker" | "employer" | "admin";
 
 export type AuthActionState = {
   status: "idle" | "error" | "success";
