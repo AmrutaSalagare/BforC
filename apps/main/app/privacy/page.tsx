@@ -2,7 +2,7 @@
 
 import { Reveal } from "@/components/motion";
 
-const CAREER_SITE_URL = process.env.NEXT_PUBLIC_CAREER_SITE_URL || "https://career.bforc.in";
+const CAREER_SITE_URL = process.env.NEXT_PUBLIC_CAREER_SITE_URL || "/career";
 
 export default function Privacy() {
   return (

@@ -26,12 +26,18 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     window.addEventListener("pageshow", handlePageShow);
 
     // 2. Force reload if navigation type is back/forward (e.g. returning from local port 3001)
-    if (typeof window !== "undefined" && window.performance) {
+    if (typeof window !== "undefined" && window.performance && window.sessionStorage) {
       const navigationEntries = window.performance.getEntriesByType("navigation");
       if (navigationEntries.length > 0) {
         const timing = navigationEntries[0] as PerformanceNavigationTiming;
         if (timing.type === "back_forward") {
-          window.location.reload();
+          const hasReloaded = sessionStorage.getItem("bforc_back_forward_reloaded");
+          if (!hasReloaded) {
+            sessionStorage.setItem("bforc_back_forward_reloaded", "true");
+            window.location.reload();
+          } else {
+            sessionStorage.removeItem("bforc_back_forward_reloaded");
+          }
         }
       }
     }

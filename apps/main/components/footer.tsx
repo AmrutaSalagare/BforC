@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, ArrowUpRight } from "lucide-react";
 
-const CAREER_SITE_URL = process.env.NEXT_PUBLIC_CAREER_SITE_URL || "https://career.bforc.in";
+const CAREER_SITE_URL = process.env.NEXT_PUBLIC_CAREER_SITE_URL || "/career";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();

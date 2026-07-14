@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { EASE } from "@/components/motion";
 
-const CAREER_SITE_URL = process.env.NEXT_PUBLIC_CAREER_SITE_URL || "https://career.bforc.in";
+const CAREER_SITE_URL = process.env.NEXT_PUBLIC_CAREER_SITE_URL || "/career";
 
 const navLinks = [
   { label: "BforC Careers", href: CAREER_SITE_URL },
