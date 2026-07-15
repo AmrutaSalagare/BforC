@@ -6,6 +6,7 @@ import {
   useTransform,
   useSpring,
   useReducedMotion,
+  HTMLMotionProps,
 } from "framer-motion";
 import { type JSX, useRef } from "react";
 
@@ -99,10 +100,11 @@ export function StaggerReveal({
 export function StaggerItem({
   children,
   className,
+  ...props
 }: {
   children: React.ReactNode;
   className?: string;
-}) {
+} & HTMLMotionProps<"div">) {
   const shouldReduce = useReducedMotion();
   return (
     <motion.div
@@ -115,6 +117,7 @@ export function StaggerItem({
         },
       }}
       className={className}
+      {...props}
     >
       {children}
     </motion.div>

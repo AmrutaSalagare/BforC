@@ -9,7 +9,7 @@ import {
   Shield, Briefcase, Heart,
   Compass, BookOpen, Landmark, Activity, Globe
 } from "lucide-react";
-import { Reveal, StaggerItem, StaggerReveal } from "@/components/motion";
+import { Reveal, StaggerItem, StaggerReveal, EASE } from "@/components/motion";
 
 function PremiumButton({ 
   href, 
@@ -443,6 +443,8 @@ export default function Home() {
 
       {/* HERO SECTION */}
       <section className="relative pt-24 md:pt-36 pb-16 md:pb-24 min-h-[85svh] md:min-h-[90svh] flex items-center px-6 md:px-12 max-w-5xl mx-auto w-full z-10">
+        {/* Soft background orb behind Bento Grid */}
+        <div className="absolute right-[-10%] top-[10%] w-[350px] h-[350px] rounded-full bg-[var(--primary)]/8 blur-3xl pointer-events-none -z-10" />
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* Left Column: Copy */}
@@ -486,47 +488,71 @@ export default function Home() {
           <StaggerReveal className="lg:col-span-5 w-full grid grid-cols-2 gap-4">
               
               {/* Card 1 */}
-              <StaggerItem className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-5 md:p-6 flex flex-col justify-between min-h-[140px] md:min-h-[160px] transition-all duration-300">
-                <div>
-                  <span className="inline-block px-3 md:px-4 py-1.5 rounded-full text-[10px] font-semibold text-white" style={{ background: "#db2777" }}>
-                    Corporate Partners
-                  </span>
-                  <div className="font-display text-[clamp(28px,4vw,44px)] font-light text-[#501854] tracking-[-0.02em] tabular-nums mt-3">
-                    483+
+              <StaggerItem 
+                whileHover={{ y: -6, scale: 1.015 }}
+                transition={{ duration: 0.3, ease: EASE }}
+                className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-5 md:p-6 flex flex-col min-h-[140px] md:min-h-[160px] transition-all duration-300 cursor-pointer"
+              >
+                <motion.div 
+                  className="h-full flex flex-col justify-between w-full"
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+                >
+                  <div>
+                    <span className="inline-block px-3 md:px-4 py-1.5 rounded-full text-[10px] font-semibold text-white" style={{ background: "#db2777" }}>
+                      Corporate Partners
+                    </span>
+                    <div className="font-display text-[clamp(28px,4vw,44px)] font-light text-[#501854] tracking-[-0.02em] tabular-nums mt-3">
+                      483+
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-2 mt-4 border-t border-[var(--primary)]/5 pt-3">
-                  <div className="relative flex h-2 w-2 shrink-0">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  <div className="flex items-center gap-2 mt-4 border-t border-[var(--primary)]/5 pt-3">
+                    <div className="relative flex h-2 w-2 shrink-0">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </div>
+                    <span className="text-[10px] text-[var(--muted-foreground)] font-medium">Vetted Hiring Partners</span>
                   </div>
-                  <span className="text-[10px] text-[var(--muted-foreground)] font-medium">Vetted Hiring Partners</span>
-                </div>
+                </motion.div>
               </StaggerItem>
 
               {/* Card 2 */}
-              <StaggerItem className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-5 md:p-6 flex flex-col justify-between min-h-[140px] md:min-h-[160px] transition-all duration-300">
-                <div>
-                  <span className="inline-block px-3 md:px-4 py-1.5 rounded-full text-[10px] font-semibold text-white" style={{ background: "#db2777" }}>
-                    Careers Launched
-                  </span>
-                  <div className="font-display text-[clamp(28px,4vw,44px)] font-light text-[#501854] tracking-[-0.02em] tabular-nums mt-3">
-                    1,247+
+              <StaggerItem 
+                whileHover={{ y: -6, scale: 1.015 }}
+                transition={{ duration: 0.3, ease: EASE }}
+                className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-5 md:p-6 flex flex-col min-h-[140px] md:min-h-[160px] transition-all duration-300 cursor-pointer"
+              >
+                <motion.div 
+                  className="h-full flex flex-col justify-between w-full"
+                  animate={{ y: [0, -7, 0] }}
+                  transition={{ repeat: Infinity, duration: 5.5, ease: "easeInOut", delay: 0.2 }}
+                >
+                  <div>
+                    <span className="inline-block px-3 md:px-4 py-1.5 rounded-full text-[10px] font-semibold text-white" style={{ background: "#db2777" }}>
+                      Careers Launched
+                    </span>
+                    <div className="font-display text-[clamp(28px,4vw,44px)] font-light text-[#501854] tracking-[-0.02em] tabular-nums mt-3">
+                      1,247+
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center justify-between mt-4 border-t border-[var(--primary)]/5 pt-3">
-                  <span className="text-[10px] text-[var(--muted-foreground)]">Empowered Alumni</span>
-                  <div className="flex -space-x-1.5 overflow-hidden">
-                    <div className="inline-block h-5 w-5 rounded-full ring-1 ring-white bg-[#501854] text-[7px] text-white flex items-center justify-center font-bold">DK</div>
-                    <div className="inline-block h-5 w-5 rounded-full ring-1 ring-white bg-[#db2777] text-[7px] text-white flex items-center justify-center font-bold">KV</div>
-                    <div className="inline-block h-5 w-5 rounded-full ring-1 ring-white bg-[#c04090] text-[7px] text-white flex items-center justify-center font-bold">NI</div>
-                    <div className="inline-block h-5 w-5 rounded-full ring-1 ring-white bg-[#f6e5f3] text-[7px] text-[#501854] flex items-center justify-center font-bold font-mono">+1.2k</div>
+                  <div className="flex items-center justify-between mt-4 border-t border-[var(--primary)]/5 pt-3">
+                    <span className="text-[10px] text-[var(--muted-foreground)]">Empowered Alumni</span>
+                    <div className="flex -space-x-1.5 overflow-hidden">
+                      <div className="inline-block h-5 w-5 rounded-full ring-1 ring-white bg-[#501854] text-[7px] text-white flex items-center justify-center font-bold">DK</div>
+                      <div className="inline-block h-5 w-5 rounded-full ring-1 ring-white bg-[#db2777] text-[7px] text-white flex items-center justify-center font-bold">KV</div>
+                      <div className="inline-block h-5 w-5 rounded-full ring-1 ring-white bg-[#c04090] text-[7px] text-white flex items-center justify-center font-bold">NI</div>
+                      <div className="inline-block h-5 w-5 rounded-full ring-1 ring-white bg-[#f6e5f3] text-[7px] text-[#501854] flex items-center justify-center font-bold font-mono">+1.2k</div>
+                    </div>
                   </div>
-                </div>
+                </motion.div>
               </StaggerItem>
 
               {/* Card 3 - Image Background with Stat Overlay */}
-              <StaggerItem className="col-span-2 relative overflow-hidden border border-[var(--primary)]/10 shadow-warm-md hover:shadow-warm-lg rounded-2xl min-h-[160px] md:min-h-[200px] transition-all duration-300 group">
+              <StaggerItem 
+                whileHover={{ y: -6, scale: 1.015 }}
+                transition={{ duration: 0.3, ease: EASE }}
+                className="col-span-2 relative overflow-hidden border border-[var(--primary)]/10 shadow-warm-md hover:shadow-warm-lg rounded-2xl min-h-[160px] md:min-h-[200px] transition-all duration-300 group cursor-pointer"
+              >
                 <Image 
                   src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&q=80&w=800" 
                   alt="Professional Women Collaborating"
@@ -535,40 +561,54 @@ export default function Home() {
                   sizes="(max-width: 1024px) 100vw, 500px"
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#501854]/95 via-[#501854]/40 to-transparent" />
-                <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
+                <motion.div 
+                  className="absolute inset-0 p-6 flex flex-col justify-between z-10"
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ repeat: Infinity, duration: 6, ease: "easeInOut", delay: 0.4 }}
+                >
                   <span className="inline-block self-start px-3.5 py-1.5 rounded-full text-[11px] font-semibold text-white bg-[#db2777]/90 backdrop-blur-xs">
                     Cities Covered
                   </span>
                   <span className="font-display text-[clamp(32px,6vw,56px)] font-light text-white leading-none tracking-[-0.03em] tabular-nums">
                     38+
                   </span>
-                </div>
+                </motion.div>
               </StaggerItem>
 
               {/* Card 4 - Placement Rate */}
-              <StaggerItem className="col-span-2 bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-6 flex flex-col justify-between min-h-[140px] md:min-h-[160px] transition-all duration-300">
-                <div className="flex justify-between items-center">
-                  <span className="inline-block px-3 md:px-4 py-1.5 rounded-full text-[11px] font-semibold text-white" style={{ background: "#db2777" }}>
-                    Placement Rate
-                  </span>
-                  <span className="font-display text-2xl font-light text-[#501854] tracking-tight tabular-nums">
-                    94.3%
-                  </span>
-                </div>
-                
-                {/* Visual Progress Bar */}
-                <div className="w-full mt-4">
-                  <div className="w-full h-2 bg-[#f1c4e6]/40 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-[#501854] to-[#db2777] rounded-full" 
-                      style={{ width: "94.3%" }}
-                    />
+              <StaggerItem 
+                whileHover={{ y: -6, scale: 1.015 }}
+                transition={{ duration: 0.3, ease: EASE }}
+                className="col-span-2 bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-6 flex flex-col min-h-[140px] md:min-h-[160px] transition-all duration-300 cursor-pointer"
+              >
+                <motion.div 
+                  className="h-full flex flex-col justify-between w-full"
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ repeat: Infinity, duration: 4.8, ease: "easeInOut", delay: 0.1 }}
+                >
+                  <div className="flex justify-between items-center w-full">
+                    <span className="inline-block px-3 md:px-4 py-1.5 rounded-full text-[11px] font-semibold text-white" style={{ background: "#db2777" }}>
+                      Placement Rate
+                    </span>
+                    <span className="font-display text-2xl font-light text-[#501854] tracking-tight tabular-nums">
+                      94.3%
+                    </span>
                   </div>
-                  <div className="flex justify-between items-center mt-2 text-[10px] text-[var(--muted-foreground)]">
-                    <span>Target: 100%</span>
-                    <span>Direct Corporate Placements</span>
+                  
+                  {/* Visual Progress Bar */}
+                  <div className="w-full mt-4">
+                    <div className="w-full h-2 bg-[#f1c4e6]/40 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-[#501854] to-[#db2777] rounded-full" 
+                        style={{ width: "94.3%" }}
+                      />
+                    </div>
+                    <div className="flex justify-between items-center mt-2 text-[10px] text-[var(--muted-foreground)]">
+                      <span>Target: 100%</span>
+                      <span>Direct Corporate Placements</span>
+                    </div>
                   </div>
-                </div>
+                </motion.div>
               </StaggerItem>
 
           </StaggerReveal>
@@ -596,13 +636,13 @@ export default function Home() {
             </Reveal>
           </div>
 
-          <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
+          <StaggerReveal className="flex flex-wrap justify-center gap-5 md:gap-8">
             {benefits.map((b, idx) => {
               const Icon = b.icon;
               return (
                 <StaggerItem 
                   key={idx}
-                  className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/25 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-8 transition-all duration-300 flex flex-col justify-between"
+                  className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.35rem)] bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/25 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-8 transition-all duration-300 flex flex-col justify-between"
                 >
                   <div className="flex flex-col gap-4">
                     <div className="w-10 h-10 rounded-lg bg-[var(--muted)] text-[var(--primary)] flex items-center justify-center">
@@ -631,7 +671,10 @@ export default function Home() {
       </section>
 
       {/* ABOUT US SECTION */}
-      <section id="about" className="py-14 md:py-24 px-6 bg-[var(--background)] border-t border-[var(--border)]/20">
+      <section id="about" className="py-14 md:py-24 px-6 bg-[var(--background)] border-t border-[var(--border)]/20 relative overflow-hidden">
+        {/* Soft background orbs */}
+        <div className="absolute left-[-10%] top-[20%] w-[350px] h-[350px] rounded-full bg-[#db2777]/5 blur-3xl pointer-events-none -z-10" />
+        <div className="absolute right-[-10%] bottom-[10%] w-[300px] h-[300px] rounded-full bg-[var(--primary)]/5 blur-3xl pointer-events-none -z-10" />
         <div className="max-w-5xl mx-auto">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start mb-20">
@@ -680,12 +723,16 @@ export default function Home() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
                 </div>
-                <div className="p-8 flex flex-col justify-center text-center relative">
-                  <p className="font-display text-lg md:text-xl italic text-[#501854] leading-relaxed font-light">
-                    &ldquo;True equality begins with economic independence.&rdquo;
+                <div className="p-10 flex flex-col justify-center items-center text-center relative overflow-hidden bg-gradient-to-br from-white to-[var(--primary)]/5">
+                  {/* Huge Decorative Background Quotation Marks */}
+                  <span className="absolute top-2 left-6 text-9xl font-display text-[#db2777]/8 select-none pointer-events-none">&ldquo;</span>
+                  <span className="absolute bottom-[-2rem] right-6 text-9xl font-display text-[#db2777]/8 select-none pointer-events-none">&rdquo;</span>
+                  
+                  <p className="font-display text-xl md:text-2xl font-light italic text-[#501854] leading-relaxed relative z-10 max-w-sm">
+                    True equality begins with economic independence.
                   </p>
-                  <div className="w-10 h-[2px] bg-[#db2777] mx-auto my-4" />
-                  <span className="text-[10px] font-bold tracking-widest text-[#db2777] font-mono-dm uppercase">
+                  <div className="w-8 h-[1px] bg-[#db2777]/40 my-5 z-10" />
+                  <span className="text-[10px] font-bold tracking-widest text-[#db2777] font-mono-dm uppercase z-10">
                     BforC Ethos
                   </span>
                 </div>
@@ -738,13 +785,13 @@ export default function Home() {
               </Reveal>
             </div>
 
-            <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
+            <StaggerReveal className="flex flex-wrap justify-center gap-5 md:gap-8">
               {values.map((val, idx) => {
                 const Icon = val.icon;
                 return (
                   <StaggerItem 
                     key={idx}
-                    className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-8 transition-all duration-300 flex flex-col gap-4"
+                    className="w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.35rem)] bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-8 transition-all duration-300 flex flex-col gap-4"
                   >
                     <div className="w-10 h-10 rounded-lg bg-[var(--muted)] text-[var(--primary)] flex items-center justify-center">
                       <Icon size={18} />
@@ -767,7 +814,10 @@ export default function Home() {
       </section>
 
       {/* DETAILED MEMBER BENEFITS SECTION */}
-      <section id="detailed-benefits" className="py-14 md:py-24 px-6 bg-[var(--muted)]/15 border-t border-[var(--border)]/20">
+      <section id="detailed-benefits" className="py-14 md:py-24 px-6 bg-[var(--muted)]/15 border-t border-[var(--border)]/20 relative overflow-hidden">
+        {/* Soft background orbs */}
+        <div className="absolute right-[-10%] top-[15%] w-[400px] h-[400px] rounded-full bg-[var(--primary)]/5 blur-3xl pointer-events-none -z-10" />
+        <div className="absolute left-[-10%] bottom-[10%] w-[350px] h-[350px] rounded-full bg-[#db2777]/5 blur-3xl pointer-events-none -z-10" />
         <div className="max-w-5xl mx-auto">
           
           <div className="text-center mb-16 max-w-2xl mx-auto">
@@ -1133,7 +1183,7 @@ export default function Home() {
             </Reveal>
             <Reveal delay={0.1}>
               <h2 className="font-display font-light text-[var(--foreground)] leading-[1.05] tracking-[-0.04em] text-[clamp(32px,3.5vw,48px)] text-[var(--foreground)]">
-                Trusted by Forward-Thinking Enterprises
+                Trusted by Forward Thinking Enterprises
               </h2>
             </Reveal>
           </div>
@@ -1200,14 +1250,7 @@ export default function Home() {
                 Have more questions? Reach out to our team &mdash; we&apos;d love to help you find the right path.
               </p>
             </Reveal>
-            <Reveal delay={0.3} className="pt-2">
-              <Link 
-                href="/contact"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#501854] hover:underline"
-              >
-                Contact us <ArrowRight size={12} className="text-[#db2777]" />
-              </Link>
-            </Reveal>
+
           </div>
 
           {/* Right Column: White Accordions Card */}
