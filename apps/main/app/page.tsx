@@ -422,12 +422,27 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col bg-[var(--background)] text-[var(--foreground)] overflow-x-hidden relative">
+    <div className="flex flex-col bg-[var(--background)] text-[var(--foreground)] relative">
       
-
+      {/* Full-width Subtle Hero Background Image */}
+      <div 
+        className="absolute top-[-4rem] left-0 right-0 w-full h-[480px] sm:h-[600px] md:h-[714px] opacity-[0.18] pointer-events-none z-0"
+        style={{
+          maskImage: 'linear-gradient(to bottom, black 30%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 30%, transparent)',
+        }}
+      >
+        <Image 
+          src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&q=80&w=1600" 
+          alt="Workspace Background"
+          fill
+          priority
+          className="object-cover object-top"
+        />
+      </div>
 
       {/* HERO SECTION */}
-      <section className="relative pt-24 md:pt-36 pb-16 md:pb-24 min-h-[85svh] md:min-h-[90svh] flex items-center px-6 md:px-12 max-w-5xl mx-auto w-full">
+      <section className="relative pt-24 md:pt-36 pb-16 md:pb-24 min-h-[85svh] md:min-h-[90svh] flex items-center px-6 md:px-12 max-w-5xl mx-auto w-full z-10">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* Left Column: Copy */}
@@ -468,51 +483,95 @@ export default function Home() {
           </div>
 
           {/* Right Column: Bento Metrics Cards */}
-          <div className="lg:col-span-5 w-full grid grid-cols-2 gap-4">
-            <StaggerReveal className="contents">
+          <StaggerReveal className="lg:col-span-5 w-full grid grid-cols-2 gap-4">
               
               {/* Card 1 */}
-              <StaggerItem className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-4 md:p-6 flex flex-col gap-3 md:gap-4 min-h-[120px] md:min-h-[160px] justify-between transition-all duration-300">
-                <span className="inline-block self-start px-3 md:px-4 py-1.5 rounded-full text-[11px] font-semibold text-white" style={{ background: "#db2777" }}>
-                  Corporate Partners
-                </span>
-                <span className="font-display text-[clamp(28px,8vw,56px)] font-light text-[#501854] leading-none tracking-[-0.03em] tabular-nums">
-                  483+
-                </span>
+              <StaggerItem className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-5 md:p-6 flex flex-col justify-between min-h-[140px] md:min-h-[160px] transition-all duration-300">
+                <div>
+                  <span className="inline-block px-3 md:px-4 py-1.5 rounded-full text-[10px] font-semibold text-white" style={{ background: "#db2777" }}>
+                    Corporate Partners
+                  </span>
+                  <div className="font-display text-[clamp(28px,4vw,44px)] font-light text-[#501854] tracking-[-0.02em] tabular-nums mt-3">
+                    483+
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 mt-4 border-t border-[var(--primary)]/5 pt-3">
+                  <div className="relative flex h-2 w-2 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </div>
+                  <span className="text-[10px] text-[var(--muted-foreground)] font-medium">Vetted Hiring Partners</span>
+                </div>
               </StaggerItem>
 
               {/* Card 2 */}
-              <StaggerItem className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-4 md:p-6 flex flex-col gap-3 md:gap-4 min-h-[120px] md:min-h-[160px] justify-between transition-all duration-300">
-                <span className="inline-block self-start px-3 md:px-4 py-1.5 rounded-full text-[11px] font-semibold text-white" style={{ background: "#db2777" }}>
-                  Careers Launched
-                </span>
-                <span className="font-display text-[clamp(28px,8vw,56px)] font-light text-[#501854] leading-none tracking-[-0.03em] tabular-nums">
-                  1,247+
-                </span>
+              <StaggerItem className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-5 md:p-6 flex flex-col justify-between min-h-[140px] md:min-h-[160px] transition-all duration-300">
+                <div>
+                  <span className="inline-block px-3 md:px-4 py-1.5 rounded-full text-[10px] font-semibold text-white" style={{ background: "#db2777" }}>
+                    Careers Launched
+                  </span>
+                  <div className="font-display text-[clamp(28px,4vw,44px)] font-light text-[#501854] tracking-[-0.02em] tabular-nums mt-3">
+                    1,247+
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mt-4 border-t border-[var(--primary)]/5 pt-3">
+                  <span className="text-[10px] text-[var(--muted-foreground)]">Empowered Alumni</span>
+                  <div className="flex -space-x-1.5 overflow-hidden">
+                    <div className="inline-block h-5 w-5 rounded-full ring-1 ring-white bg-[#501854] text-[7px] text-white flex items-center justify-center font-bold">DK</div>
+                    <div className="inline-block h-5 w-5 rounded-full ring-1 ring-white bg-[#db2777] text-[7px] text-white flex items-center justify-center font-bold">KV</div>
+                    <div className="inline-block h-5 w-5 rounded-full ring-1 ring-white bg-[#c04090] text-[7px] text-white flex items-center justify-center font-bold">NI</div>
+                    <div className="inline-block h-5 w-5 rounded-full ring-1 ring-white bg-[#f6e5f3] text-[7px] text-[#501854] flex items-center justify-center font-bold font-mono">+1.2k</div>
+                  </div>
+                </div>
               </StaggerItem>
 
-              {/* Card 3 */}
-              <StaggerItem className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-4 md:p-6 flex flex-col gap-3 md:gap-4 min-h-[120px] md:min-h-[160px] justify-between transition-all duration-300">
-                <span className="inline-block self-start px-3 md:px-4 py-1.5 rounded-full text-[11px] font-semibold text-white" style={{ background: "#db2777" }}>
-                  Cities Covered
-                </span>
-                <span className="font-display text-[clamp(28px,8vw,56px)] font-light text-[#501854] leading-none tracking-[-0.03em] tabular-nums">
-                  38+
-                </span>
+              {/* Card 3 - Image Background with Stat Overlay */}
+              <StaggerItem className="col-span-2 relative overflow-hidden border border-[var(--primary)]/10 shadow-warm-md hover:shadow-warm-lg rounded-2xl min-h-[160px] md:min-h-[200px] transition-all duration-300 group">
+                <Image 
+                  src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&q=80&w=800" 
+                  alt="Professional Women Collaborating"
+                  fill
+                  className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 500px"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#501854]/95 via-[#501854]/40 to-transparent" />
+                <div className="absolute inset-0 p-6 flex flex-col justify-between z-10">
+                  <span className="inline-block self-start px-3.5 py-1.5 rounded-full text-[11px] font-semibold text-white bg-[#db2777]/90 backdrop-blur-xs">
+                    Cities Covered
+                  </span>
+                  <span className="font-display text-[clamp(32px,6vw,56px)] font-light text-white leading-none tracking-[-0.03em] tabular-nums">
+                    38+
+                  </span>
+                </div>
               </StaggerItem>
 
-              {/* Card 4 */}
-              <StaggerItem className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-4 md:p-6 flex flex-col gap-3 md:gap-4 min-h-[120px] md:min-h-[160px] justify-between transition-all duration-300">
-                <span className="inline-block self-start px-3 md:px-4 py-1.5 rounded-full text-[11px] font-semibold text-white" style={{ background: "#db2777" }}>
-                  Placement Rate
-                </span>
-                <span className="font-display text-[clamp(28px,8vw,56px)] font-light text-[#501854] leading-none tracking-[-0.03em] tabular-nums">
-                  94.3%
-                </span>
+              {/* Card 4 - Placement Rate */}
+              <StaggerItem className="col-span-2 bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-6 flex flex-col justify-between min-h-[140px] md:min-h-[160px] transition-all duration-300">
+                <div className="flex justify-between items-center">
+                  <span className="inline-block px-3 md:px-4 py-1.5 rounded-full text-[11px] font-semibold text-white" style={{ background: "#db2777" }}>
+                    Placement Rate
+                  </span>
+                  <span className="font-display text-2xl font-light text-[#501854] tracking-tight tabular-nums">
+                    94.3%
+                  </span>
+                </div>
+                
+                {/* Visual Progress Bar */}
+                <div className="w-full mt-4">
+                  <div className="w-full h-2 bg-[#f1c4e6]/40 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-gradient-to-r from-[#501854] to-[#db2777] rounded-full" 
+                      style={{ width: "94.3%" }}
+                    />
+                  </div>
+                  <div className="flex justify-between items-center mt-2 text-[10px] text-[var(--muted-foreground)]">
+                    <span>Target: 100%</span>
+                    <span>Direct Corporate Placements</span>
+                  </div>
+                </div>
               </StaggerItem>
 
-            </StaggerReveal>
-          </div>
+          </StaggerReveal>
         </div>
       </section>
 
@@ -608,19 +667,28 @@ export default function Home() {
               </Reveal>
             </div>
 
-            {/* Right Column: Premium Ethos Card */}
+            {/* Right Column: Premium Ethos Card with Image */}
             <Reveal delay={0.2} className="lg:col-span-5 w-full relative">
-              <div className="bg-white border border-[#efbdeb]/30 rounded-2xl p-10 md:p-12 shadow-[0_8px_30px_rgba(80,24,84,0.04)] flex flex-col justify-center text-center relative overflow-hidden min-h-[300px]">
-                <p className="font-display text-2xl md:text-3xl italic text-[#501854] leading-relaxed font-light">
-                  &ldquo;True equality begins with economic independence.&rdquo;
-                </p>
-                <div className="w-12 h-[2px] bg-[#db2777] mx-auto my-6" />
-                <span className="text-xs font-bold tracking-widest text-[#db2777] font-mono-dm uppercase">
-                  BforC Ethos
-                </span>
-                
-                {/* Decorative soft pink circle in bottom right */}
-                <div className="absolute bottom-6 right-6 w-8 h-8 rounded-full bg-[#db2777]/10 animate-pulse" />
+              <div className="bg-white border border-[#efbdeb]/30 rounded-2xl shadow-[0_8px_30px_rgba(80,24,84,0.04)] flex flex-col overflow-hidden min-h-[400px] group">
+                <div className="relative w-full h-[220px]">
+                  <Image 
+                    src="https://images.unsplash.com/photo-1531538606174-0f90ff5dce83?auto=format&fit=crop&q=80&w=600"
+                    alt="BforC Mentorship"
+                    fill
+                    className="object-cover object-center transition-transform duration-500 group-hover:scale-102"
+                    sizes="(max-width: 768px) 100vw, 400px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
+                </div>
+                <div className="p-8 flex flex-col justify-center text-center relative">
+                  <p className="font-display text-lg md:text-xl italic text-[#501854] leading-relaxed font-light">
+                    &ldquo;True equality begins with economic independence.&rdquo;
+                  </p>
+                  <div className="w-10 h-[2px] bg-[#db2777] mx-auto my-4" />
+                  <span className="text-[10px] font-bold tracking-widest text-[#db2777] font-mono-dm uppercase">
+                    BforC Ethos
+                  </span>
+                </div>
               </div>
             </Reveal>
           </div>
@@ -722,80 +790,135 @@ export default function Home() {
 
           <div className="flex flex-col gap-8">
             {/* Benefit 1 */}
-            <Reveal className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-8 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center transition-all duration-300">
-              <div className="max-w-2xl">
-                <span className="text-xs font-semibold tracking-wider text-[var(--primary)] font-mono-dm uppercase block mb-1">Opportunity</span>
-                <h3 className="text-base font-semibold mb-2">Get access to job listings</h3>
-                <p className="text-xs md:text-sm text-[var(--muted-foreground)] leading-[1.7] font-light">
-                  The BforC career portal provides a platform to all job-seeking women who are looking to start their careers, grow professionally, or even return to work after a break. We understand everyone&apos;s situation and take care of every woman&apos;s career needs. Whether you want remote work, flexible schedules, training, or more, BforC offers opportunities of all kinds.
-                </p>
+            <Reveal className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl overflow-hidden flex flex-col lg:flex-row transition-all duration-300">
+              <div className="flex-1 p-8 flex flex-col justify-between items-start gap-6">
+                <div>
+                  <span className="text-xs font-semibold tracking-wider text-[var(--primary)] font-mono-dm uppercase block mb-1">Opportunity</span>
+                  <h3 className="text-base font-semibold mb-2">Get access to job listings</h3>
+                  <p className="text-xs md:text-sm text-[var(--muted-foreground)] leading-[1.7] font-light">
+                    The BforC career portal provides a platform to all job-seeking women who are looking to start their careers, grow professionally, or even return to work after a break. We understand everyone&apos;s situation and take care of every woman&apos;s career needs. Whether you want remote work, flexible schedules, training, or more, BforC offers opportunities of all kinds.
+                  </p>
+                </div>
+                <PremiumButton 
+                  href={CAREER_SITE_URL} 
+                  label="Visit BforC career portal" 
+                  variant="white" 
+                />
               </div>
-              <PremiumButton 
-                href={CAREER_SITE_URL} 
-                label="Visit BforC career portal" 
-                variant="white" 
-              />
+              <div className="relative w-full lg:w-[320px] min-h-[260px] sm:min-h-[300px] lg:min-h-auto shrink-0">
+                <Image 
+                  src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=600"
+                  alt="Job search and coaching"
+                  fill
+                  className="object-cover object-[center_15%]"
+                  sizes="(max-width: 1024px) 100vw, 320px"
+                />
+              </div>
             </Reveal>
 
             {/* Benefit 2 */}
-            <Reveal delay={0.05} className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-8 transition-all duration-300">
-              <span className="text-xs font-semibold tracking-wider text-[var(--primary)] font-mono-dm uppercase block mb-1">Networking</span>
-              <h3 className="text-base font-semibold mb-3">BforC Club membership</h3>
-              <p className="text-xs md:text-sm text-[var(--muted-foreground)] leading-[1.7] font-light mb-4">
-                As a BforC club member, you will become a part of a tight-knit community with the following benefits:
-              </p>
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <li className="flex gap-3 text-xs md:text-sm leading-[1.7] font-light">
-                  <CheckCircle2 size={14} className="text-[var(--primary)] shrink-0 mt-0.5" />
-                  <span>Network and connect with the BforC founders group and grow your contacts.</span>
-                </li>
-                <li className="flex gap-3 text-xs md:text-sm leading-[1.7] font-light">
-                  <CheckCircle2 size={14} className="text-[var(--primary)] shrink-0 mt-0.5" />
-                  <span>Engage with like-minded community members residing locally in your city and build a close, supportive community.</span>
-                </li>
-                <li className="flex gap-3 text-xs md:text-sm leading-[1.7] font-light">
-                  <CheckCircle2 size={14} className="text-[var(--primary)] shrink-0 mt-0.5" />
-                  <span>Get various kinds of benefits on products, shopping, and travel.</span>
-                </li>
-                <li className="flex gap-3 text-xs md:text-sm leading-[1.7] font-light">
-                  <CheckCircle2 size={14} className="text-[var(--primary)] shrink-0 mt-0.5" />
-                  <span>Get an opportunity to attend BforC&apos;s quarterly networking meetings where you can connect with like-minded, empowered women.</span>
-                </li>
-              </ul>
+            <Reveal delay={0.05} className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl overflow-hidden flex flex-col lg:flex-row-reverse transition-all duration-300">
+              <div className="flex-1 p-8">
+                <span className="text-xs font-semibold tracking-wider text-[var(--primary)] font-mono-dm uppercase block mb-1">Networking</span>
+                <h3 className="text-base font-semibold mb-3">BforC Club membership</h3>
+                <p className="text-xs md:text-sm text-[var(--muted-foreground)] leading-[1.7] font-light mb-4">
+                  As a BforC club member, you will become a part of a tight-knit community with the following benefits:
+                </p>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <li className="flex gap-3 text-xs md:text-sm leading-[1.7] font-light">
+                    <CheckCircle2 size={14} className="text-[var(--primary)] shrink-0 mt-0.5" />
+                    <span>Network and connect with the BforC founders group and grow your contacts.</span>
+                  </li>
+                  <li className="flex gap-3 text-xs md:text-sm leading-[1.7] font-light">
+                    <CheckCircle2 size={14} className="text-[var(--primary)] shrink-0 mt-0.5" />
+                    <span>Engage with like-minded community members residing locally in your city and build a close, supportive community.</span>
+                  </li>
+                  <li className="flex gap-3 text-xs md:text-sm leading-[1.7] font-light">
+                    <CheckCircle2 size={14} className="text-[var(--primary)] shrink-0 mt-0.5" />
+                    <span>Get various kinds of benefits on products, shopping, and travel.</span>
+                  </li>
+                  <li className="flex gap-3 text-xs md:text-sm leading-[1.7] font-light">
+                    <CheckCircle2 size={14} className="text-[var(--primary)] shrink-0 mt-0.5" />
+                    <span>Get an opportunity to attend BforC&apos;s quarterly networking meetings where you can connect with like-minded, empowered women.</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="relative w-full lg:w-[320px] min-h-[260px] sm:min-h-[300px] lg:min-h-auto shrink-0">
+                <Image 
+                  src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?auto=format&fit=crop&q=80&w=600"
+                  alt="Networking community"
+                  fill
+                  className="object-cover object-[center_15%]"
+                  sizes="(max-width: 1024px) 100vw, 320px"
+                />
+              </div>
             </Reveal>
 
             {/* Benefit 3 */}
-            <Reveal delay={0.1} className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-8 transition-all duration-300">
-              <span className="text-xs font-semibold tracking-wider text-[var(--primary)] font-mono-dm uppercase block mb-1">Ventures</span>
-              <h3 className="text-base font-semibold mb-2">Entrepreneurship guidance and funding</h3>
-              <p className="text-xs md:text-sm text-[var(--muted-foreground)] leading-[1.7] font-light">
-                BforC provides guidance, training, and seed funding to support all women with budding ideas. If you are an entrepreneur who is starting your own business, organization, or venture, BforC will support your efforts through necessary funds and a chance at incubation.
-              </p>
+            <Reveal delay={0.1} className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl overflow-hidden flex flex-col lg:flex-row transition-all duration-300">
+              <div className="flex-1 p-8 flex flex-col justify-center">
+                <span className="text-xs font-semibold tracking-wider text-[var(--primary)] font-mono-dm uppercase block mb-1">Ventures</span>
+                <h3 className="text-base font-semibold mb-2">Entrepreneurship guidance and funding</h3>
+                <p className="text-xs md:text-sm text-[var(--muted-foreground)] leading-[1.7] font-light">
+                  BforC provides guidance, training, and seed funding to support all women with budding ideas. If you are an entrepreneur who is starting your own business, organization, or venture, BforC will support your efforts through necessary funds and a chance at incubation.
+                </p>
+              </div>
+              <div className="relative w-full lg:w-[320px] min-h-[260px] sm:min-h-[300px] lg:min-h-auto shrink-0">
+                <Image 
+                  src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?auto=format&fit=crop&q=80&w=600"
+                  alt="Entrepreneurship and funding"
+                  fill
+                  className="object-cover object-[center_20%]"
+                  sizes="(max-width: 1024px) 100vw, 320px"
+                />
+              </div>
             </Reveal>
 
             {/* Benefit 4 */}
-            <Reveal delay={0.15} className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-8 transition-all duration-300">
-              <span className="text-xs font-semibold tracking-wider text-[var(--primary)] font-mono-dm uppercase block mb-1">Wellbeing</span>
-              <h3 className="text-base font-semibold mb-2">Health and wellness benefits</h3>
-              <p className="text-xs md:text-sm text-[var(--muted-foreground)] leading-[1.7] font-light">
-                BforC cares about every strong woman who gets associated with us. As a BforC member, you will be able to get life skills coaching and training, contributing to your upliftment. Along with that, BforC also facilitates meditation and wellbeing sessions with fellow BforC members so that you always feel your best!
-              </p>
+            <Reveal delay={0.15} className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl overflow-hidden flex flex-col lg:flex-row-reverse transition-all duration-300">
+              <div className="flex-1 p-8 flex flex-col justify-center">
+                <span className="text-xs font-semibold tracking-wider text-[var(--primary)] font-mono-dm uppercase block mb-1">Wellbeing</span>
+                <h3 className="text-base font-semibold mb-2">Health and wellness benefits</h3>
+                <p className="text-xs md:text-sm text-[var(--muted-foreground)] leading-[1.7] font-light">
+                  BforC cares about every strong woman who gets associated with us. As a BforC member, you will be able to get life skills coaching and training, contributing to your upliftment. Along with that, BforC also facilitates meditation and wellbeing sessions with fellow BforC members so that you always feel your best!
+                </p>
+              </div>
+              <div className="relative w-full lg:w-[320px] min-h-[260px] sm:min-h-[300px] lg:min-h-auto shrink-0">
+                <Image 
+                  src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&q=80&w=600"
+                  alt="Health and wellness wellbeing"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(max-width: 1024px) 100vw, 320px"
+                />
+              </div>
             </Reveal>
 
             {/* Benefit 5 */}
-            <Reveal delay={0.2} className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl p-8 flex flex-col md:flex-row gap-6 justify-between items-start md:items-center transition-all duration-300">
-              <div className="max-w-2xl">
-                <span className="text-xs font-semibold tracking-wider text-[var(--primary)] font-mono-dm uppercase block mb-1">Global Connect</span>
-                <h3 className="text-base font-semibold mb-2">Global connections</h3>
-                <p className="text-xs md:text-sm text-[var(--muted-foreground)] leading-[1.7] font-light">
-                  BforC is a rapidly growing community of amazing women. As a member, you get to connect with a rich network of women across the globe and make connections that will last a lifetime. BforC provides all women a platform for making strong and meaningful connections.
-                </p>
+            <Reveal delay={0.2} className="bg-[var(--background)]/90 border border-[var(--primary)]/10 hover:border-[var(--primary)]/20 hover:bg-[var(--primary)]/5 shadow-warm-md hover:shadow-warm-lg rounded-2xl overflow-hidden flex flex-col lg:flex-row transition-all duration-300">
+              <div className="flex-1 p-8 flex flex-col justify-between items-start gap-6">
+                <div>
+                  <span className="text-xs font-semibold tracking-wider text-[var(--primary)] font-mono-dm uppercase block mb-1">Global Connect</span>
+                  <h3 className="text-base font-semibold mb-2">Global connections</h3>
+                  <p className="text-xs md:text-sm text-[var(--muted-foreground)] leading-[1.7] font-light">
+                    BforC is a rapidly growing community of amazing women. As a member, you get to connect with a rich network of women across the globe and make connections that will last a lifetime. BforC provides all women a platform for making strong and meaningful connections.
+                  </p>
+                </div>
+                <PremiumButton 
+                  href={CAREER_SITE_URL} 
+                  label="Become a member now" 
+                  variant="purple" 
+                />
               </div>
-              <PremiumButton 
-                href={CAREER_SITE_URL} 
-                label="Become a member now" 
-                variant="purple" 
-              />
+              <div className="relative w-full lg:w-[320px] min-h-[260px] sm:min-h-[300px] lg:min-h-auto shrink-0">
+                <Image 
+                  src="https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?auto=format&fit=crop&q=80&w=600"
+                  alt="Global connections networking"
+                  fill
+                  className="object-cover object-[center_15%]"
+                  sizes="(max-width: 1024px) 100vw, 320px"
+                />
+              </div>
             </Reveal>
           </div>
 
